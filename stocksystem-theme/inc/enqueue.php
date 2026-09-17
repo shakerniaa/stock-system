@@ -55,6 +55,10 @@ function stocksystem_enqueue_assets() {
 		wp_enqueue_script( 'stocksystem-checkout', STOCKSYSTEM_URI . '/assets/js/checkout.js', array( 'jquery' ), STOCKSYSTEM_VERSION, true );
 	}
 
+	if ( is_page_template( 'page-templates/about-contact.php' ) ) {
+		wp_enqueue_style( 'stocksystem-about', STOCKSYSTEM_URI . '/assets/css/components/about.css', array( 'stocksystem-buttons' ), STOCKSYSTEM_VERSION );
+	}
+
 	$is_account_area = ( function_exists( 'is_account_page' ) && is_account_page() )
 		|| is_page_template( 'page-templates/order-tracking.php' );
 
