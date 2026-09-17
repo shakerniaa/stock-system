@@ -1,0 +1,117 @@
+/**
+ * Base / reset — RTL is the default direction site-wide.
+ * Use CSS logical properties throughout (margin-inline-*, padding-inline-*,
+ * inset-inline-*, border-inline-*) so an LTR variant stays possible later.
+ */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	direction: rtl;
+	text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	background: var(--c-paper);
+	color: var(--c-text);
+	font-family: var(--font-family-base);
+	font-size: var(--fs-15);
+	line-height: var(--lh-body);
+	-webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+	line-height: var(--lh-heading);
+	font-weight: 700;
+}
+
+p {
+	margin: 0;
+}
+
+img, svg {
+	max-width: 100%;
+	display: block;
+}
+
+a {
+	color: var(--c-teal-600);
+	text-decoration: none;
+	transition: color var(--transition-hover);
+}
+
+a:hover {
+	color: var(--c-orange-500);
+}
+
+button, input, select, textarea {
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+}
+
+button {
+	cursor: pointer;
+}
+
+ul, ol {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* Latin-only content (SKU, phone, model names, sizes) inside RTL flow */
+.ltr,
+[dir="ltr"] {
+	direction: ltr;
+	unicode-bidi: isolate;
+}
+
+/* Visible keyboard focus — 2px teal ring, 2px offset, per README a11y spec */
+:focus-visible {
+	outline: var(--focus-ring-width) solid var(--focus-ring-color);
+	outline-offset: var(--focus-ring-offset);
+}
+
+.container {
+	max-width: var(--container-max);
+	margin-inline: auto;
+	padding-inline: var(--sp-20);
+}
+
+@media (min-width: 768px) {
+	.container {
+		padding-inline: var(--sp-40);
+	}
+}
+
+.screen-reader-text {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(1px, 1px, 1px, 1px);
+	white-space: nowrap;
+}
+
+.skip-link {
+	position: absolute;
+	inset-inline-start: var(--sp-12);
+	top: -100px;
+	z-index: 1000;
+	background: var(--c-teal-500);
+	color: #fff;
+	padding: var(--sp-10) var(--sp-16);
+	border-radius: var(--radius-button);
+	transition: top var(--transition-hover);
+}
+
+.skip-link:focus {
+	top: var(--sp-12);
+}

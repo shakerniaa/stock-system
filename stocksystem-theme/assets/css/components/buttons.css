@@ -1,0 +1,80 @@
+/**
+ * Buttons — Decision #1: teal is the ONLY primary CTA fill (white text).
+ * Orange is never a button fill and never paired with white text; it only
+ * appears as the phone-CTA variant (dark text) and short-lived badges.
+ */
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--sp-9);
+	height: 48px;
+	padding-inline: var(--sp-24);
+	border-radius: var(--radius-button);
+	border: none;
+	font-size: var(--fs-15);
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color var(--transition-hover), border-color var(--transition-hover), color var(--transition-hover);
+}
+
+.btn--block {
+	width: 100%;
+}
+
+.btn--primary {
+	background: var(--c-teal-500);
+	color: #fff;
+}
+
+.btn--primary:hover {
+	background: var(--c-teal-600);
+	color: #fff;
+}
+
+.btn--outline {
+	background: transparent;
+	border: var(--border-interactive) solid var(--c-line);
+	color: var(--c-text);
+}
+
+.btn--outline:hover {
+	border-color: var(--c-teal-500);
+	color: var(--c-teal-600);
+}
+
+.btn--outline-on-dark {
+	background: transparent;
+	border: var(--border-interactive) solid var(--overlay-on-dark-20);
+	color: var(--c-on-dark);
+}
+
+.btn--outline-on-dark:hover {
+	border-color: var(--c-teal-500);
+	color: var(--c-teal-300);
+}
+
+/* Quote-request CTA: dark fill, not the teal purchase color — there's
+   nothing to add to cart, it opens a request-a-quote form instead. */
+.btn--dark {
+	background: var(--c-ink-800);
+	color: #fff;
+}
+
+.btn--dark:hover {
+	background: var(--c-ink-700);
+	color: #fff;
+}
+
+/* Phone CTA: orange fill, dark text (never white-on-orange). */
+.btn--phone {
+	background: var(--c-orange-500);
+	color: var(--c-ink-800);
+}
+
+.btn--phone:hover {
+	background: var(--c-orange-500);
+	color: var(--c-ink-800);
+	opacity: .92;
+}

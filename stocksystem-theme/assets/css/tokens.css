@@ -1,0 +1,189 @@
+/**
+ * Design tokens — Stock System
+ * Source of truth: DECISIONS-v1.1.md overrides README.md token table
+ * where the two disagree. Do not introduce new colors outside this file.
+ */
+
+:root {
+	/* ---- Color: surfaces (dark, deepest to lightest) ---- */
+	--c-ink-900: #04211F; /* page background, dark surfaces */
+	--c-ink-800: #06292A; /* site header, footer, dark section bg */
+	--c-ink-700: #08302E; /* raised card on dark */
+	--c-ink-600: #0B3A38; /* main nav bar */
+
+	/* ---- Color: brand / accent (teal) ----
+	   Decision #1: teal is the ONLY primary CTA color (add to cart, buy,
+	   pay). White text on teal. Never use teal for inventory status. */
+	--c-teal-500: #0EBAAF; /* primary CTA fill, links, focus ring */
+	--c-teal-600: #0A8F87; /* accent text on light (AA-safe) */
+	--c-teal-700: #0A6F69; /* reserved: do not use for "in stock" (see status-success) */
+	--c-teal-300: #5FD9D0; /* accent text on dark */
+	--c-teal-050: #E6F7F5; /* accent surface tint */
+	--c-teal-025: #F7FDFC; /* selected-row tint */
+
+	/* ---- Color: orange ----
+	   Decision #1: orange is NEVER the primary buy button and NEVER
+	   paired with white text (insufficient contrast). Use only for:
+	   urgent phone contact, "featured/discount" badges, short-lived
+	   sale emphasis. */
+	--c-orange-500: #F58220; /* phone CTA, badges, hover emphasis */
+	--c-orange-700: #B25708; /* price emphasis on light */
+	--c-orange-800: #9A3412; /* orange text on light (AA-safe) */
+	--c-orange-050: #FDEEE0; /* orange surface tint */
+
+	/* ---- Color: red (errors / clearance) ---- */
+	--c-red-600: #C62828; /* sale price, clearance badge */
+	--c-red-700: #9B2222; /* out-of-stock / error text */
+	--c-red-050: #FBE9E9; /* error surface */
+
+	/* ---- Color: amber (low stock) ---- */
+	--c-amber-500: #F2C94C; /* low-stock border */
+	--c-amber-700: #7A5800; /* low-stock text */
+	--c-amber-050: #FCF3DA; /* low-stock surface */
+
+	/* ---- Color: status (Decision #9) ----
+	   "In stock" = green, NOT teal. Teal is reserved for brand/CTA only
+	   so status and action never collide visually. */
+	--c-status-success: #13A05C; /* in stock */
+	--c-status-success-050: #E7F7EE; /* in-stock surface tint */
+	--c-status-warning-500: var(--c-amber-500); /* low stock */
+	--c-status-warning-700: var(--c-amber-700);
+	--c-status-error-600: var(--c-red-700); /* out of stock */
+
+	/* ---- Color: neutrals ---- */
+	--c-paper: #FFFFFF;
+	--c-paper-alt: #F4F8F8; /* subtle section / product image well */
+	--c-paper-warm: #FFFCF8; /* featured product card background (15-B state 14) */
+	--c-line: #DDE7E6;
+	--c-line-soft: #EFF5F4;
+	--c-text: #06292A;
+	--c-text-2: #4C6664;
+	--c-text-3: #8FA5A3;
+	--c-text-disabled: #B7C7C6;
+	--c-on-dark: #EBEDEC;
+	--c-on-dark-2: #B9CBC9;
+	--c-on-dark-3: #9FB4B2;
+
+	/* Alpha overlays on dark surfaces */
+	--overlay-on-dark-06: rgba(235, 237, 236, .06);
+	--overlay-on-dark-08: rgba(235, 237, 236, .08);
+	--overlay-on-dark-10: rgba(235, 237, 236, .1);
+	--overlay-on-dark-12: rgba(235, 237, 236, .12);
+	--overlay-on-dark-14: rgba(235, 237, 236, .14);
+	--overlay-on-dark-16: rgba(235, 237, 236, .16);
+	--overlay-on-dark-20: rgba(235, 237, 236, .2);
+
+	/* ---- Typography ---- */
+	--font-family-base: 'Peyda', 'Vazirmatn', system-ui, sans-serif;
+
+	--fs-11: 11px;
+	--fs-11-5: 11.5px;
+	--fs-12: 12px;
+	--fs-12-5: 12.5px;
+	--fs-13: 13px;
+	--fs-13-5: 13.5px;
+	--fs-14: 14px;
+	--fs-14-5: 14.5px;
+	--fs-15: 15px;
+	--fs-15-5: 15.5px;
+	--fs-16: 16px;
+	--fs-17: 17px;
+	--fs-18: 18px;
+	--fs-19: 19px;
+	--fs-20: 20px;
+	--fs-21: 21px;
+	--fs-22: 22px;
+	--fs-24: 24px;
+	--fs-26: 26px;
+	--fs-27: 27px;
+	--fs-28: 28px;
+	--fs-30: 30px;
+	--fs-32: 32px;
+	--fs-34: 34px;
+	--fs-38: 38px;
+	--fs-page-title: clamp(26px, 3.6vw, 40px);
+
+	--lh-heading: 1.45;
+	--lh-body: 1.95; /* keep in 1.85–2.05 range for Persian body text; never tighten */
+
+	/* ---- Spacing scale ---- */
+	--sp-4: 4px;
+	--sp-5: 5px;
+	--sp-6: 6px;
+	--sp-7: 7px;
+	--sp-8: 8px;
+	--sp-9: 9px;
+	--sp-10: 10px;
+	--sp-11: 11px;
+	--sp-12: 12px;
+	--sp-14: 14px;
+	--sp-16: 16px;
+	--sp-18: 18px;
+	--sp-20: 20px;
+	--sp-22: 22px;
+	--sp-24: 24px;
+	--sp-26: 26px;
+	--sp-28: 28px;
+	--sp-32: 32px;
+	--sp-34: 34px;
+	--sp-36: 36px;
+	--sp-40: 40px;
+	--sp-44: 44px;
+	--sp-48: 48px;
+	--sp-52: 52px;
+	--sp-56: 56px;
+
+	/* ---- Radius ---- */
+	--radius-chip: 6px;
+	--radius-input: 8px;
+	--radius-input-lg: 9px;
+	--radius-button: 10px;
+	--radius-button-lg: 11px;
+	--radius-card: 12px;
+	--radius-panel: 14px;
+	--radius-panel-lg: 16px;
+	--radius-panel-xl: 18px;
+	--radius-phone-frame: 26px;
+	--radius-pill: 999px;
+
+	/* ---- Borders ---- */
+	--border-default: 1px;
+	--border-interactive: 1.5px;
+	--border-selected: 2px;
+
+	/* ---- Elevation ---- */
+	--shadow-dark-frame: 0 30px 60px -30px rgba(0, 0, 0, .6);
+
+	/* ---- Focus ---- */
+	--focus-ring-color: var(--c-teal-500);
+	--focus-ring-width: 2px;
+	--focus-ring-offset: 2px;
+
+	/* ---- Layout ----
+	   Decision #8: container max and largest breakpoint are BOTH 1280px
+	   (not 1440 as some .dc.html files imply). Numeric breakpoint values
+	   are duplicated in assets/js/breakpoints.js for JS consumers, since
+	   CSS custom properties can't be read inside @media conditions. */
+	--container-max: 1280px;
+	--breakpoint-sm: 480px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 1024px;
+	--breakpoint-xl: 1280px;
+
+	/* ---- Motion ---- */
+	--transition-hover: .16s ease-out;
+
+	/* ---- Elevation: z-index scale (11 Desktop States.dc.html §04) ---- */
+	--z-mega-menu: 100;
+	--z-mini-cart: 110;
+	--z-search-suggest: 120;
+	--z-mobile-drawer: 150;
+	--z-toast: 200;
+	--z-modal: 300;
+	--shadow-float: 0 20px 40px -16px rgba(4, 33, 31, .5);
+	--shadow-panel: 0 24px 48px -20px rgba(4, 33, 31, .35);
+
+	/* ---- Numerals ----
+	   Decision: thousands separator is U+066C (٬), not "," or "٫". */
+	--thousands-separator: "\066C";
+}

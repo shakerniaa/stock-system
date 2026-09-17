@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap">
+<style>
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-SemiBold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-ExtraBold.ttf") format("truetype"); font-weight: 800 900; font-display: swap; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04211F; font-family: "Peyda", "Vazirmatn", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #0EBAAF; text-decoration: none; }
+  a:hover { color: #F58220; }
+</style>
+</helmet>
+
+<div dir="rtl" style="background:#04211F; color:#EBEDEC; padding:0 20px 100px">
+<div style="max-width:1180px; margin:0 auto">
+
+<header style="padding:56px 0 36px; border-bottom:1px solid rgba(235,237,236,.12); display:flex; flex-direction:column; gap:18px">
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap">
+    <img src="assets/logo-lockup-dark.png" alt="استوک سیستم" style="height:42px; width:auto">
+    <span style="font-size:13px; letter-spacing:.1em; color:#9FB4B2; direction:ltr">WEBSITE UI · PAGE 16 / 16</span>
+  </div>
+  <div role="heading" aria-level="2" style="margin:0; font-size:clamp(26px,3.6vw,40px); font-weight:800; line-height:1.24">صفحات فروشگاهی جامانده</div>
+  <p style="margin:0; max-width:860px; font-size:16px; line-height:1.9; color:#B9CBC9">صفحاتی که ووکامرس به‌طور پیش‌فرض می‌سازد و معمولاً بدون طراحی رها می‌شوند: فروشگاه، زیردسته، برند، علاقه‌مندی‌ها، ثبت‌نام و بازیابی رمز، پیگیری سفارش و جزئیات سفارش. طراحی‌شدهٔ همهٔ این‌ها اینجاست تا در قالب وردپرس چیزی بدون سبک نماند.</p>
+  <nav style="display:flex; gap:8px; flex-wrap:wrap; padding:22px 0 0">
+    <a href="00 Overview.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">فهرست پروژه</a>
+    <a href="Stock System Design System.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">سند پایه</a>
+    <a href="02 Category.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">دستهٔ کالا</a>
+    <a href="08 Account.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">حساب کاربری</a>
+    <a href="15 Product States.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">حالت‌های محصول</a>
+    <span style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:#0EBAAF; border:1px solid #0EBAAF; color:#04211F; font-size:13px; font-weight:700">صفحات فروشگاهی</span>
+  </nav>
+</header>
+
+<!-- 16-A فروشگاه -->
+<section style="padding:44px 0 0; display:flex; flex-direction:column; gap:18px">
+  <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap">
+    <span style="font-size:12.5px; letter-spacing:.16em; color:#5FD9D0; direction:ltr">16-A</span>
+    <div role="heading" aria-level="3" style="font-size:22px; font-weight:700">فروشگاه — صفحهٔ ریشهٔ ووکامرس</div>
+  </div>
+  <p style="margin:0; max-width:860px; font-size:14.5px; line-height:1.9; color:#9FB4B2">فروشگاه با دستهٔ کالا فرق دارد: اینجا مشتری هنوز نمی‌داند چه می‌خواهد. پس به‌جای گرید خالی، مسیرهای ورود می‌گذاریم — دسته‌ها، برندها، بازهٔ بودجه — و بعد پرفروش‌ها.</p>
+  <div style="overflow-x:auto; border-radius:14px; border:1px solid rgba(235,237,236,.14)">
+    <div style="width:1280px; background:#FFFFFF">
+      <div style="background:#06292A; padding:14px 48px; display:flex; align-items:center; gap:24px">
+        <img src="assets/logo-lockup-dark.png" alt="استوک سیستم" style="height:36px; width:auto">
+        <span style="display:flex; gap:22px; font-size:15px; font-weight:500; color:#B9CBC9"><span style="color:#EBEDEC">فروشگاه</span><span>لپ‌تاپ</span><span>آل‌این‌وان</span><span>تعمیرات</span><span>بلاگ</span></span>
+        <span style="margin-inline-start:auto; font-size:15px; font-weight:600; color:#F58220; direction:ltr">0903 453 5025</span>
+      </div>
+
+      <div style="background:#F4F8F8; padding:28px 48px; display:flex; flex-direction:column; gap:10px; border-bottom:1px solid #E3ECEB">
+        <span style="font-size:12.5px; color:#8FA5A3">خانه ← فروشگاه</span>
+        <h1 style="margin:0; font-size:30px; font-weight:800; color:#06292A">فروشگاه استوک سیستم</h1>
+        <span style="font-size:14.5px; color:#4C6664">۴۱۸ دستگاه تست‌شده در ۶ دسته · همه با برگهٔ وضعیت و گارانتی ۱۸ ماه</span>
+      </div>
+
+      <div style="padding:34px 48px 44px; display:flex; flex-direction:column; gap:34px">
+        <div style="display:flex; flex-direction:column; gap:14px">
+          <h2 style="margin:0; font-size:19px; font-weight:700; color:#06292A">با دسته شروع کنید</h2>
+          <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:14px">
+            <span style="display:flex; flex-direction:column; align-items:center; gap:10px; border:1px solid #DDE7E6; border-radius:12px; padding:18px 10px; text-align:center">
+              <span style="width:44px; height:44px; border-radius:11px; background:#E6F7F5; display:inline-flex; align-items:center; justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A8F87" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="5" width="18" height="11" rx="1.5"></rect><path d="M2 19h20"></path></svg></span>
+              <span style="font-size:13.5px; font-weight:600; color:#06292A">لپ‌تاپ</span><span style="font-size:11.5px; color:#8FA5A3">۲۴۱ کالا</span>
+            </span>
+            <span style="display:flex; flex-direction:column; align-items:center; gap:10px; border:1px solid #DDE7E6; border-radius:12px; padding:18px 10px; text-align:center">
+              <span style="width:44px; height:44px; border-radius:11px; background:#E6F7F5; display:inline-flex; align-items:center; justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A8F87" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="1.5"></rect><path d="M9 21h6M12 17v4"></path></svg></span>
+              <span style="font-size:13.5px; font-weight:600; color:#06292A">آل‌این‌وان</span><span style="font-size:11.5px; color:#8FA5A3">۵۸ کالا</span>
+            </span>
+            <span style="display:flex; flex-direction:column; align-items:center; gap:10px; border:1px solid #DDE7E6; border-radius:12px; padding:18px 10px; text-align:center">
+              <span style="width:44px; height:44px; border-radius:11px; background:#E6F7F5; display:inline-flex; align-items:center; justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A8F87" stroke-width="1.7" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="1.5"></rect><path d="M9 7h2"></path></svg></span>
+              <span style="font-size:13.5px; font-weight:600; color:#06292A">کیس و مینی‌پی‌سی</span><span style="font-size:11.5px; color:#8FA5A3">۴۶ کالا</span>
+            </span>
+            <span style="display:flex; flex-direction:column; align-items:center; gap:10px; border:1px solid #DDE7E6; border-radius:12px; padding:18px 10px; text-align:center">
+              <span style="width:44px; height:44px; border-radius:11px; background:#E6F7F5; display:inline-flex; align-items:center; justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A8F87" stroke-width="1.7" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="12" rx="1.5"></rect><path d="M8 20h8M12 16v4"></path></svg></span>
+              <span style="font-size:13.5px; font-weight:600; color:#06292A">مانیتور</span><span style="font-size:11.5px; color:#8FA5A3">۳۷ کالا</span>
+            </span>
+            <span style="display:flex; flex-direction:column; align-items:center; gap:10px; border:1px solid #DDE7E6; border-radius:12px; padding:18px 10px; text-align:center">
+              <span style="width:44px; height:44px; border-radius:11px; background:#E6F7F5; display:inline-flex; align-items:center; justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A8F87" stroke-width="1.7" stroke-linejoin="round"><path d="M4 8h16v9H4z"></path><path d="M7 11h10M7 14h6"></path></svg></span>
+              <span style="font-size:13.5px; font-weight:600; color:#06292A">لوازم جانبی</span><span style="font-size:11.5px; color:#8FA5A3">۳۶ کالا</span>
+            </span>
+            <span style="display:flex; flex-direction:column; align-items:center; gap:10px; border:1px solid #F58220; border-radius:12px; padding:18px 10px; text-align:center; background:#FFFCF8">
+              <span style="width:44px; height:44px; border-radius:11px; background:#FDEEE0; display:inline-flex; align-items:center; justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9A3412" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"></path></svg></span>
+              <span style="font-size:13.5px; font-weight:600; color:#9A3412">حراج ویژه</span><span style="font-size:11.5px; color:#B25708">۱۹ کالا</span>
+            </span>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+          <div style="display:flex; flex-direction:column; gap:14px">
+            <h2 style="margin:0; font-size:19px; font-weight:700; color:#06292A">با بودجه شروع کنید</h2>
+            <div style="display:flex; flex-direction:column; gap:9px">
+              <span style="display:flex; align-items:center; justify-content:space-between; border:1px solid #DDE7E6; border-radius:11px; padding:15px 18px"><span style="font-size:14.5px; font-weight:600; color:#06292A">زیر ۱۵ میلیون تومان</span><span style="font-size:13px; color:#8FA5A3">۶۲ کالا ←</span></span>
+              <span style="display:flex; align-items:center; justify-content:space-between; border:1px solid #DDE7E6; border-radius:11px; padding:15px 18px"><span style="font-size:14.5px; font-weight:600; color:#06292A">۱۵ تا ۲۵ میلیون تومان</span><span style="font-size:13px; color:#8FA5A3">۱۳۴ کالا ←</span></span>
+              <span style="display:flex; align-items:center; justify-content:space-between; border:1px solid #DDE7E6; border-radius:11px; padding:15px 18px"><span style="font-size:14.5px; font-weight:600; color:#06292A">۲۵ تا ۴۰ میلیون تومان</span><span style="font-size:13px; color:#8FA5A3">۱۴۸ کالا ←</span></span>
+              <span style="display:flex; align-items:center; justify-content:space-between; border:1px solid #DDE7E6; border-radius:11px; padding:15px 18px"><span style="font-size:14.5px; font-weight:600; color:#06292A">بالای ۴۰ میلیون تومان</span><span style="font-size:13px; color:#8FA5A3">۷۴ کالا ←</span></span>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:14px">
+            <h2 style="margin:0; font-size:19px; font-weight:700; color:#06292A">با برند شروع کنید</h2>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px">
+              <span style="height:70px; border:1px solid #DDE7E6; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; color:#4C6664; direction:ltr">HP</span>
+              <span style="height:70px; border:1px solid #DDE7E6; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; color:#4C6664; direction:ltr">Dell</span>
+              <span style="height:70px; border:1px solid #DDE7E6; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; color:#4C6664; direction:ltr">Lenovo</span>
+              <span style="height:70px; border:1px solid #DDE7E6; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; color:#4C6664; direction:ltr">Microsoft</span>
+              <span style="height:70px; border:1px solid #DDE7E6; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; color:#4C6664; direction:ltr">Asus</span>
+              <span style="height:70px; border:1px solid #DDE7E6; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:13.5px; font-weight:600; color:#0A8F87">همهٔ برندها ←</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:14px">
+          <span style="display:flex; align-items:baseline; justify-content:space-between"><h2 style="margin:0; font-size:19px; font-weight:700; color:#06292A">پرفروش‌های این هفته</h2><span style="font-size:13.5px; font-weight:600; color:#0A8F87">مشاهدهٔ همه ←</span></span>
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:18px">
+            <span style="border:1px solid #DDE7E6; border-radius:12px; overflow:hidden; display:flex; flex-direction:column">
+              <span style="height:140px; background:#F4F8F8; display:flex; align-items:center; justify-content:center"><img src="assets/products/elitebook-840-g8.png" alt="EliteBook 840 G8" style="max-width:86%; max-height:86%; object-fit:contain; mix-blend-mode:multiply"></span>
+              <span style="padding:14px; display:flex; flex-direction:column; gap:6px"><span style="font-size:13.5px; font-weight:600; color:#06292A">EliteBook 840 G8</span><span style="font-size:15.5px; font-weight:800; color:#06292A">۳۲,۹۰۰,۰۰۰</span></span>
+            </span>
+            <span style="border:1px solid #DDE7E6; border-radius:12px; overflow:hidden; display:flex; flex-direction:column">
+              <span style="height:140px; background:#F4F8F8; display:flex; align-items:center; justify-content:center"><img src="assets/products/dell-inspiron-3520.png" alt="Inspiron 3520" style="max-width:86%; max-height:86%; object-fit:contain; mix-blend-mode:multiply"></span>
+              <span style="padding:14px; display:flex; flex-direction:column; gap:6px"><span style="font-size:13.5px; font-weight:600; color:#06292A">Dell Inspiron 3520</span><span style="font-size:15.5px; font-weight:800; color:#06292A">۲۱,۹۰۰,۰۰۰</span></span>
+            </span>
+            <span style="border:1px solid #DDE7E6; border-radius:12px; overflow:hidden; display:flex; flex-direction:column">
+              <span style="height:140px; background:#F4F8F8; display:flex; align-items:center; justify-content:center"><img src="assets/products/hp-pavilion-15.png" alt="Pavilion 15" style="max-width:86%; max-height:86%; object-fit:contain; mix-blend-mode:multiply"></span>
+              <span style="padding:14px; display:flex; flex-direction:column; gap:6px"><span style="font-size:13.5px; font-weight:600; color:#06292A">HP Pavilion 15</span><span style="font-size:15.5px; font-weight:800; color:#06292A">۲۴,۵۰۰,۰۰۰</span></span>
+            </span>
+            <span style="border:1px solid #DDE7E6; border-radius:12px; overflow:hidden; display:flex; flex-direction:column">
+              <span style="height:140px; background:#F4F8F8; display:flex; align-items:center; justify-content:center"><img src="assets/products/surface-laptop-4.png" alt="Surface Laptop 4" style="max-width:86%; max-height:86%; object-fit:contain; mix-blend-mode:multiply"></span>
+              <span style="padding:14px; display:flex; flex-direction:column; gap:6px"><span style="font-size:13.5px; font-weight:600; color:#06292A">Surface Laptop 4</span><span style="font-size:15.5px; font-weight:800; color:#06292A">۳۴,۹۰۰,۰۰۰</span></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 16-B زیردسته و برند -->
+<section style="padding:52px 0 0; display:flex; flex-direction:column; gap:18px">
+  <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap">
+    <span style="font-size:12.5px; letter-spacing:.16em; color:#5FD9D0; direction:ltr">16-B</span>
+    <div role="heading" aria-level="3" style="font-size:22px; font-weight:700">زیردسته و صفحهٔ برند</div>
+  </div>
+  <p style="margin:0; max-width:860px; font-size:14.5px; line-height:1.9; color:#9FB4B2">هر دو از قالب آرشیو دستهٔ کالا ارث می‌برند، با یک سربرگ متفاوت: زیردسته چیپ خواهرها را نشان می‌دهد، برند یک بلوک معرفی و نکات فنی مخصوص همان سازنده.</p>
+  <div style="overflow-x:auto; border-radius:14px; border:1px solid rgba(235,237,236,.14)">
+    <div style="width:1280px; background:#FFFFFF; padding:0 0 40px">
+      <div style="background:#F4F8F8; padding:26px 48px; display:flex; flex-direction:column; gap:14px; border-bottom:1px solid #E3ECEB">
+        <span style="font-size:12.5px; color:#8FA5A3">خانه ← فروشگاه ← لپ‌تاپ ← لپ‌تاپ گیمینگ</span>
+        <h1 style="margin:0; font-size:28px; font-weight:800; color:#06292A">لپ‌تاپ گیمینگ استوک</h1>
+        <div style="display:flex; gap:8px; flex-wrap:wrap">
+          <span style="display:inline-flex; align-items:center; height:34px; padding:0 14px; border-radius:999px; background:#06292A; color:#FFFFFF; font-size:13px; font-weight:600">گیمینگ ۳۴</span>
+          <span style="display:inline-flex; align-items:center; height:34px; padding:0 14px; border-radius:999px; background:#FFFFFF; border:1px solid #DDE7E6; color:#4C6664; font-size:13px">اداری ۹۶</span>
+          <span style="display:inline-flex; align-items:center; height:34px; padding:0 14px; border-radius:999px; background:#FFFFFF; border:1px solid #DDE7E6; color:#4C6664; font-size:13px">گرافیکی ۴۸</span>
+          <span style="display:inline-flex; align-items:center; height:34px; padding:0 14px; border-radius:999px; background:#FFFFFF; border:1px solid #DDE7E6; color:#4C6664; font-size:13px">اولترابوک ۶۳</span>
+          <span style="display:inline-flex; align-items:center; height:34px; padding:0 14px; border-radius:999px; background:#FFFFFF; border:1px solid #DDE7E6; color:#4C6664; font-size:13px">دانشجویی ۴۱</span>
+        </div>
+      </div>
+
+      <div style="padding:30px 48px 0; display:flex; flex-direction:column; gap:26px">
+        <div style="display:flex; gap:20px; align-items:flex-start; background:#06292A; border-radius:14px; padding:26px 28px">
+          <span style="flex:0 0 auto; width:96px; height:96px; border-radius:14px; background:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:24px; font-weight:800; color:#06292A; direction:ltr">HP</span>
+          <span style="display:flex; flex-direction:column; gap:10px">
+            <span style="font-size:21px; font-weight:800; color:#EBEDEC">لپ‌تاپ استوک اچ‌پی</span>
+            <span style="font-size:14.5px; line-height:1.95; color:#B9CBC9; max-width:680px">سری EliteBook و ProBook بیشترین حجم واردات استوک اروپا را دارند؛ قطعات یدکی فراوان است و صفحه‌کلید و بدنه دوام بالایی دارند. سری Pavilion مصرفی‌تر است و برای بودجهٔ محدود انتخاب خوبی‌ست.</span>
+            <span style="display:flex; gap:16px; flex-wrap:wrap; padding-top:4px">
+              <span style="font-size:13px; color:#5FD9D0; font-weight:600">۱۳۷ دستگاه موجود</span>
+              <span style="font-size:13px; color:#9FB4B2">میانگین سلامت باتری ۸۴٪</span>
+              <span style="font-size:13px; color:#9FB4B2">نرخ مرجوعی ۱.۲٪</span>
+            </span>
+          </span>
+        </div>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap">
+          <span style="font-size:14px; color:#4C6664">نمایش ۱ تا ۲۴ از ۱۳۷ نتیجه</span>
+          <span style="display:flex; gap:10px; align-items:center">
+            <span style="display:inline-flex; align-items:center; gap:8px; height:42px; border:1px solid #DDE7E6; border-radius:10px; padding:0 14px; font-size:13.5px; color:#4C6664">مرتب‌سازی: پرفروش‌ترین
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8FA5A3" stroke-width="2.2" stroke-linecap="round"><path d="M6 9.5l6 6 6-6"></path></svg>
+            </span>
+            <span style="display:inline-flex; align-items:center; gap:8px; height:42px; border:1px solid #DDE7E6; border-radius:10px; padding:0 14px; font-size:13.5px; color:#4C6664">۲۴ در صفحه</span>
+          </span>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:18px">
+          <span style="border:1px solid #DDE7E6; border-radius:12px; overflow:hidden; display:flex; flex-direction:column">
+            <span style="height:140px; background:#F4F8F8; display:flex; align-items:center; justify-content:center"><img src="assets/products/elitebook-840-g8.png" alt="EliteBook 840 G8" style="max-width:86%; max-height:86%; object-fit:contain; mix-blend-mode:multiply"></span>
+            <span style="padding:14px; display:flex; flex-direction:column; gap:6px"><span style="font-size:13.5px; font-weight:600; color:#06292A">EliteBook 840 G8</span><span style="font-size:12px; color:#8FA5A3; direction:ltr">i7-1165G7 · 16GB · 512GB</span><span style="font-size:15.5px; font-weight:800; color:#06292A">۳۲,۹۰۰,۰۰۰</span></span>
+          </span>
+          <span style="border:1px solid #DDE7E6; border-radius:12px; overflow:hidden; display:flex; flex-direction:column">
+            <span style="height:140px; background:#F4F8F8; display:flex; align-items:center; justify-content:center"><img src="assets/products/hp-pavilion-15.png" alt="Pavilion 15" style="max-width:86%; max-height:86%; object-fit:contain; mix-blend-mode:multiply"></span>
+            <span style="padding:14px; display:flex; flex-direction:column; gap:6px"><span style="font-size:13.5px; font-weight:600; color:#06292A">HP Pavilion 15</span><span style="font-size:12px; color:#8FA5A3; direction:ltr">i5-1135G7 · 8GB · 256GB</span><span style="font-size:15.5px; font-weight:800; color:#06292A">۲۴,۵۰۰,۰۰۰</span></span>
+          </span>
+          <span style="border:1px solid #DDE7E6; border-radius:12px; overflow:hidden; display:flex; flex-direction:column">
+            <span style="height:140px; background:#F4F8F8; display:flex; align-items:center; justify-content:center"><img src="assets/products/elitebook-840-g8.png" alt="ProBook 450" style="max-width:86%; max-height:86%; object-fit:contain; mix-blend-mode:multiply"></span>
+            <span style="padding:14px; display:flex; flex-direction:column; gap:6px"><span style="font-size:13.5px; font-weight:600; color:#06292A">HP ProBook 450 G8</span><span style="font-size:12px; color:#8FA5A3; direction:ltr">i5-1135G7 · 16GB · 512GB</span><span style="font-size:15.5px; font-weight:800; color:#06292A">۲۷,۴۰۰,۰۰۰</span></span>
+          </span>
+          <span style="border:1px solid #DDE7E6; border-radius:12px; overflow:hidden; display:flex; flex-direction:column">
+            <span style="height:140px; background:#F4F8F8; display:flex; align-items:center; justify-content:center"><img src="assets/products/hp-pavilion-15.png" alt="ZBook 15" style="max-width:86%; max-height:86%; object-fit:contain; mix-blend-mode:multiply"></span>
+            <span style="padding:14px; display:flex; flex-direction:column; gap:6px"><span style="font-size:13.5px; font-weight:600; color:#06292A">HP ZBook 15 G6</span><span style="font-size:12px; color:#8FA5A3; direction:ltr">Xeon · 32GB · 1TB</span><span style="font-size:15.5px; font-weight:800; color:#06292A">۴۱,۸۰۰,۰۰۰</span></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 16-C ورود و ثبت‌نام -->
+<section style="padding:52px 0 0; display:flex; flex-direction:column; gap:18px">
+  <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap">
+    <span style="font-size:12.5px; letter-spacing:.16em; color:#5FD9D0; direction:ltr">16-C</span>
+    <div role="heading" aria-level="3" style="font-size:22px; font-weight:700">ورود، ثبت‌نام و بازیابی رمز</div>
+  </div>
+  <p style="margin:0; max-width:860px; font-size:14.5px; line-height:1.9; color:#9FB4B2">ورود پیش‌فرض با کد یک‌بارمصرف است — برای بازار ایران سریع‌تر و کم‌اصطکاک‌تر از رمز. ورود با رمز به‌عنوان گزینهٔ دوم می‌ماند چون مشتریان سازمانی به آن نیاز دارند.</p>
+  <div style="overflow-x:auto; border-radius:14px; border:1px solid rgba(235,237,236,.14)">
+    <div style="width:1280px; background:#FFFFFF; padding:40px 48px; display:grid; grid-template-columns:repeat(3,1fr); gap:24px">
+
+      <div style="display:flex; flex-direction:column; gap:16px; border:1px solid #DDE7E6; border-radius:14px; padding:28px">
+        <span style="font-size:12.5px; font-weight:700; color:#0A8F87">ورود</span>
+        <h2 style="margin:0; font-size:21px; font-weight:800; color:#06292A">ورود به حساب</h2>
+        <span style="font-size:13.5px; line-height:1.9; color:#4C6664">شمارهٔ موبایل را وارد کنید؛ کد ورود پیامک می‌شود.</span>
+        <span style="display:flex; flex-direction:column; gap:7px">
+          <span style="font-size:13px; font-weight:600; color:#06292A">شمارهٔ موبایل</span>
+          <span style="display:flex; align-items:center; height:50px; border:1.5px solid #0EBAAF; border-radius:11px; padding:0 14px; font-size:15px; color:#06292A; direction:ltr">0912 345 6789</span>
+        </span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; height:50px; border-radius:11px; background:#F58220; color:#FFFFFF; font-size:15px; font-weight:700">دریافت کد ورود</span>
+        <span style="display:flex; align-items:center; gap:12px"><span style="flex:1; height:1px; background:#EFF5F4"></span><span style="font-size:12.5px; color:#8FA5A3">یا</span><span style="flex:1; height:1px; background:#EFF5F4"></span></span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; height:48px; border-radius:11px; border:1.5px solid #DDE7E6; color:#06292A; font-size:14px; font-weight:600">ورود با رمز عبور</span>
+        <span style="font-size:13px; color:#4C6664; line-height:1.9">حساب ندارید؟ <span style="color:#0A8F87; font-weight:600">ثبت‌نام کنید</span></span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:16px; border:1px solid #DDE7E6; border-radius:14px; padding:28px">
+        <span style="font-size:12.5px; font-weight:700; color:#0A8F87">ثبت‌نام</span>
+        <h2 style="margin:0; font-size:21px; font-weight:800; color:#06292A">ساخت حساب</h2>
+        <span style="display:flex; flex-direction:column; gap:7px">
+          <span style="font-size:13px; font-weight:600; color:#06292A">نام و نام خانوادگی</span>
+          <span style="display:flex; align-items:center; height:48px; border:1px solid #DDE7E6; border-radius:11px; padding:0 14px; font-size:14px; color:#8FA5A3">مثلاً رضا کاظمی</span>
+        </span>
+        <span style="display:flex; flex-direction:column; gap:7px">
+          <span style="font-size:13px; font-weight:600; color:#06292A">شمارهٔ موبایل</span>
+          <span style="display:flex; align-items:center; height:48px; border:1px solid #DDE7E6; border-radius:11px; padding:0 14px; font-size:14px; color:#8FA5A3; direction:ltr">09xx xxx xxxx</span>
+        </span>
+        <span style="display:flex; flex-direction:column; gap:7px">
+          <span style="font-size:13px; font-weight:600; color:#06292A">ایمیل <span style="font-weight:400; color:#8FA5A3">(اختیاری)</span></span>
+          <span style="display:flex; align-items:center; height:48px; border:1px solid #DDE7E6; border-radius:11px; padding:0 14px; font-size:14px; color:#8FA5A3; direction:ltr">name@example.com</span>
+        </span>
+        <span style="display:flex; align-items:flex-start; gap:10px">
+          <span style="flex:0 0 auto; width:19px; height:19px; border-radius:5px; background:#0EBAAF; display:inline-flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:12px; font-weight:800; margin-top:2px">✓</span>
+          <span style="font-size:12.5px; line-height:1.85; color:#4C6664"><a href="14 Support Pages.dc.html">قوانین و مقررات</a> و <a href="14 Support Pages.dc.html">حریم خصوصی</a> را می‌پذیرم.</span>
+        </span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; height:50px; border-radius:11px; background:#F58220; color:#FFFFFF; font-size:15px; font-weight:700">ثبت‌نام</span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:16px; border:1px solid #DDE7E6; border-radius:14px; padding:28px; background:#F4F8F8">
+        <span style="font-size:12.5px; font-weight:700; color:#9A3412">بازیابی رمز</span>
+        <h2 style="margin:0; font-size:21px; font-weight:800; color:#06292A">رمز را فراموش کرده‌اید؟</h2>
+        <span style="font-size:13.5px; line-height:1.95; color:#4C6664">شمارهٔ موبایل یا ایمیل حسابتان را وارد کنید. لینک تغییر رمز فرستاده می‌شود و تا ۱۵ دقیقه معتبر است.</span>
+        <span style="display:flex; align-items:center; height:50px; border:1px solid #DDE7E6; border-radius:11px; padding:0 14px; font-size:14px; color:#8FA5A3; background:#FFFFFF">موبایل یا ایمیل</span>
+        <span style="display:inline-flex; align-items:center; justify-content:center; height:50px; border-radius:11px; background:#06292A; color:#FFFFFF; font-size:15px; font-weight:700">ارسال لینک بازیابی</span>
+        <span style="display:flex; gap:11px; align-items:flex-start; background:#FFFFFF; border-radius:11px; padding:15px 16px">
+          <span style="flex:0 0 auto; width:3px; align-self:stretch; background:#0EBAAF; border-radius:2px"></span>
+          <span style="font-size:12.5px; line-height:1.9; color:#4C6664">اگر پیامک نرسید، احتمالاً شماره در حساب ثبت نشده است. با پشتیبانی تماس بگیرید.</span>
+        </span>
+        <span style="font-size:13px; color:#0A8F87; font-weight:600">بازگشت به صفحهٔ ورود</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 16-D علاقه‌مندی، پیگیری، جزئیات سفارش -->
+<section style="padding:52px 0 0; display:flex; flex-direction:column; gap:18px">
+  <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap">
+    <span style="font-size:12.5px; letter-spacing:.16em; color:#5FD9D0; direction:ltr">16-D</span>
+    <div role="heading" aria-level="3" style="font-size:22px; font-weight:700">علاقه‌مندی‌ها، پیگیری سفارش و جزئیات سفارش</div>
+  </div>
+  <p style="margin:0; max-width:860px; font-size:14.5px; line-height:1.9; color:#9FB4B2">علاقه‌مندی در فروش استوک معنای متفاوتی دارد: چون هر دستگاه یکتاست، کالای ذخیره‌شده ممکن است فروخته شود. پس وضعیت موجودی داخل لیست هم نمایش داده می‌شود. پیگیری سفارش بدون نیاز به ورود کار می‌کند.</p>
+  <div style="overflow-x:auto; border-radius:14px; border:1px solid rgba(235,237,236,.14)">
+    <div style="width:1280px; background:#FFFFFF; padding:40px 48px; display:flex; flex-direction:column; gap:34px">
+
+      <div style="display:flex; flex-direction:column; gap:16px">
+        <span style="display:flex; align-items:baseline; justify-content:space-between"><h2 style="margin:0; font-size:20px; font-weight:700; color:#06292A">علاقه‌مندی‌ها</h2><span style="font-size:13.5px; color:#8FA5A3">۳ کالا ذخیره شده</span></span>
+        <div style="border:1px solid #DDE7E6; border-radius:14px; overflow:hidden">
+          <div style="display:grid; grid-template-columns:2.4fr 1fr 1fr 1.2fr; background:#F4F8F8; padding:13px 20px; font-size:13px; font-weight:700; color:#06292A"><span>کالا</span><span>قیمت</span><span>وضعیت</span><span></span></div>
+          <div style="display:grid; grid-template-columns:2.4fr 1fr 1fr 1.2fr; align-items:center; padding:16px 20px; border-top:1px solid #EFF5F4">
+            <span style="display:flex; align-items:center; gap:14px"><span style="width:60px; height:60px; border-radius:9px; background:#F4F8F8; display:inline-flex; align-items:center; justify-content:center"><img src="assets/products/elitebook-840-g8.png" alt="EliteBook 840 G8" style="max-width:84%; max-height:84%; object-fit:contain; mix-blend-mode:multiply"></span><span style="display:flex; flex-direction:column; gap:4px"><span style="font-size:14px; font-weight:600; color:#06292A">HP EliteBook 840 G8</span><span style="font-size:12px; color:#8FA5A3; direction:ltr">16GB · 512GB · A+</span></span></span>
+            <span style="font-size:14.5px; font-weight:700; color:#06292A">۳۲,۹۰۰,۰۰۰</span>
+            <span style="justify-self:start; background:#E6F7F6; color:#0A6F69; border-radius:999px; padding:4px 11px; font-size:12px; font-weight:600">موجود</span>
+            <span style="justify-self:end; display:flex; gap:9px"><span style="display:inline-flex; align-items:center; justify-content:center; height:40px; padding:0 16px; border-radius:9px; background:#F58220; color:#FFFFFF; font-size:13px; font-weight:700">افزودن به سبد</span><span style="display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:9px; border:1px solid #DDE7E6; color:#8FA5A3; font-size:16px">×</span></span>
+          </div>
+          <div style="display:grid; grid-template-columns:2.4fr 1fr 1fr 1.2fr; align-items:center; padding:16px 20px; border-top:1px solid #EFF5F4">
+            <span style="display:flex; align-items:center; gap:14px"><span style="width:60px; height:60px; border-radius:9px; background:#F4F8F8; display:inline-flex; align-items:center; justify-content:center"><img src="assets/products/surface-laptop-4.png" alt="Surface Laptop 4" style="max-width:84%; max-height:84%; object-fit:contain; mix-blend-mode:multiply"></span><span style="display:flex; flex-direction:column; gap:4px"><span style="font-size:14px; font-weight:600; color:#06292A">Surface Laptop 4</span><span style="font-size:12px; color:#8FA5A3; direction:ltr">8GB · 256GB · A</span></span></span>
+            <span style="display:flex; flex-direction:column; gap:2px"><span style="font-size:14.5px; font-weight:700; color:#C62828">۲۷,۹۰۰,۰۰۰</span><span style="font-size:11.5px; color:#8FA5A3; text-decoration:line-through">۳۴,۹۰۰,۰۰۰</span></span>
+            <span style="justify-self:start; background:#FCF3DA; color:#7A5800; border-radius:999px; padding:4px 11px; font-size:12px; font-weight:600">تنها ۱ عدد</span>
+            <span style="justify-self:end; display:flex; gap:9px"><span style="display:inline-flex; align-items:center; justify-content:center; height:40px; padding:0 16px; border-radius:9px; background:#F58220; color:#FFFFFF; font-size:13px; font-weight:700">افزودن به سبد</span><span style="display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:9px; border:1px solid #DDE7E6; color:#8FA5A3; font-size:16px">×</span></span>
+          </div>
+          <div style="display:grid; grid-template-columns:2.4fr 1fr 1fr 1.2fr; align-items:center; padding:16px 20px; border-top:1px solid #EFF5F4; background:#FCFDFD">
+            <span style="display:flex; align-items:center; gap:14px"><span style="width:60px; height:60px; border-radius:9px; background:#F4F8F8; display:inline-flex; align-items:center; justify-content:center"><img src="assets/products/dell-inspiron-3520.png" alt="Inspiron 3520" style="max-width:84%; max-height:84%; object-fit:contain; mix-blend-mode:multiply; filter:grayscale(1); opacity:.55"></span><span style="display:flex; flex-direction:column; gap:4px"><span style="font-size:14px; font-weight:600; color:#4C6664">Dell Inspiron 3520</span><span style="font-size:12px; color:#8FA5A3; direction:ltr">8GB · 512GB · B</span></span></span>
+            <span style="font-size:14px; font-weight:600; color:#8FA5A3">۲۱,۹۰۰,۰۰۰</span>
+            <span style="justify-self:start; background:#FBE9E9; color:#9B2222; border-radius:999px; padding:4px 11px; font-size:12px; font-weight:600">فروخته شد</span>
+            <span style="justify-self:end; display:flex; gap:9px"><span style="display:inline-flex; align-items:center; justify-content:center; height:40px; padding:0 16px; border-radius:9px; border:1.5px solid #06292A; color:#06292A; font-size:13px; font-weight:700">مشابه‌ها را ببین</span><span style="display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:9px; border:1px solid #DDE7E6; color:#8FA5A3; font-size:16px">×</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1.35fr; gap:26px; align-items:start">
+        <div style="display:flex; flex-direction:column; gap:16px">
+          <h2 style="margin:0; font-size:20px; font-weight:700; color:#06292A">پیگیری سفارش</h2>
+          <div style="display:flex; flex-direction:column; gap:14px; border:1px solid #DDE7E6; border-radius:14px; padding:24px">
+            <span style="font-size:13.5px; line-height:1.95; color:#4C6664">بدون ورود به حساب: شمارهٔ سفارش و شمارهٔ موبایل ثبت‌شده کافی است.</span>
+            <span style="display:flex; flex-direction:column; gap:7px">
+              <span style="font-size:13px; font-weight:600; color:#06292A">شمارهٔ سفارش</span>
+              <span style="display:flex; align-items:center; height:48px; border:1px solid #DDE7E6; border-radius:11px; padding:0 14px; font-size:14px; color:#8FA5A3; direction:ltr">SS-48121</span>
+            </span>
+            <span style="display:flex; flex-direction:column; gap:7px">
+              <span style="font-size:13px; font-weight:600; color:#06292A">شمارهٔ موبایل</span>
+              <span style="display:flex; align-items:center; height:48px; border:1px solid #DDE7E6; border-radius:11px; padding:0 14px; font-size:14px; color:#8FA5A3; direction:ltr">09xx xxx xxxx</span>
+            </span>
+            <span style="display:inline-flex; align-items:center; justify-content:center; height:50px; border-radius:11px; background:#06292A; color:#FFFFFF; font-size:15px; font-weight:700">پیگیری</span>
+            <span style="font-size:12.5px; color:#8FA5A3; line-height:1.85">کد رهگیری پستی پس از تحویل به شرکت حمل، پیامک می‌شود.</span>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:16px">
+          <h2 style="margin:0; font-size:20px; font-weight:700; color:#06292A">جزئیات سفارش</h2>
+          <div style="border:1px solid #DDE7E6; border-radius:14px; overflow:hidden">
+            <div style="background:#F4F8F8; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; border-bottom:1px solid #E3ECEB">
+              <span style="display:flex; flex-direction:column; gap:5px"><span style="font-size:16px; font-weight:800; color:#06292A; direction:ltr">SS-48121</span><span style="font-size:12.5px; color:#8FA5A3">ثبت‌شده در ۱۲ شهریور ۱۴۰۵ · ساعت ۱۴:۲۶</span></span>
+              <span style="background:#E6F7F6; color:#0A6F69; border-radius:999px; padding:6px 14px; font-size:12.5px; font-weight:700">در حال ارسال</span>
+            </div>
+            <div style="padding:22px 24px; display:flex; flex-direction:column; gap:20px">
+              <div style="display:flex; align-items:flex-start; gap:0">
+                <span style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px"><span style="width:26px; height:26px; border-radius:50%; background:#0A8F87; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:800">✓</span><span style="font-size:11.5px; color:#0A8F87; font-weight:600; text-align:center">ثبت سفارش</span></span>
+                <span style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px"><span style="width:26px; height:26px; border-radius:50%; background:#0A8F87; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:800">✓</span><span style="font-size:11.5px; color:#0A8F87; font-weight:600; text-align:center">پرداخت</span></span>
+                <span style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px"><span style="width:26px; height:26px; border-radius:50%; background:#0A8F87; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:800">✓</span><span style="font-size:11.5px; color:#0A8F87; font-weight:600; text-align:center">آماده‌سازی</span></span>
+                <span style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px"><span style="width:26px; height:26px; border-radius:50%; background:#F58220; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:800">۴</span><span style="font-size:11.5px; color:#9A3412; font-weight:700; text-align:center">ارسال</span></span>
+                <span style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px"><span style="width:26px; height:26px; border-radius:50%; background:#EFF5F4; color:#8FA5A3; display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:700">۵</span><span style="font-size:11.5px; color:#8FA5A3; text-align:center">تحویل</span></span>
+              </div>
+
+              <div style="display:flex; flex-direction:column; gap:12px; border-top:1px solid #EFF5F4; padding-top:18px">
+                <span style="display:flex; align-items:center; gap:14px">
+                  <span style="width:56px; height:56px; border-radius:9px; background:#F4F8F8; display:inline-flex; align-items:center; justify-content:center"><img src="assets/products/elitebook-840-g8.png" alt="EliteBook 840 G8" style="max-width:84%; max-height:84%; object-fit:contain; mix-blend-mode:multiply"></span>
+                  <span style="flex:1; display:flex; flex-direction:column; gap:4px"><span style="font-size:14px; font-weight:600; color:#06292A">HP EliteBook 840 G8</span><span style="font-size:12px; color:#8FA5A3; direction:ltr">16GB · 512GB · ۱ عدد</span></span>
+                  <span style="font-size:14.5px; font-weight:700; color:#06292A">۳۲,۹۰۰,۰۰۰</span>
+                </span>
+                <span style="display:flex; align-items:center; gap:14px">
+                  <span style="width:56px; height:56px; border-radius:9px; background:#F4F8F8; display:inline-flex; align-items:center; justify-content:center; font-size:11px; color:#8FA5A3; text-align:center">کیف</span>
+                  <span style="flex:1; display:flex; flex-direction:column; gap:4px"><span style="font-size:14px; font-weight:600; color:#06292A">کیف ضدضربه و ماوس بی‌سیم</span><span style="font-size:12px; color:#8FA5A3">۱ عدد</span></span>
+                  <span style="font-size:14.5px; font-weight:700; color:#06292A">۸۹۰,۰۰۰</span>
+                </span>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; border-top:1px solid #EFF5F4; padding-top:18px">
+                <span style="display:flex; flex-direction:column; gap:7px">
+                  <span style="font-size:13px; font-weight:700; color:#06292A">نشانی تحویل</span>
+                  <span style="font-size:13px; line-height:1.95; color:#4C6664">رضا کاظمی · تهران، خیابان ولیعصر، کوچهٔ بهار، پلاک ۱۲، واحد ۴ · ۰۹۱۲۳۴۵۶۷۸۹</span>
+                </span>
+                <span style="display:flex; flex-direction:column; gap:9px">
+                  <span style="display:flex; justify-content:space-between; font-size:13px; color:#4C6664"><span>جمع کالاها</span><span>۳۳,۷۹۰,۰۰۰</span></span>
+                  <span style="display:flex; justify-content:space-between; font-size:13px; color:#4C6664"><span>ارسال (تیپاکس)</span><span>۱۸۰,۰۰۰</span></span>
+                  <span style="display:flex; justify-content:space-between; font-size:13px; color:#0A8F87"><span>تخفیف کد WELCOME</span><span>−۱,۳۲۰,۰۰۰</span></span>
+                  <span style="height:1px; background:#EFF5F4"></span>
+                  <span style="display:flex; justify-content:space-between; align-items:baseline"><span style="font-size:14px; font-weight:700; color:#06292A">پرداخت‌شده</span><span style="font-size:19px; font-weight:800; color:#06292A">۳۲,۶۵۰,۰۰۰</span></span>
+                </span>
+              </div>
+
+              <div style="display:flex; gap:10px; flex-wrap:wrap; border-top:1px solid #EFF5F4; padding-top:18px">
+                <span style="display:inline-flex; align-items:center; justify-content:center; height:44px; padding:0 18px; border-radius:10px; background:#06292A; color:#FFFFFF; font-size:13.5px; font-weight:700">دانلود فاکتور</span>
+                <span style="display:inline-flex; align-items:center; justify-content:center; height:44px; padding:0 18px; border-radius:10px; border:1.5px solid #DDE7E6; color:#06292A; font-size:13.5px; font-weight:600">برگهٔ تست دستگاه</span>
+                <span style="display:inline-flex; align-items:center; justify-content:center; height:44px; padding:0 18px; border-radius:10px; border:1.5px solid #DDE7E6; color:#06292A; font-size:13.5px; font-weight:600">درخواست مرجوعی</span>
+                <span style="display:inline-flex; align-items:center; justify-content:center; height:44px; padding:0 18px; border-radius:10px; border:1.5px solid #DDE7E6; color:#4C6664; font-size:13.5px; font-weight:600">پشتیبانی این سفارش</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 16-E چک‌لیست پوشش -->
+<section style="padding:52px 0 0; display:flex; flex-direction:column; gap:18px">
+  <div role="heading" aria-level="3" style="font-size:22px; font-weight:700">چک‌لیست پوشش صفحات</div>
+  <p style="margin:0; max-width:860px; font-size:14.5px; line-height:1.9; color:#9FB4B2">هر قالب وردپرسی که برای این سایت نوشته می‌شود باید این فهرست را پوشش دهد. ستون سوم می‌گوید طراحی در کدام سند است.</p>
+  <div style="border:1px solid rgba(235,237,236,.14); border-radius:14px; overflow:hidden">
+    <div style="display:grid; grid-template-columns:1.1fr 1.4fr 1fr; background:rgba(235,237,236,.07); padding:14px 20px; font-size:13px; font-weight:700; color:#EBEDEC"><span>قالب وردپرس</span><span>صفحه</span><span>سند طراحی</span></div>
+    <sc-for list="{{ coverage }}" as="r" hint-placeholder-count="20">
+      <div style="display:grid; grid-template-columns:1.1fr 1.4fr 1fr; padding:12px 20px; border-top:1px solid rgba(235,237,236,.09); font-size:13.5px; color:#B9CBC9; align-items:center">
+        <span style="direction:ltr; color:#9FB4B2; font-size:12.5px">{{ r.tpl }}</span>
+        <span style="color:#EBEDEC">{{ r.page }}</span>
+        <span style="color:#5FD9D0; font-weight:600">{{ r.doc }}</span>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const ROWS = [
+  ["front-page.php", "صفحهٔ اصلی", "۰۱"],
+  ["archive-product.php", "فروشگاه", "۱۶-A"],
+  ["taxonomy-product_cat.php", "دسته‌بندی محصولات", "۰۲"],
+  ["taxonomy-product_cat.php", "زیردسته", "۱۶-B"],
+  ["taxonomy-product_brand.php", "صفحهٔ برند", "۱۶-B"],
+  ["single-product.php", "صفحهٔ محصول", "۰۳ · ۱۵"],
+  ["searchform.php", "جستجو", "۱۳"],
+  ["search.php", "نتایج جستجو", "۱۳"],
+  ["home.php", "وبلاگ", "۰۵"],
+  ["single.php", "مقاله", "۰۵"],
+  ["page-about.php", "دربارهٔ ما", "۰۹"],
+  ["page-contact.php", "تماس با ما", "۰۹"],
+  ["cart.php", "سبد خرید", "۰۴"],
+  ["checkout/form-checkout.php", "تسویه حساب", "۰۴ · ۱۲"],
+  ["myaccount/my-account.php", "حساب کاربری", "۰۸"],
+  ["myaccount/form-login.php", "ورود", "۱۶-C"],
+  ["myaccount/form-login.php", "ثبت‌نام", "۱۶-C"],
+  ["myaccount/form-lost-password.php", "بازیابی رمز", "۱۶-C"],
+  ["myaccount/view-order.php", "جزئیات سفارش", "۱۶-D"],
+  ["order-tracking.php", "پیگیری سفارش", "۱۶-D"],
+  ["wishlist.php", "علاقه‌مندی‌ها", "۱۶-D"],
+  ["page-terms.php", "قوانین · حریم خصوصی · سوالات متداول", "۱۴"],
+  ["page-installments.php", "راهنمای اقساط", "۱۴"],
+  ["page-repair.php", "تعمیرات تخصصی", "۰۶"],
+  ["page-grading.php", "استاندارد وضعیت کالا", "۰۷"],
+  ["404.php", "صفحهٔ ۴۰۴ و حالت‌های خطا", "۱۰ · ۱۱"]
+];
+class Component extends DCLogic {
+  renderVals() {
+    return { coverage: ROWS.map(([tpl, page, doc]) => ({ tpl, page, doc })) };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap">
+<style>
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-SemiBold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-ExtraBold.ttf") format("truetype"); font-weight: 800 900; font-display: swap; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04211F; font-family: "Peyda", "Vazirmatn", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #0EBAAF; text-decoration: none; }
+  a:hover { color: #F58220; }
+</style>
+</helmet>
+
+<div dir="rtl" style="background:#04211F; color:#EBEDEC; padding:0 20px 100px">
+<div style="max-width:1180px; margin:0 auto">
+
+<header style="padding:56px 0 36px; border-bottom:1px solid rgba(235,237,236,.12); display:flex; flex-direction:column; gap:18px">
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap">
+    <img src="assets/logo-lockup-dark.png" alt="استوک سیستم" style="height:42px; width:auto">
+    <span style="font-size:13px; letter-spacing:.1em; color:#9FB4B2; direction:ltr">WEBSITE UI · PAGE 12 / 16</span>
+  </div>
+  <div role="heading" aria-level="2" style="margin:0; font-size:clamp(26px,3.6vw,40px); font-weight:800; line-height:1.24">فرآیند تسویه سفارش</div>
+  <p style="margin:0; max-width:820px; font-size:16px; line-height:1.9; color:#B9CBC9">چهار گام پشت سر هم: انتخاب آدرس، روش ارسال، درگاه پرداخت و تأیید نهایی سفارش. هر گام یک فریم دسکتاپ ۱۲۸۰ پیکسل با خلاصهٔ سفارش ثابت در سمت چپ.</p>
+  <nav style="display:flex; gap:8px; flex-wrap:wrap; padding:22px 0 0">
+    <a href="Stock System Design System.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">سند پایه</a>
+    <a href="04 Cart Checkout.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">سبد و پرداخت</a>
+    <a href="12 Checkout Flow.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:#0EBAAF; border:1px solid #0EBAAF; color:#04211F; font-size:13px; font-weight:700">فرآیند تسویه</a>
+    <a href="11 Desktop States.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">حالت‌های دسکتاپ</a>
+    <a href="00 Overview.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">نمای کلی</a>
+  
+    <a href="15 Product States.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">حالت‌های محصول</a>
+    <a href="16 Shop Pages.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">صفحات فروشگاهی</a>
+  </nav>
+</header>
+
+<section style="padding:44px 0 0; display:flex; flex-direction:column; gap:14px">
+  <span style="font-size:12px; letter-spacing:.12em; color:#F58220; font-weight:600; direction:ltr">STEP 01</span>
+  <div role="heading" aria-level="3" style="font-size:24px; font-weight:700">گام یک — انتخاب آدرس تحویل</div>
+  <p style="margin:0; max-width:760px; font-size:15px; line-height:1.9; color:#9FB4B2">آدرس‌های ذخیره‌شده به شکل کارت رادیویی، با امکان افزودن آدرس جدید در همان صفحه. آدرس پیش‌فرض از قبل انتخاب شده تا کاربر بتواند بی‌درنگ ادامه دهد.</p>
+  <div style="overflow-x:auto; border-radius:14px; border:1px solid rgba(235,237,236,.14); margin-top:8px">
+    <div style="width:1280px; background:#FFFFFF">
+
+      <div style="background:#06292A; padding:14px 48px; display:flex; align-items:center; gap:24px">
+        <img src="assets/logo-lockup-dark.png" alt="استوک سیستم" style="height:36px; width:auto">
+        <span style="margin-inline-start:auto; display:flex; align-items:center; gap:10px; font-size:13px; color:#B9CBC9">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0EBAAF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"></path><path d="M9 12l2.2 2.2L15.5 10"></path></svg>
+          اتصال امن · اطلاعات کارت نزد درگاه بانکی
+        </span>
+      </div>
+
+      <div style="background:#F4F8F8; padding:20px 48px; display:flex; align-items:center; flex-wrap:wrap; border-bottom:1px solid #DDE7E6">
+        <span style="display:flex; align-items:center; gap:10px; flex:1; min-width:170px">
+          <span style="width:32px; height:32px; border-radius:50%; background:#0EBAAF; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex:0 0 auto">۱</span>
+          <span style="font-size:14px; font-weight:600; color:#06292A">آدرس تحویل</span>
+          <span style="flex:1; height:2px; background:#DDE7E6; min-width:16px"></span>
+        </span>
+        <span style="display:flex; align-items:center; gap:10px; flex:1; min-width:170px">
+          <span style="width:32px; height:32px; border-radius:50%; background:#FFFFFF; border:2px solid #DDE7E6; color:#8FA5A3; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex:0 0 auto">۲</span>
+          <span style="font-size:14px; font-weight:500; color:#8FA5A3">روش ارسال</span>
+          <span style="flex:1; height:2px; background:#DDE7E6; min-width:16px"></span>
+        </span>
+        <span style="display:flex; align-items:center; gap:10px; flex:1; min-width:170px">
+          <span style="width:32px; height:32px; border-radius:50%; background:#FFFFFF; border:2px solid #DDE7E6; color:#8FA5A3; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex:0 0 auto">۳</span>
+          <span style="font-size:14px; font-weight:500; color:#8FA5A3">پرداخت</span>
+          <span style="flex:1; height:2px; background:#DDE7E6; min-width:16px"></span>
+        </span>
+        <span style="display:flex; align-items:center; gap:10px; flex:0 0 auto">
+          <span style="width:32px; height:32px; border-radius:50%; background:#FFFFFF; border:2px solid #DDE7E6; color:#8FA5A3; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:700">۴</span>
+          <span style="font-size:14px; font-weight:500; color:#8FA5A3">تأیید سفارش</span>
+        </span>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 372px; gap:32px; padding:36px 48px 44px">
+        <div style="display:flex; flex-direction:column; gap:18px; min-width:0">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:16px">
+            <span style="font-size:19px; font-weight:700; color:#06292A">آدرس‌های من</span>
+            <span style="font-size:13px; color:#5C7472">۳ آدرس ذخیره‌شده</span>
+          </div>
+
+          <label style="display:flex; gap:14px; padding:20px; border:2px solid #0EBAAF; border-radius:14px; background:#F0FBFA; cursor:pointer">
+            <span style="width:20px; height:20px; border-radius:50%; border:6px solid #0EBAAF; background:#FFFFFF; flex:0 0 auto; margin-top:2px"></span>
+            <span style="display:flex; flex-direction:column; gap:8px; flex:1; min-width:0">
+              <span style="display:flex; align-items:center; gap:8px; flex-wrap:wrap">
+                <span style="font-size:15px; font-weight:700; color:#06292A">خانه — تهران</span>
+                <span style="font-size:11px; font-weight:600; color:#0A6F68; background:#CFF1EE; border-radius:999px; padding:3px 9px">پیش‌فرض</span>
+              </span>
+              <span style="font-size:14px; line-height:1.85; color:#5C7472">تهران، خیابان ولیعصر، کوچهٔ شهید مرادی، پلاک ۱۸، واحد ۵ — کد پستی ۱۵۸۷۹۳۴۴۵۱</span>
+              <span style="font-size:13px; color:#5C7472; direction:ltr; text-align:right">مهسا رضایی · ۰۹۱۲ ۳۴۵ ۶۷۸۹</span>
+              <span style="display:flex; gap:14px; padding-top:4px">
+                <span style="font-size:13px; font-weight:600; color:#0EBAAF">ویرایش</span>
+                <span style="font-size:13px; font-weight:600; color:#8FA5A3">حذف</span>
+              </span>
+            </span>
+          </label>
+
+          <label style="display:flex; gap:14px; padding:20px; border:1px solid #DDE7E6; border-radius:14px; background:#FFFFFF; cursor:pointer">
+            <span style="width:20px; height:20px; border-radius:50%; border:2px solid #C6D6D5; background:#FFFFFF; flex:0 0 auto; margin-top:2px"></span>
+            <span style="display:flex; flex-direction:column; gap:8px; flex:1; min-width:0">
+              <span style="font-size:15px; font-weight:700; color:#06292A">محل کار — تهران</span>
+              <span style="font-size:14px; line-height:1.85; color:#5C7472">تهران، سعادت‌آباد، بلوار دریا، برج نگین، طبقهٔ ۹، واحد ۹۰۲ — کد پستی ۱۹۹۸۷۷۴۵۲۱</span>
+              <span style="font-size:13px; color:#5C7472; direction:ltr; text-align:right">مهسا رضایی · ۰۲۱ ۸۸۷۷ ۵۵۳۳</span>
+              <span style="display:flex; gap:14px; padding-top:4px">
+                <span style="font-size:13px; font-weight:600; color:#0EBAAF">ویرایش</span>
+                <span style="font-size:13px; font-weight:600; color:#8FA5A3">حذف</span>
+              </span>
+            </span>
+          </label>
+
+          <label style="display:flex; gap:14px; padding:20px; border:1px solid #DDE7E6; border-radius:14px; background:#FFFFFF; cursor:pointer">
+            <span style="width:20px; height:20px; border-radius:50%; border:2px solid #C6D6D5; background:#FFFFFF; flex:0 0 auto; margin-top:2px"></span>
+            <span style="display:flex; flex-direction:column; gap:8px; flex:1; min-width:0">
+              <span style="font-size:15px; font-weight:700; color:#06292A">انبار شرکت — کرج</span>
+              <span style="font-size:14px; line-height:1.85; color:#5C7472">کرج، عظیمیه، خیابان کاج، مجتمع اداری آرین، طبقهٔ ۲ — کد پستی ۳۱۵۵۸۹۲۲۱۰</span>
+              <span style="font-size:13px; color:#5C7472; direction:ltr; text-align:right">واحد تدارکات · ۰۲۶ ۳۴۵۶ ۷۸۹۰</span>
+              <span style="display:flex; gap:14px; padding-top:4px">
+                <span style="font-size:13px; font-weight:600; color:#0EBAAF">ویرایش</span>
+                <span style="font-size:13px; font-weight:600; color:#8FA5A3">حذف</span>
+              </span>
+            </span>
+          </label>
+
+          <div style="display:flex; align-items:center; gap:10px; padding:18px 20px; border:1px dashed #A9C4C2; border-radius:14px; background:#F8FBFB; cursor:pointer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0EBAAF" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+            <span style="font-size:15px; font-weight:600; color:#0A6F68">افزودن آدرس جدید</span>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:14px; padding:22px; border:1px solid #DDE7E6; border-radius:14px; background:#FFFFFF">
+            <span style="font-size:15px; font-weight:700; color:#06292A">اطلاعات فاکتور</span>
+            <div style="display:flex; gap:10px; flex-wrap:wrap">
+              <span style="display:inline-flex; align-items:center; gap:8px; height:40px; padding:0 16px; border-radius:999px; border:2px solid #0EBAAF; background:#F0FBFA; font-size:14px; font-weight:600; color:#0A6F68">فاکتور حقیقی</span>
+              <span style="display:inline-flex; align-items:center; gap:8px; height:40px; padding:0 16px; border-radius:999px; border:1px solid #DDE7E6; background:#FFFFFF; font-size:14px; font-weight:500; color:#5C7472">فاکتور حقوقی (شرکتی)</span>
+            </div>
+            <label style="display:flex; align-items:center; gap:10px; font-size:14px; color:#5C7472">
+              <span style="width:18px; height:18px; border-radius:5px; border:1px solid #C6D6D5; background:#FFFFFF; flex:0 0 auto"></span>
+              گیرندهٔ سفارش شخص دیگری است
+            </label>
+          </div>
+        </div>
+
+        <aside style="display:flex; flex-direction:column; gap:14px; background:#F4F8F8; border:1px solid #DDE7E6; border-radius:16px; padding:24px; align-self:start">
+          <span style="font-size:17px; font-weight:700; color:#06292A">خلاصهٔ سفارش</span>
+          <div style="display:flex; flex-direction:column; gap:14px; padding-bottom:14px; border-bottom:1px solid #DDE7E6">
+            <div style="display:flex; gap:12px; align-items:center">
+              <img src="assets/products/elitebook-840-g8.png" alt="" style="width:56px; height:56px; object-fit:cover; border-radius:10px; background:#FFFFFF; flex:0 0 auto">
+              <span style="display:flex; flex-direction:column; gap:4px; flex:1; min-width:0">
+                <span style="font-size:13px; font-weight:600; color:#06292A; line-height:1.6">لپ‌تاپ HP EliteBook 840 G8 — گرید A</span>
+                <span style="font-size:12px; color:#5C7472">۱ عدد · ۲۴٫۸۰۰٫۰۰۰ تومان</span>
+              </span>
+            </div>
+            <div style="display:flex; gap:12px; align-items:center">
+              <img src="assets/products/surface-laptop-4.png" alt="" style="width:56px; height:56px; object-fit:cover; border-radius:10px; background:#FFFFFF; flex:0 0 auto">
+              <span style="display:flex; flex-direction:column; gap:4px; flex:1; min-width:0">
+                <span style="font-size:13px; font-weight:600; color:#06292A; line-height:1.6">لپ‌تاپ Surface Laptop 4 — گرید B</span>
+                <span style="font-size:12px; color:#5C7472">۲ عدد · ۶٫۴۰۰٫۰۰۰ تومان</span>
+              </span>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:14px; color:#5C7472">
+            <span style="display:flex; justify-content:space-between"><span>جمع کالاها</span><span style="color:#06292A; font-weight:600">۳۱٫۲۰۰٫۰۰۰ تومان</span></span>
+            <span style="display:flex; justify-content:space-between"><span>تخفیف استوک</span><span style="color:#C2410C; font-weight:600">− ۱٫۲۰۰٫۰۰۰ تومان</span></span>
+            <span style="display:flex; justify-content:space-between"><span>هزینهٔ ارسال</span><span style="color:#8FA5A3">در گام بعد</span></span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding-top:14px; border-top:1px solid #DDE7E6">
+            <span style="font-size:15px; font-weight:600; color:#06292A">مبلغ قابل پرداخت</span>
+            <span style="font-size:20px; font-weight:800; color:#06292A">۳۰٫۰۰۰٫۰۰۰ <span style="font-size:13px; font-weight:500; color:#5C7472">تومان</span></span>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:center; height:52px; border-radius:12px; background:#F58220; color:#FFFFFF; font-size:16px; font-weight:700">ادامه به روش ارسال</div>
+          <span style="font-size:12px; line-height:1.8; color:#5C7472; text-align:center">با ادامهٔ خرید، قوانین و شرایط استوک سیستم را می‌پذیرید.</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:64px 0 0; display:flex; flex-direction:column; gap:14px">
+  <span style="font-size:12px; letter-spacing:.12em; color:#F58220; font-weight:600; direction:ltr">STEP 02</span>
+  <div role="heading" aria-level="3" style="font-size:24px; font-weight:700">گام دو — روش ارسال و زمان تحویل</div>
+  <p style="margin:0; max-width:760px; font-size:15px; line-height:1.9; color:#9FB4B2">سه روش ارسال با قیمت و بازهٔ زمانی شفاف. انتخاب بازهٔ ساعتی برای پیک تهران و یادداشت اختیاری برای مأمور ارسال.</p>
+  <div style="overflow-x:auto; border-radius:14px; border:1px solid rgba(235,237,236,.14); margin-top:8px">
+    <div style="width:1280px; background:#FFFFFF">
+
+      <div style="background:#F4F8F8; padding:20px 48px; display:flex; align-items:center; flex-wrap:wrap; border-bottom:1px solid #DDE7E6">
+        <span style="display:flex; align-items:center; gap:10px; flex:1; min-width:170px">
+          <span style="width:32px; height:32px; border-radius:50%; background:#0EBAAF; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex:0 0 auto">✓</span>
+          <span style="font-size:14px; font-weight:500; color:#0A6F68">آدرس تحویل</span>
+          <span style="flex:1; height:2px; background:#0EBAAF; min-width:16px"></span>
+        </span>
+        <span style="display:flex; align-items:center; gap:10px; flex:1; min-width:170px">
+          <span style="width:32px; height:32px; border-radius:50%; background:#0EBAAF; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex:0 0 auto">۲</span>
+          <span style="font-size:14px; font-weight:600; color:#06292A">روش ارسال</span>
+          <span style="flex:1; height:2px; background:#DDE7E6; min-width:16px"></span>
+        </span>
+        <span style="display:flex; align-items:center; gap:10px; flex:1; min-width:170px">
+          <span style="width:32px; height:32px; border-radius:50%; background:#FFFFFF; border:2px solid #DDE7E6; color:#8FA5A3; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex:0 0 auto">۳</span>
+          <span style="font-size:14px; font-weight:500; color:#8FA5A3">پرداخت</span>
+          <span style="flex:1; height:2px; background:#DDE7E6; min-width:16px"></span>
+        </span>
+        <span style="display:flex; align-items:center; gap:10px; flex:0 0 auto">
+          <span style="width:32px; height:32px; border-radius:50%; background:#FFFFFF; border:2px solid #DDE7E6; color:#8FA5A3; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:700">۴</span>
+          <span style="font-size:14px; font-weight:500; color:#8FA5A3">تأیید سفارش</span>
+        </span>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 372px; gap:32px; padding:36px 48px 44px">
+        <div style="display:flex; flex-direction:column; gap:18px; min-width:0">
+          <div style="display:flex; align-items:center; gap:12px; padding:16px 20px; border-radius:12px; background:#F0FBFA; border:1px solid #CFF1EE">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A6F68" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 1118 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span style="font-size:14px; color:#0A6F68; flex:1; min-width:0; line-height:1.8">ارسال به: تهران، خیابان ولیعصر، کوچهٔ شهید مرادی، پلاک ۱۸، واحد ۵</span>
+            <span style="font-size:13px; font-weight:600; color:#0EBAAF; flex:0 0 auto">تغییر آدرس</span>
+          </div>
+
+          <span style="font-size:19px; font-weight:700; color:#06292A">روش ارسال را انتخاب کنید</span>
+
+          <label style="display:flex; gap:14px; padding:20px; border:2px solid #0EBAAF; border-radius:14px; background:#F0FBFA; cursor:pointer">
+            <span style="width:20px; height:20px; border-radius:50%; border:6px solid #0EBAAF; background:#FFFFFF; flex:0 0 auto; margin-top:2px"></span>
+            <span style="display:flex; flex-direction:column; gap:6px; flex:1; min-width:0">
+              <span style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+                <span style="font-size:15px; font-weight:700; color:#06292A">پیک اختصاصی تهران</span>
+                <span style="font-size:15px; font-weight:700; color:#06292A">۹۵٫۰۰۰ تومان</span>
+              </span>
+              <span style="font-size:14px; line-height:1.85; color:#5C7472">تحویل در بازهٔ زمانی انتخابی شما، فردا ۲۶ شهریور. امکان تست دستگاه در حضور پیک.</span>
+              <span style="display:flex; gap:8px; flex-wrap:wrap; padding-top:8px">
+                <span style="display:inline-flex; align-items:center; height:36px; padding:0 14px; border-radius:10px; border:2px solid #0EBAAF; background:#FFFFFF; font-size:13px; font-weight:600; color:#0A6F68">۹ تا ۱۲</span>
+                <span style="display:inline-flex; align-items:center; height:36px; padding:0 14px; border-radius:10px; border:1px solid #DDE7E6; background:#FFFFFF; font-size:13px; font-weight:500; color:#5C7472">۱۲ تا ۱۵</span>
+                <span style="display:inline-flex; align-items:center; height:36px; padding:0 14px; border-radius:10px; border:1px solid #DDE7E6; background:#FFFFFF; font-size:13px; font-weight:500; color:#5C7472">۱۵ تا ۱۸</span>
+                <span style="display:inline-flex; align-items:center; height:36px; padding:0 14px; border-radius:10px; border:1px solid #E7EDEC; background:#F4F8F8; font-size:13px; font-weight:500; color:#A9BAB9; text-decoration:line-through">۱۸ تا ۲۱</span>
+              </span>
+            </span>
+          </label>
+
+          <label style="display:flex; gap:14px; padding:20px; border:1px solid #DDE7E6; border-radius:14px; background:#FFFFFF; cursor:pointer">
+            <span style="width:20px; height:20px; border-radius:50%; border:2px solid #C6D6D5; background:#FFFFFF; flex:0 0 auto; margin-top:2px"></span>
+            <span style="display:flex; flex-direction:column; gap:6px; flex:1; min-width:0">
+              <span style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+                <span style="font-size:15px; font-weight:700; color:#06292A">پست پیشتاز — سراسر کشور</span>
+                <span style="font-size:15px; font-weight:700; color:#0A6F68">رایگان</span>
+              </span>
+              <span style="font-size:14px; line-height:1.85; color:#5C7472">۲ تا ۴ روز کاری · بستهٔ ضدضربه با بیمهٔ کامل. کد رهگیری پس از تحویل به پست ارسال می‌شود.</span>
+            </span>
+          </label>
+
+          <label style="display:flex; gap:14px; padding:20px; border:1px solid #DDE7E6; border-radius:14px; background:#FFFFFF; cursor:pointer">
+            <span style="width:20px; height:20px; border-radius:50%; border:2px solid #C6D6D5; background:#FFFFFF; flex:0 0 auto; margin-top:2px"></span>
+            <span style="display:flex; flex-direction:column; gap:6px; flex:1; min-width:0">
+              <span style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+                <span style="font-size:15px; font-weight:700; color:#06292A">تحویل حضوری در انبار</span>
+                <span style="font-size:15px; font-weight:700; color:#0A6F68">رایگان</span>
+              </span>
+              <span style="font-size:14px; line-height:1.85; color:#5C7472">تهران، خیابان جمهوری، پاساژ ایران، طبقهٔ ۲ · شنبه تا پنجشنبه ۱۰ تا ۱۹. امکان تست کامل دستگاه.</span>
+            </span>
+          </label>
+
+          <div style="display:flex; flex-direction:column; gap:10px; padding:22px; border:1px solid #DDE7E6; border-radius:14px; background:#FFFFFF">
+            <span style="font-size:15px; font-weight:700; color:#06292A">یادداشت برای مأمور ارسال (اختیاری)</span>
+            <div style="min-height:86px; border:1px solid #DDE7E6; border-radius:10px; background:#F8FBFB; padding:12px 14px; font-size:14px; line-height:1.8; color:#A9BAB9">مثلاً: زنگ واحد ۵ خراب است، لطفاً تماس بگیرید.</div>
+          </div>
+        </div>
+
+        <aside style="display:flex; flex-direction:column; gap:14px; background:#F4F8F8; border:1px solid #DDE7E6; border-radius:16px; padding:24px; align-self:start">
+          <span style="font-size:17px; font-weight:700; color:#06292A">خلاصهٔ سفارش</span>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:14px; color:#5C7472; padding-bottom:14px; border-bottom:1px solid #DDE7E6">
+            <span style="display:flex; justify-content:space-between"><span>۳ کالا</span><span style="color:#06292A; font-weight:600">۳۱٫۲۰۰٫۰۰۰ تومان</span></span>
+            <span style="display:flex; justify-content:space-between"><span>تخفیف استوک</span><span style="color:#C2410C; font-weight:600">− ۱٫۲۰۰٫۰۰۰ تومان</span></span>
+            <span style="display:flex; justify-content:space-between"><span>پیک اختصاصی تهران</span><span style="color:#06292A; font-weight:600">۹۵٫۰۰۰ تومان</span></span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; padding:14px; border-radius:12px; background:#FFF4EC; border:1px solid #FBD9BF">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C2410C" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4l3 2"></path></svg>
+            <span style="font-size:13px; line-height:1.8; color:#9A3412">تحویل تخمینی: فردا ۲۶ شهریور، بازهٔ ۹ تا ۱۲</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding-top:14px; border-top:1px solid #DDE7E6">
+            <span style="font-size:15px; font-weight:600; color:#06292A">مبلغ قابل پرداخت</span>
+            <span style="font-size:20px; font-weight:800; color:#06292A">۳۰٫۰۹۵٫۰۰۰ <span style="font-size:13px; font-weight:500; color:#5C7472">تومان</span></span>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:center; height:52px; border-radius:12px; background:#F58220; color:#FFFFFF; font-size:16px; font-weight:700">ادامه به پرداخت</div>
+          <div style="display:flex; align-items:center; justify-content:center; height:44px; border-radius:12px; background:transparent; border:1px solid #C6D6D5; color:#5C7472; font-size:14px; font-weight:600">بازگشت به آدرس</div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:64px 0 0; display:flex; flex-direction:column; gap:14px">
+  <span style="font-size:12px; letter-spacing:.12em; color:#F58220; font-weight:600; direction:ltr">STEP 03</span>
+  <div role="heading" aria-level="3" style="font-size:24px; font-weight:700">گام سه — انتخاب روش پرداخت</div>
+  <p style="margin:0; max-width:760px; font-size:15px; line-height:1.9; color:#9FB4B2">درگاه‌های بانکی، کیف پول داخلی و خرید اقساطی در یک لیست. کد تخفیف و اعلان امنیت پرداخت در همین گام.</p>
+  <div style="overflow-x:auto; border-radius:14px; border:1px solid rgba(235,237,236,.14); margin-top:8px">
+    <div style="width:1280px; background:#FFFFFF">
+
+      <div style="background:#F4F8F8; padding:20px 48px; display:flex; align-items:center; flex-wrap:wrap; border-bottom:1px solid #DDE7E6">
+        <span style="display:flex; align-items:center; gap:10px; flex:1; min-width:170px">
+          <span style="width:32px; height:32px; border-radius:50%; background:#0EBAAF; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex:0 0 auto">✓</span>
+          <span style="font-size:14px; font-weight:500; color:#0A6F68">آدرس تحویل</span>
+          <span style="flex:1; height:2px; background:#0EBAAF; min-width:16px"></span>
+        </span>
+        <span style="display:flex; align-items:center; gap:10px; flex:1; min-width:170px">
+          <span style="width:32px; height:32px; border-radius:50%; background:#0EBAAF; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex:0 0 auto">✓</span>
+          <span style="font-size:14px; font-weight:500; color:#0A6F68">روش ارسال</span>
+          <span style="flex:1; height:2px; background:#0EBAAF; min-width:16px"></span>
+        </span>
+        <span style="display:flex; align-items:center; gap:10px; flex:1; min-width:170px">
+          <span style="width:32px; height:32px; border-radius:50%; background:#0EBAAF; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex:0 0 auto">۳</span>
+          <span style="font-size:14px; font-weight:600; color:#06292A">پرداخت</span>
+          <span style="flex:1; height:2px; background:#DDE7E6; min-width:16px"></span>
+        </span>
+        <span style="display:flex; align-items:center; gap:10px; flex:0 0 auto">
+          <span style="width:32px; height:32px; border-radius:50%; background:#FFFFFF; border:2px solid #DDE7E6; color:#8FA5A3; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:700">۴</span>
+          <span style="font-size:14px; font-weight:500; color:#8FA5A3">تأیید سفارش</span>
+        </span>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 372px; gap:32px; padding:36px 48px 44px">
+        <div style="display:flex; flex-direction:column; gap:18px; min-width:0">
+          <span style="font-size:19px; font-weight:700; color:#06292A">روش پرداخت</span>
+
+          <label style="display:flex; gap:14px; padding:20px; border:2px solid #0EBAAF; border-radius:14px; background:#F0FBFA; cursor:pointer">
+            <span style="width:20px; height:20px; border-radius:50%; border:6px solid #0EBAAF; background:#FFFFFF; flex:0 0 auto; margin-top:2px"></span>
+            <span style="display:flex; flex-direction:column; gap:10px; flex:1; min-width:0">
+              <span style="font-size:15px; font-weight:700; color:#06292A">پرداخت اینترنتی — درگاه بانکی</span>
+              <span style="font-size:14px; line-height:1.85; color:#5C7472">انتقال به صفحهٔ امن بانک. اطلاعات کارت هرگز روی سرور استوک سیستم ذخیره نمی‌شود.</span>
+              <span style="display:flex; gap:10px; flex-wrap:wrap; padding-top:4px">
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:96px; height:44px; border-radius:10px; border:2px solid #0EBAAF; background:#FFFFFF; font-size:13px; font-weight:700; color:#0A6F68">سامان</span>
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:96px; height:44px; border-radius:10px; border:1px solid #DDE7E6; background:#FFFFFF; font-size:13px; font-weight:600; color:#5C7472">پارسیان</span>
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:96px; height:44px; border-radius:10px; border:1px solid #DDE7E6; background:#FFFFFF; font-size:13px; font-weight:600; color:#5C7472">ملت</span>
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:96px; height:44px; border-radius:10px; border:1px solid #DDE7E6; background:#FFFFFF; font-size:13px; font-weight:600; color:#5C7472">زرین‌پال</span>
+              </span>
+            </span>
+          </label>
+
+          <label style="display:flex; gap:14px; padding:20px; border:1px solid #DDE7E6; border-radius:14px; background:#FFFFFF; cursor:pointer">
+            <span style="width:20px; height:20px; border-radius:50%; border:2px solid #C6D6D5; background:#FFFFFF; flex:0 0 auto; margin-top:2px"></span>
+            <span style="display:flex; flex-direction:column; gap:6px; flex:1; min-width:0">
+              <span style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+                <span style="font-size:15px; font-weight:700; color:#06292A">کیف پول استوک سیستم</span>
+                <span style="font-size:14px; font-weight:600; color:#0A6F68">موجودی ۲٫۴۰۰٫۰۰۰ تومان</span>
+              </span>
+              <span style="font-size:14px; line-height:1.85; color:#5C7472">موجودی کیف پول از مبلغ سفارش کمتر است؛ مابقی از درگاه بانکی دریافت می‌شود.</span>
+            </span>
+          </label>
+
+          <label style="display:flex; gap:14px; padding:20px; border:1px solid #DDE7E6; border-radius:14px; background:#FFFFFF; cursor:pointer">
+            <span style="width:20px; height:20px; border-radius:50%; border:2px solid #C6D6D5; background:#FFFFFF; flex:0 0 auto; margin-top:2px"></span>
+            <span style="display:flex; flex-direction:column; gap:6px; flex:1; min-width:0">
+              <span style="display:flex; align-items:center; gap:8px; flex-wrap:wrap">
+                <span style="font-size:15px; font-weight:700; color:#06292A">خرید اقساطی</span>
+                <span style="font-size:11px; font-weight:600; color:#9A3412; background:#FBE0CC; border-radius:999px; padding:3px 9px">۴ تا ۱۲ ماه</span>
+              </span>
+              <span style="font-size:14px; line-height:1.85; color:#5C7472">پیش‌پرداخت از ۳۰٪ · بررسی اعتبارسنجی حداکثر ۲۴ ساعت کاری. <a href="14 Support Pages.dc.html">راهنمای اقساط</a></span>
+            </span>
+          </label>
+
+          <label style="display:flex; gap:14px; padding:20px; border:1px solid #E7EDEC; border-radius:14px; background:#F8FBFB; cursor:not-allowed">
+            <span style="width:20px; height:20px; border-radius:50%; border:2px solid #E1E9E8; background:#F4F8F8; flex:0 0 auto; margin-top:2px"></span>
+            <span style="display:flex; flex-direction:column; gap:6px; flex:1; min-width:0">
+              <span style="display:flex; align-items:center; gap:8px; flex-wrap:wrap">
+                <span style="font-size:15px; font-weight:700; color:#A9BAB9">پرداخت در محل</span>
+                <span style="font-size:11px; font-weight:600; color:#8FA5A3; background:#EDF3F2; border-radius:999px; padding:3px 9px">غیرفعال</span>
+              </span>
+              <span style="font-size:14px; line-height:1.85; color:#A9BAB9">برای سفارش‌های بالای ۱۰ میلیون تومان فعال نیست.</span>
+            </span>
+          </label>
+
+          <div style="display:flex; flex-direction:column; gap:12px; padding:22px; border:1px solid #DDE7E6; border-radius:14px; background:#FFFFFF">
+            <span style="font-size:15px; font-weight:700; color:#06292A">کد تخفیف</span>
+            <div style="display:flex; gap:10px; flex-wrap:wrap">
+              <div style="flex:1; min-width:200px; height:48px; border:1px solid #DDE7E6; border-radius:10px; background:#F8FBFB; display:flex; align-items:center; padding:0 14px; font-size:14px; color:#06292A; direction:ltr; justify-content:flex-end">STOCK1404</div>
+              <div style="display:flex; align-items:center; justify-content:center; height:48px; padding:0 22px; border-radius:10px; background:#06292A; color:#FFFFFF; font-size:14px; font-weight:600">اعمال کد</div>
+            </div>
+            <span style="display:flex; align-items:center; gap:8px; font-size:13px; color:#0A6F68">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A6F68" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"></path></svg>
+              کد تخفیف ۱٫۲۰۰٫۰۰۰ تومانی اعمال شد.
+            </span>
+          </div>
+        </div>
+
+        <aside style="display:flex; flex-direction:column; gap:14px; background:#F4F8F8; border:1px solid #DDE7E6; border-radius:16px; padding:24px; align-self:start">
+          <span style="font-size:17px; font-weight:700; color:#06292A">خلاصهٔ سفارش</span>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:14px; color:#5C7472; padding-bottom:14px; border-bottom:1px solid #DDE7E6">
+            <span style="display:flex; justify-content:space-between"><span>جمع کالاها</span><span style="color:#06292A; font-weight:600">۳۱٫۲۰۰٫۰۰۰ تومان</span></span>
+            <span style="display:flex; justify-content:space-between"><span>تخفیف استوک</span><span style="color:#C2410C; font-weight:600">− ۱٫۲۰۰٫۰۰۰ تومان</span></span>
+            <span style="display:flex; justify-content:space-between"><span>هزینهٔ ارسال</span><span style="color:#06292A; font-weight:600">۹۵٫۰۰۰ تومان</span></span>
+            <span style="display:flex; justify-content:space-between"><span>مالیات بر ارزش افزوده</span><span style="color:#8FA5A3">در قیمت لحاظ شده</span></span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center">
+            <span style="font-size:15px; font-weight:600; color:#06292A">مبلغ قابل پرداخت</span>
+            <span style="font-size:20px; font-weight:800; color:#06292A">۳۰٫۰۹۵٫۰۰۰ <span style="font-size:13px; font-weight:500; color:#5C7472">تومان</span></span>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:center; height:52px; border-radius:12px; background:#F58220; color:#FFFFFF; font-size:16px; font-weight:700">انتقال به درگاه بانکی</div>
+          <div style="display:flex; align-items:flex-start; gap:10px; padding:14px; border-radius:12px; background:#FFFFFF; border:1px solid #DDE7E6">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A6F68" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto; margin-top:2px"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 118 0v3"></path></svg>
+            <span style="font-size:12px; line-height:1.85; color:#5C7472">تراکنش روی بستر SSL و شاپرک انجام می‌شود. در صورت قطع ارتباط، مبلغ حداکثر ۷۲ ساعت کاری برمی‌گردد.</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:64px 0 0; display:flex; flex-direction:column; gap:14px">
+  <span style="font-size:12px; letter-spacing:.12em; color:#F58220; font-weight:600; direction:ltr">STEP 04</span>
+  <div role="heading" aria-level="3" style="font-size:24px; font-weight:700">گام چهار — تأیید و رسید سفارش</div>
+  <p style="margin:0; max-width:760px; font-size:15px; line-height:1.9; color:#9FB4B2">رسید پرداخت، شمارهٔ سفارش و کد رهگیری، تایم‌لاین وضعیت و مسیرهای بعدی: پیگیری سفارش، دانلود فاکتور، بازگشت به فروشگاه.</p>
+  <div style="overflow-x:auto; border-radius:14px; border:1px solid rgba(235,237,236,.14); margin-top:8px">
+    <div style="width:1280px; background:#FFFFFF">
+
+      <div style="background:#06292A; padding:44px 48px; display:flex; align-items:center; gap:22px">
+        <span style="width:64px; height:64px; border-radius:50%; background:#0EBAAF; display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#04211F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+        </span>
+        <span style="display:flex; flex-direction:column; gap:8px; flex:1; min-width:0">
+          <span style="font-size:26px; font-weight:800; color:#FFFFFF">پرداخت با موفقیت انجام شد</span>
+          <span style="font-size:15px; line-height:1.85; color:#B9CBC9">سفارش شما ثبت شد و پیامک تأیید به شمارهٔ ۰۹۱۲···۶۷۸۹ ارسال گردید.</span>
+        </span>
+        <span style="display:flex; flex-direction:column; gap:6px; flex:0 0 auto; text-align:left; direction:ltr">
+          <span style="font-size:12px; color:#9FB4B2">ORDER NO.</span>
+          <span style="font-size:22px; font-weight:800; color:#0EBAAF">SS-۱۴۰۵-۸۸۲۴۱</span>
+        </span>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 372px; gap:32px; padding:36px 48px 44px">
+        <div style="display:flex; flex-direction:column; gap:22px; min-width:0">
+
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid #DDE7E6; border-radius:14px; overflow:hidden">
+            <div style="padding:18px; border-inline-end:1px solid #DDE7E6; display:flex; flex-direction:column; gap:6px">
+              <span style="font-size:12px; color:#8FA5A3">مبلغ پرداخت‌شده</span>
+              <span style="font-size:16px; font-weight:700; color:#06292A">۳۰٫۰۹۵٫۰۰۰ تومان</span>
+            </div>
+            <div style="padding:18px; border-inline-end:1px solid #DDE7E6; display:flex; flex-direction:column; gap:6px">
+              <span style="font-size:12px; color:#8FA5A3">شمارهٔ پیگیری بانکی</span>
+              <span style="font-size:16px; font-weight:700; color:#06292A; direction:ltr; text-align:right">۷۷۳۰۴۹۲۲۱۵</span>
+            </div>
+            <div style="padding:18px; border-inline-end:1px solid #DDE7E6; display:flex; flex-direction:column; gap:6px">
+              <span style="font-size:12px; color:#8FA5A3">روش ارسال</span>
+              <span style="font-size:16px; font-weight:700; color:#06292A">پیک اختصاصی</span>
+            </div>
+            <div style="padding:18px; display:flex; flex-direction:column; gap:6px">
+              <span style="font-size:12px; color:#8FA5A3">تحویل تخمینی</span>
+              <span style="font-size:16px; font-weight:700; color:#06292A">۲۶ شهریور · ۹–۱۲</span>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:16px; padding:24px; border:1px solid #DDE7E6; border-radius:14px; background:#FFFFFF">
+            <span style="font-size:17px; font-weight:700; color:#06292A">وضعیت سفارش</span>
+            <div style="display:flex; align-items:flex-start; gap:0">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1; min-width:0">
+                <span style="display:flex; align-items:center; width:100%">
+                  <span style="flex:1; height:3px; background:transparent"></span>
+                  <span style="width:28px; height:28px; border-radius:50%; background:#0EBAAF; flex:0 0 auto"></span>
+                  <span style="flex:1; height:3px; background:#0EBAAF"></span>
+                </span>
+                <span style="font-size:13px; font-weight:700; color:#06292A; text-align:center">ثبت سفارش</span>
+                <span style="font-size:12px; color:#8FA5A3">۲۵ شهریور · ۱۴:۳۲</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1; min-width:0">
+                <span style="display:flex; align-items:center; width:100%">
+                  <span style="flex:1; height:3px; background:#0EBAAF"></span>
+                  <span style="width:28px; height:28px; border-radius:50%; background:#0EBAAF; flex:0 0 auto"></span>
+                  <span style="flex:1; height:3px; background:#DDE7E6"></span>
+                </span>
+                <span style="font-size:13px; font-weight:700; color:#06292A; text-align:center">تأیید پرداخت</span>
+                <span style="font-size:12px; color:#8FA5A3">۲۵ شهریور · ۱۴:۳۳</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1; min-width:0">
+                <span style="display:flex; align-items:center; width:100%">
+                  <span style="flex:1; height:3px; background:#DDE7E6"></span>
+                  <span style="width:28px; height:28px; border-radius:50%; background:#FFFFFF; border:3px solid #DDE7E6; flex:0 0 auto"></span>
+                  <span style="flex:1; height:3px; background:#DDE7E6"></span>
+                </span>
+                <span style="font-size:13px; font-weight:500; color:#8FA5A3; text-align:center">تست فنی و بسته‌بندی</span>
+                <span style="font-size:12px; color:#A9BAB9">در انتظار</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1; min-width:0">
+                <span style="display:flex; align-items:center; width:100%">
+                  <span style="flex:1; height:3px; background:#DDE7E6"></span>
+                  <span style="width:28px; height:28px; border-radius:50%; background:#FFFFFF; border:3px solid #DDE7E6; flex:0 0 auto"></span>
+                  <span style="flex:1; height:3px; background:#DDE7E6"></span>
+                </span>
+                <span style="font-size:13px; font-weight:500; color:#8FA5A3; text-align:center">تحویل به پیک</span>
+                <span style="font-size:12px; color:#A9BAB9">در انتظار</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1; min-width:0">
+                <span style="display:flex; align-items:center; width:100%">
+                  <span style="flex:1; height:3px; background:#DDE7E6"></span>
+                  <span style="width:28px; height:28px; border-radius:50%; background:#FFFFFF; border:3px solid #DDE7E6; flex:0 0 auto"></span>
+                  <span style="flex:1; height:3px; background:transparent"></span>
+                </span>
+                <span style="font-size:13px; font-weight:500; color:#8FA5A3; text-align:center">تحویل شده</span>
+                <span style="font-size:12px; color:#A9BAB9">۲۶ شهریور</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:14px; padding:24px; border:1px solid #DDE7E6; border-radius:14px; background:#FFFFFF">
+            <span style="font-size:17px; font-weight:700; color:#06292A">کالاهای سفارش</span>
+            <div style="display:flex; gap:14px; align-items:center; padding-bottom:14px; border-bottom:1px solid #EDF3F2">
+              <img src="assets/products/elitebook-840-g8.png" alt="" style="width:64px; height:64px; object-fit:cover; border-radius:10px; background:#F4F8F8; flex:0 0 auto">
+              <span style="display:flex; flex-direction:column; gap:4px; flex:1; min-width:0">
+                <span style="font-size:14px; font-weight:600; color:#06292A">لپ‌تاپ HP EliteBook 840 G8 — گرید A</span>
+                <span style="font-size:12px; color:#5C7472">سریال: EB840-۲۲۴۸ · گارانتی ۶ ماهه استوک سیستم</span>
+              </span>
+              <span style="font-size:14px; font-weight:700; color:#06292A; flex:0 0 auto">۲۴٫۸۰۰٫۰۰۰ تومان</span>
+            </div>
+            <div style="display:flex; gap:14px; align-items:center">
+              <img src="assets/products/surface-laptop-4.png" alt="" style="width:64px; height:64px; object-fit:cover; border-radius:10px; background:#F4F8F8; flex:0 0 auto">
+              <span style="display:flex; flex-direction:column; gap:4px; flex:1; min-width:0">
+                <span style="font-size:14px; font-weight:600; color:#06292A">لپ‌تاپ Surface Laptop 4 — گرید B</span>
+                <span style="font-size:12px; color:#5C7472">۲ عدد · گارانتی ۳ ماهه تست سلامت</span>
+              </span>
+              <span style="font-size:14px; font-weight:700; color:#06292A; flex:0 0 auto">۶٫۴۰۰٫۰۰۰ تومان</span>
+            </div>
+          </div>
+        </div>
+
+        <aside style="display:flex; flex-direction:column; gap:12px; align-self:start">
+          <div style="display:flex; flex-direction:column; gap:12px; background:#F4F8F8; border:1px solid #DDE7E6; border-radius:16px; padding:24px">
+            <span style="font-size:17px; font-weight:700; color:#06292A">گام بعدی</span>
+            <div style="display:flex; align-items:center; justify-content:center; height:50px; border-radius:12px; background:#0EBAAF; color:#04211F; font-size:15px; font-weight:700">پیگیری سفارش</div>
+            <div style="display:flex; align-items:center; justify-content:center; gap:8px; height:50px; border-radius:12px; background:#FFFFFF; border:1px solid #C6D6D5; color:#06292A; font-size:15px; font-weight:600">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#06292A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="M7 11l5 5 5-5"></path><path d="M5 21h14"></path></svg>
+              دانلود فاکتور PDF
+            </div>
+            <div style="display:flex; align-items:center; justify-content:center; height:50px; border-radius:12px; background:transparent; border:1px solid #C6D6D5; color:#5C7472; font-size:15px; font-weight:600">بازگشت به فروشگاه</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px; background:#FFF4EC; border:1px solid #FBD9BF; border-radius:16px; padding:20px">
+            <span style="font-size:15px; font-weight:700; color:#9A3412">۷ روز مهلت بازگشت</span>
+            <span style="font-size:13px; line-height:1.9; color:#9A3412">اگر دستگاه با توضیحات گرید مطابق نبود، تا ۷ روز پس از تحویل بدون پرسش مرجوع می‌شود.</span>
+            <span style="font-size:13px; font-weight:600; color:#C2410C">شرایط مرجوعی</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px; background:#FFFFFF; border:1px solid #DDE7E6; border-radius:16px; padding:20px">
+            <span style="font-size:15px; font-weight:700; color:#06292A">پشتیبانی سفارش</span>
+            <span style="font-size:13px; line-height:1.9; color:#5C7472">شنبه تا پنجشنبه ۹ تا ۱۹ · تلفن ۰۲۱-۹۱۰۰۲۲۳۳</span>
+            <span style="font-size:13px; font-weight:600; color:#0EBAAF">ثبت تیکت پشتیبانی</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="margin-top:72px; padding-top:28px; border-top:1px solid rgba(235,237,236,.12); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap">
+  <span style="font-size:13px; color:#9FB4B2">استوک سیستم · فرآیند تسویه سفارش · نسخهٔ ۱</span>
+  <span style="display:flex; gap:14px; flex-wrap:wrap; font-size:13px">
+    <a href="04 Cart Checkout.dc.html">سبد و پرداخت</a>
+    <a href="08 Account.dc.html">حساب کاربری</a>
+    <a href="00 Overview.dc.html">نمای کلی</a>
+  </span>
+</footer>
+
+</div>
+</div>
+
+</x-dc>
+</body>
+</html>

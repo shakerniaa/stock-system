@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap">
+<style>
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-SemiBold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+  @font-face { font-family: "Peyda"; src: url("assets/fonts/Peyda-ExtraBold.ttf") format("truetype"); font-weight: 800 900; font-display: swap; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #04211F; font-family: "Peyda", "Vazirmatn", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #0EBAAF; text-decoration: none; }
+  a:hover { color: #F58220; }
+</style>
+</helmet>
+
+<div dir="rtl" style="background:#04211F; color:#EBEDEC; padding:0 20px 100px">
+<div style="max-width:1180px; margin:0 auto">
+
+<header style="padding:56px 0 36px; border-bottom:1px solid rgba(235,237,236,.12); display:flex; flex-direction:column; gap:18px">
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap">
+    <img src="assets/logo-lockup-dark.png" alt="استوک سیستم" style="height:42px; width:auto">
+    <span style="font-size:13px; letter-spacing:.1em; color:#9FB4B2; direction:ltr">WEBSITE UI · PAGE 14 / 16</span>
+  </div>
+  <div role="heading" aria-level="2" style="margin:0; font-size:clamp(26px,3.6vw,40px); font-weight:800; line-height:1.24">صفحات پشتیبان: قوانین، حریم خصوصی، سوالات متداول، راهنمای اقساط</div>
+  <p style="margin:0; max-width:820px; font-size:16px; line-height:1.9; color:#B9CBC9">چهار صفحهٔ متنی که خرید را کامل می‌کنند: شرط‌های فروش و مرجوعی، سیاست داده‌ها، پرتکرارترین سوال‌های خریدار استوک، و مسیر گام‌به‌گام خرید اقساطی. یک قالب متنی مشترک با نمای فهرست چسبان.</p>
+  <nav style="display:flex; gap:8px; flex-wrap:wrap; padding:22px 0 0">
+    <a href="Stock System Design System.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">سند پایه</a>
+    <a href="09 About Contact.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">دربارهٔ ما</a>
+    <a href="12 Checkout Flow.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">فرایند پرداخت</a>
+    <a href="13 Search Results.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">نتایج جستجو</a>
+    <span style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:#0EBAAF; border:1px solid #0EBAAF; color:#04211F; font-size:13px; font-weight:700">صفحات پشتیبان</span>
+    <a href="15 Product States.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">حالت‌های محصول</a>
+    <a href="16 Shop Pages.dc.html" style="display:inline-flex; align-items:center; height:38px; padding:0 14px; border-radius:999px; background:rgba(235,237,236,.06); border:1px solid rgba(235,237,236,.16); color:#B9CBC9; font-size:13px; font-weight:500">صفحات فروشگاهی</a>
+  </nav>
+</header>
+
+<!-- 14-A قالب متنی: قوانین و مقررات -->
+<section style="padding:44px 0 0; display:flex; flex-direction:column; gap:18px">
+  <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap">
+    <span style="font-size:12.5px; letter-spacing:.16em; color:#5FD9D0; direction:ltr">14-A</span>
+    <div role="heading" aria-level="3" style="font-size:22px; font-weight:700">قوانین و مقررات — قالب مرجع صفحات متنی</div>
+  </div>
+  <p style="margin:0; max-width:820px; font-size:14.5px; line-height:1.9; color:#9FB4B2">ستون راست فهرست چسبان است، ستون چپ متن با عرض خوانا (حدود ۷۲۰ پیکسل). هر بند شماره دارد تا در پشتیبانی بتوان به آن ارجاع داد.</p>
+  <div style="overflow-x:auto; border-radius:14px; border:1px solid rgba(235,237,236,.14)">
+    <div style="width:1280px; background:#FFFFFF">
+      <div style="background:#06292A; padding:14px 48px; display:flex; align-items:center; gap:24px">
+        <img src="assets/logo-lockup-dark.png" alt="استوک سیستم" style="height:36px; width:auto">
+        <span style="display:flex; gap:22px; font-size:15px; font-weight:500; color:#B9CBC9"><span>لپ‌تاپ</span><span>آل‌این‌وان</span><span>تعمیرات تخصصی</span><span>بلاگ</span></span>
+        <span style="margin-inline-start:auto; font-size:15px; font-weight:600; color:#F58220; direction:ltr">0903 453 5025</span>
+      </div>
+
+      <div style="background:#F4F8F8; padding:26px 48px; display:flex; flex-direction:column; gap:12px; border-bottom:1px solid #E3ECEB">
+        <span style="font-size:12.5px; color:#8FA5A3">خانه ← قوانین و مقررات</span>
+        <h1 style="margin:0; font-size:32px; font-weight:800; color:#06292A">قوانین و مقررات فروش</h1>
+        <span style="font-size:13px; color:#4C6664">آخرین بازنگری: ۱۵ شهریور ۱۴۰۵ · نسخهٔ ۲.۱</span>
+      </div>
+
+      <div style="padding:38px 48px 46px; display:grid; grid-template-columns:260px minmax(0,1fr); gap:44px; align-items:start">
+        <aside style="position:sticky; top:20px; display:flex; flex-direction:column; gap:4px; border:1px solid #DDE7E6; border-radius:12px; padding:16px">
+          <span style="font-size:13px; font-weight:700; color:#06292A; padding:0 8px 10px">در این صفحه</span>
+          <span style="font-size:13.5px; font-weight:600; color:#0A8F87; background:#E6F7F5; border-radius:8px; padding:9px 10px">۱. تعریف کالای استوک</span>
+          <span style="font-size:13.5px; color:#4C6664; padding:9px 10px">۲. ثبت سفارش و قیمت</span>
+          <span style="font-size:13.5px; color:#4C6664; padding:9px 10px">۳. گارانتی و پشتیبانی</span>
+          <span style="font-size:13.5px; color:#4C6664; padding:9px 10px">۴. مرجوعی و انصراف</span>
+          <span style="font-size:13.5px; color:#4C6664; padding:9px 10px">۵. ارسال و تحویل</span>
+          <span style="font-size:13.5px; color:#4C6664; padding:9px 10px">۶. خرید اقساطی</span>
+          <span style="font-size:13.5px; color:#4C6664; padding:9px 10px">۷. حل اختلاف</span>
+          <span style="margin-top:10px; padding-top:12px; border-top:1px solid #EFF5F4; display:flex; flex-direction:column; gap:8px">
+            <span style="font-size:12.5px; color:#8FA5A3; line-height:1.8">سوالی دارید؟</span>
+            <span style="display:inline-flex; align-items:center; justify-content:center; height:40px; border-radius:10px; background:#F58220; color:#FFFFFF; font-size:13.5px; font-weight:700">تماس با پشتیبانی</span>
+          </span>
+        </aside>
+
+        <article style="max-width:720px; display:flex; flex-direction:column; gap:26px">
+          <p style="margin:0; font-size:15.5px; line-height:2.05; color:#28403E">ثبت سفارش در استوک سیستم به‌معنای پذیرش بندهای زیر است. این متن برای خریدار نوشته شده، نه برای واحد حقوقی؛ هر جا شرطی به سود ما و به زیان شماست، صریح گفته‌ایم.</p>
+
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <h2 style="margin:0; font-size:19px; font-weight:700; color:#06292A">۱. تعریف کالای استوک</h2>
+            <p style="margin:0; font-size:15px; line-height:2.05; color:#4C6664">کالای استوک، دستگاه کارکردهٔ وارداتی است که در کارگاه ما تست سخت‌افزاری کامل شده و بر اساس جدول درجه‌بندی (A+ تا C) قیمت‌گذاری می‌شود. خش، رنگ‌پریدگی بدنه و کاهش ظرفیت باتری در محدودهٔ اعلام‌شدهٔ هر درجه، ایراد محسوب نمی‌شود.</p>
+            <span style="display:flex; gap:12px; align-items:flex-start; background:#F4F8F8; border-radius:12px; padding:16px 18px">
+              <span style="width:3px; align-self:stretch; background:#0EBAAF; border-radius:2px"></span>
+              <span style="font-size:14px; line-height:1.95; color:#28403E">درجهٔ هر دستگاه و درصد سلامت باتری، هم در صفحهٔ محصول و هم روی برگهٔ تست داخل جعبه درج می‌شود.</span>
+            </span>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <h2 style="margin:0; font-size:19px; font-weight:700; color:#06292A">۲. ثبت سفارش و قیمت</h2>
+            <p style="margin:0; font-size:15px; line-height:2.05; color:#4C6664">قیمت‌ها تا لحظهٔ پرداخت معتبرند. اگر پس از ثبت سفارش، کالا موجود نباشد یا قیمت به‌دلیل خطای سیستمی اشتباه درج شده باشد، سفارش لغو و مبلغ حداکثر ظرف ۷۲ ساعت کاری بازگردانده می‌شود.</p>
+            <ul style="margin:0; padding-inline-start:20px; display:flex; flex-direction:column; gap:9px; font-size:15px; line-height:1.95; color:#4C6664">
+              <li>سفارش با پرداخت موفق قطعی می‌شود، نه با افزودن به سبد.</li>
+              <li>فاکتور رسمی با احتساب مالیات، در صورت درخواست هنگام ثبت سفارش صادر می‌شود.</li>
+              <li>حداکثر سه دستگاه از یک مدل در هر سفارش خرده‌فروشی؛ سفارش عمده از راه واحد فروش سازمانی.</li>
+            </ul>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <h2 style="margin:0; font-size:19px; font-weight:700; color:#06292A">۳. گارانتی و پشتیبانی</h2>
+            <p style="margin:0; font-size:15px; line-height:2.05; color:#4C6664">تمام دستگاه‌ها ۱۸ ماه گارانتی سخت‌افزاری دارند. باتری، شارژر و قطعات مصرفی مشمول ۶ ماه گارانتی‌اند. ضربه، نفوذ مایعات و باز شدن دستگاه توسط فرد غیرمجاز، گارانتی را باطل می‌کند.</p>
+            <div style="border:1px solid #DDE7E6; border-radius:12px; overflow:hidden">
+              <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr; background:#F4F8F8; padding:12px 16px; font-size:13px; font-weight:700; color:#06292A"><span>بخش</span><span>مدت</span><span>پوشش</span></div>
+              <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr; padding:13px 16px; font-size:13.5px; color:#4C6664; border-top:1px solid #EFF5F4"><span>مادربرد و پردازنده</span><span>۱۸ ماه</span><span>تعویض یا تعمیر</span></div>
+              <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr; padding:13px 16px; font-size:13.5px; color:#4C6664; border-top:1px solid #EFF5F4"><span>نمایشگر</span><span>۱۸ ماه</span><span>تعمیر</span></div>
+              <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr; padding:13px 16px; font-size:13.5px; color:#4C6664; border-top:1px solid #EFF5F4"><span>باتری و شارژر</span><span>۶ ماه</span><span>تعویض</span></div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <h2 style="margin:0; font-size:19px; font-weight:700; color:#06292A">۴. مرجوعی و انصراف</h2>
+            <p style="margin:0; font-size:15px; line-height:2.05; color:#4C6664">تا ۷ روز پس از تحویل، بدون نیاز به دلیل می‌توانید کالا را مرجوع کنید؛ به شرط آنکه جعبه، برگهٔ تست و متعلقات کامل باشد و دستگاه آسیب فیزیکی تازه نداشته باشد. هزینهٔ ارسال برگشت در صورت ایراد فنی با ماست.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 14-B سوالات متداول -->
+<section style="padding:52px 0 0; display:flex; flex-direction:column; gap:18px">
+  <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap">
+    <span style="font-size:12.5px; letter-spacing:.16em; color:#5FD9D0; direction:ltr">14-B</span>
+    <div role="heading" aria-level="3" style="font-size:22px; font-weight:700">سوالات متداول — آکاردئون فعال</div>
+  </div>
+  <p style="margin:0; max-width:820px; font-size:14.5px; line-height:1.9; color:#9FB4B2">دسته‌بندی افقی + آکاردئون. روی هر سوال کلیک کنید تا باز شود. این صفحه برای سئو با اسکیمای FAQPage علامت‌گذاری می‌شود.</p>
+  <div style="overflow-x:auto; border-radius:14px; border:1px solid rgba(235,237,236,.14)">
+    <div style="width:1280px; background:#FFFFFF">
+      <div style="background:#06292A; padding:14px 48px; display:flex; align-items:center; gap:24px">
+        <img src="assets/logo-lockup-dark.png" alt="استوک سیستم" style="height:36px; width:auto">
+        <span style="display:flex; gap:22px; font-size:15px; font-weight:500; color:#B9CBC9"><span>لپ‌تاپ</span><span>آل‌این‌وان</span><span>تعمیرات تخصصی</span><span>بلاگ</span></span>
+        <span style="margin-inline-start:auto; font-size:15px; font-weight:600; color:#F58220; direction:ltr">0903 453 5025</span>
+      </div>
+
+      <div style="background:#06292A; padding:44px 48px 40px; display:flex; flex-direction:column; gap:18px; align-items:center; text-align:center; position:relative; overflow:hidden">
+        <span style="position:absolute; inset:0; background:linear-gradient(115deg, transparent 60%, rgba(14,186,175,.13) 60%, rgba(14,186,175,.13) 72%, transparent 72%)"></span>
+        <h1 style="position:relative; margin:0; font-size:34px; font-weight:800; color:#EBEDEC">چه سوالی دارید؟</h1>
+        <p style="position:relative; margin:0; font-size:15.5px; line-height:1.9; color:#B9CBC9; max-width:560px">۹۰٪ تماس‌های پشتیبانی دربارهٔ همین هفت موضوع است.</p>
+        <span style="position:relative; display:flex; align-items:center; gap:10px; width:520px; max-width:100%; height:52px; border-radius:12px; background:#FFFFFF; padding:0 16px">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#8FA5A3" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+          <span style="font-size:14.5px; color:#8FA5A3">جستجو در سوال‌ها…</span>
+        </span>
+      </div>
+
+      <div style="padding:30px 48px 46px; display:flex; flex-direction:column; gap:22px">
+        <div style="display:flex; gap:9px; flex-wrap:wrap">
+          <span style="display:inline-flex; align-items:center; height:38px; padding:0 16px; border-radius:999px; background:#06292A; color:#FFFFFF; font-size:13.5px; font-weight:600">همه</span>
+          <span style="display:inline-flex; align-items:center; height:38px; padding:0 16px; border-radius:999px; background:#F4F8F8; border:1px solid #DDE7E6; color:#4C6664; font-size:13.5px; font-weight:500">کیفیت و درجه‌بندی</span>
+          <span style="display:inline-flex; align-items:center; height:38px; padding:0 16px; border-radius:999px; background:#F4F8F8; border:1px solid #DDE7E6; color:#4C6664; font-size:13.5px; font-weight:500">گارانتی</span>
+          <span style="display:inline-flex; align-items:center; height:38px; padding:0 16px; border-radius:999px; background:#F4F8F8; border:1px solid #DDE7E6; color:#4C6664; font-size:13.5px; font-weight:500">پرداخت و اقساط</span>
+          <span style="display:inline-flex; align-items:center; height:38px; padding:0 16px; border-radius:999px; background:#F4F8F8; border:1px solid #DDE7E6; color:#4C6664; font-size:13.5px; font-weight:500">ارسال</span>
+          <span style="display:inline-flex; align-items:center; height:38px; padding:0 16px; border-radius:999px; background:#F4F8F8; border:1px solid #DDE7E6; color:#4C6664; font-size:13.5px; font-weight:500">تعمیرات</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:36px; align-items:start">
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="7">
+              <div onClick="{{ q.toggle }}" style="border:1px solid {{ q.border }}; border-radius:12px; background:{{ q.bg }}; cursor:pointer; overflow:hidden">
+                <div style="display:flex; align-items:center; gap:14px; padding:18px 20px">
+                  <span style="flex:1; font-size:15.5px; font-weight:600; color:#06292A; line-height:1.7">{{ q.q }}</span>
+                  <span style="flex:0 0 auto; width:28px; height:28px; border-radius:8px; background:{{ q.iconBg }}; display:inline-flex; align-items:center; justify-content:center; color:{{ q.iconColor }}; font-size:17px; font-weight:700">{{ q.sign }}</span>
+                </div>
+                <sc-if value="{{ q.open }}">
+                  <div style="padding:0 20px 20px; font-size:14.5px; line-height:2.05; color:#4C6664; max-width:640px">{{ q.a }}</div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+
+          <aside style="display:flex; flex-direction:column; gap:16px; border:1px solid #DDE7E6; border-radius:14px; padding:22px; background:#F4F8F8">
+            <span style="font-size:16px; font-weight:700; color:#06292A">جواب سوالتان را نگرفتید؟</span>
+            <span style="font-size:14px; line-height:1.95; color:#4C6664">کارشناس فنی ما شنبه تا پنجشنبه، ۱۰ تا ۱۹ پاسخگوست. برای سوال فنی، مدل دستگاه را آماده داشته باشید.</span>
+            <span style="display:inline-flex; align-items:center; justify-content:center; gap:9px; height:46px; border-radius:11px; background:#F58220; color:#FFFFFF; font-size:14.5px; font-weight:700; direction:ltr">0903 453 5025</span>
+            <span style="display:inline-flex; align-items:center; justify-content:center; height:46px; border-radius:11px; border:1px solid #06292A; color:#06292A; font-size:14.5px; font-weight:600">گفتگوی آنلاین</span>
+            <span style="padding-top:14px; border-top:1px solid #DDE7E6; font-size:13px; line-height:1.9; color:#8FA5A3">میانگین زمان پاسخ در گفتگوی آنلاین: زیر ۴ دقیقه</span>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 14-C راهنمای اقساط -->
+<section style="padding:52px 0 0; display:flex; flex-direction:column; gap:18px">
+  <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap">
+    <span style="font-size:12.5px; letter-spacing:.16em; color:#5FD9D0; direction:ltr">14-C</span>
+    <div role="heading" aria-level="3" style="font-size:22px; font-weight:700">راهنمای خرید اقساطی + ماشین‌حساب</div>
+  </div>
+  <p style="margin:0; max-width:820px; font-size:14.5px; line-height:1.9; color:#9FB4B2">صفحهٔ فروش است نه صفحهٔ متنی: چهار گام، ماشین‌حساب زنده و جدول مدارک. مبلغ و تعداد قسط را تغییر دهید تا محاسبه به‌روز شود.</p>
+  <div style="overflow-x:auto; border-radius:14px; border:1px solid rgba(235,237,236,.14)">
+    <div style="width:1280px; background:#FFFFFF">
+      <div style="background:#06292A; padding:14px 48px; display:flex; align-items:center; gap:24px">
+        <img src="assets/logo-lockup-dark.png" alt="استوک سیستم" style="height:36px; width:auto">
+        <span style="display:flex; gap:22px; font-size:15px; font-weight:500; color:#B9CBC9"><span>لپ‌تاپ</span><span>آل‌این‌وان</span><span>تعمیرات تخصصی</span><span>بلاگ</span></span>
+        <span style="margin-inline-start:auto; font-size:15px; font-weight:600; color:#F58220; direction:ltr">0903 453 5025</span>
+      </div>
+
+      <div style="background:#06292A; padding:46px 48px; display:grid; grid-template-columns:6fr 5fr; gap:40px; align-items:center; position:relative; overflow:hidden">
+        <span style="position:absolute; inset:0; background:linear-gradient(115deg, transparent 56%, rgba(245,130,32,.14) 56%, rgba(245,130,32,.14) 68%, transparent 68%)"></span>
+        <div style="position:relative; display:flex; flex-direction:column; gap:18px">
+          <span style="align-self:flex-start; display:inline-flex; align-items:center; gap:8px; background:rgba(245,130,32,.16); border:1px solid rgba(245,130,32,.4); color:#F9A85C; border-radius:999px; padding:7px 14px; font-size:13px; font-weight:600">بدون ضامن تا ۴۰ میلیون تومان</span>
+          <h1 style="margin:0; font-size:38px; font-weight:800; line-height:1.28; color:#EBEDEC; max-width:480px">لپ‌تاپ را امروز تحویل بگیرید، در ۶ تا ۱۸ قسط پرداخت کنید</h1>
+          <p style="margin:0; font-size:16px; line-height:1.95; color:#B9CBC9; max-width:460px">اعتبارسنجی آنلاین با کد ملی و شمارهٔ موبایل، نتیجه در کمتر از ۱۰ دقیقه. قرارداد در محل فروشگاه یا با امضای دیجیتال.</p>
+        </div>
+
+        <div style="position:relative; background:#FFFFFF; border-radius:16px; padding:26px; display:flex; flex-direction:column; gap:20px">
+          <span style="font-size:16px; font-weight:700; color:#06292A">محاسبهٔ قسط</span>
+          <div style="display:flex; flex-direction:column; gap:10px">
+            <span style="display:flex; justify-content:space-between; font-size:13.5px; color:#4C6664"><span>مبلغ کالا</span><span style="font-weight:700; color:#06292A">{{ priceFa }} تومان</span></span>
+            <input type="range" min="10000000" max="90000000" step="1000000" value="{{ price }}" onChange="{{ setPrice }}" style="width:100%; accent-color:#0EBAAF">
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px">
+            <span style="font-size:13.5px; color:#4C6664">تعداد اقساط</span>
+            <span style="display:flex; gap:8px">
+              <sc-for list="{{ terms }}" as="t" hint-placeholder-count="4">
+                <span onClick="{{ t.pick }}" style="flex:1; display:inline-flex; align-items:center; justify-content:center; height:42px; border-radius:10px; cursor:pointer; font-size:14px; font-weight:600; background:{{ t.bg }}; color:{{ t.color }}; border:1px solid {{ t.border }}">{{ t.label }}</span>
+              </sc-for>
+            </span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:11px; background:#F4F8F8; border-radius:12px; padding:18px">
+            <span style="display:flex; justify-content:space-between; font-size:13.5px; color:#4C6664"><span>پیش‌پرداخت (۳۰٪)</span><span style="font-weight:600; color:#06292A">{{ downFa }} تومان</span></span>
+            <span style="display:flex; justify-content:space-between; font-size:13.5px; color:#4C6664"><span>مبلغ تسهیلات</span><span style="font-weight:600; color:#06292A">{{ financedFa }} تومان</span></span>
+            <span style="height:1px; background:#DDE7E6"></span>
+            <span style="display:flex; justify-content:space-between; align-items:baseline"><span style="font-size:14px; font-weight:600; color:#06292A">قسط ماهانه</span><span style="font-size:22px; font-weight:800; color:#B25708">{{ monthlyFa }}</span></span>
+            <span style="font-size:12px; color:#8FA5A3; line-height:1.85">نرخ کارمزد سالانه ۲۳٪ · محاسبه تقریبی است و مبلغ نهایی در قرارداد تعیین می‌شود.</span>
+          </div>
+          <span style="display:inline-flex; align-items:center; justify-content:center; height:48px; border-radius:11px; background:#F58220; color:#FFFFFF; font-size:15px; font-weight:700">شروع اعتبارسنجی</span>
+        </div>
+      </div>
+
+      <div style="padding:42px 48px; display:flex; flex-direction:column; gap:26px">
+        <h2 style="margin:0; font-size:22px; font-weight:700; color:#06292A">چهار گام تا تحویل دستگاه</h2>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:18px">
+          <div style="display:flex; flex-direction:column; gap:12px; border:1px solid #DDE7E6; border-radius:14px; padding:22px">
+            <span style="width:38px; height:38px; border-radius:10px; background:#E6F7F5; color:#0A8F87; display:inline-flex; align-items:center; justify-content:center; font-size:17px; font-weight:800">۱</span>
+            <span style="font-size:15.5px; font-weight:700; color:#06292A">انتخاب کالا</span>
+            <span style="font-size:13.5px; line-height:1.95; color:#4C6664">در صفحهٔ محصول گزینهٔ «خرید اقساطی» را بزنید. کالاهای بالای ۱۰ میلیون تومان مشمول‌اند.</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px; border:1px solid #DDE7E6; border-radius:14px; padding:22px">
+            <span style="width:38px; height:38px; border-radius:10px; background:#E6F7F5; color:#0A8F87; display:inline-flex; align-items:center; justify-content:center; font-size:17px; font-weight:800">۲</span>
+            <span style="font-size:15.5px; font-weight:700; color:#06292A">اعتبارسنجی</span>
+            <span style="font-size:13.5px; line-height:1.95; color:#4C6664">کد ملی، شمارهٔ موبایل به نام خودتان و شمارهٔ شبا. نتیجه زیر ۱۰ دقیقه پیامک می‌شود.</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px; border:1px solid #DDE7E6; border-radius:14px; padding:22px">
+            <span style="width:38px; height:38px; border-radius:10px; background:#E6F7F5; color:#0A8F87; display:inline-flex; align-items:center; justify-content:center; font-size:17px; font-weight:800">۳</span>
+            <span style="font-size:15.5px; font-weight:700; color:#06292A">قرارداد و پیش‌پرداخت</span>
+            <span style="font-size:13.5px; line-height:1.95; color:#4C6664">امضای دیجیتال یا حضوری، سپس پرداخت ۳۰٪ مبلغ از درگاه بانکی.</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px; border:1px solid #DDE7E6; border-radius:14px; padding:22px">
+            <span style="width:38px; height:38px; border-radius:10px; background:#FDEEE0; color:#B25708; display:inline-flex; align-items:center; justify-content:center; font-size:17px; font-weight:800">۴</span>
+            <span style="font-size:15.5px; font-weight:700; color:#06292A">تحویل</span>
+            <span style="font-size:13.5px; line-height:1.95; color:#4C6664">ارسال در همان روز کاری یا تحویل حضوری در فروشگاه با تست دستگاه پیش از امضا.</span>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:32px; align-items:start; padding-top:8px">
+          <div style="display:flex; flex-direction:column; gap:14px">
+            <h2 style="margin:0; font-size:20px; font-weight:700; color:#06292A">مدارک لازم</h2>
+            <div style="border:1px solid #DDE7E6; border-radius:12px; overflow:hidden">
+              <div style="display:grid; grid-template-columns:1.6fr 1fr 1fr; background:#F4F8F8; padding:12px 16px; font-size:13px; font-weight:700; color:#06292A"><span>مدرک</span><span>حقیقی</span><span>حقوقی</span></div>
+              <div style="display:grid; grid-template-columns:1.6fr 1fr 1fr; padding:13px 16px; font-size:13.5px; color:#4C6664; border-top:1px solid #EFF5F4"><span>کارت ملی</span><span>لازم</span><span>مدیرعامل</span></div>
+              <div style="display:grid; grid-template-columns:1.6fr 1fr 1fr; padding:13px 16px; font-size:13.5px; color:#4C6664; border-top:1px solid #EFF5F4"><span>فیش حقوقی یا گردش حساب ۳ ماه</span><span>لازم</span><span>—</span></div>
+              <div style="display:grid; grid-template-columns:1.6fr 1fr 1fr; padding:13px 16px; font-size:13.5px; color:#4C6664; border-top:1px solid #EFF5F4"><span>روزنامهٔ رسمی و آگهی آخرین تغییرات</span><span>—</span><span>لازم</span></div>
+              <div style="display:grid; grid-template-columns:1.6fr 1fr 1fr; padding:13px 16px; font-size:13.5px; color:#4C6664; border-top:1px solid #EFF5F4"><span>چک صیادی</span><span>بالای ۴۰ م.ت</span><span>لازم</span></div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:14px; background:#06292A; border-radius:14px; padding:24px">
+            <span style="font-size:16px; font-weight:700; color:#EBEDEC">نکته‌ای که معمولاً دیر فهمیده می‌شود</span>
+            <span style="font-size:14px; line-height:2; color:#B9CBC9">شمارهٔ موبایل حتماً باید به نام خودتان باشد؛ بیشتر ردهای اعتبارسنجی به همین دلیل اتفاق می‌افتد. پیش از شروع، وضعیت سیم‌کارت را در سامانهٔ اپراتور بررسی کنید.</span>
+            <span style="display:inline-flex; align-items:center; justify-content:center; height:44px; border-radius:11px; background:#0EBAAF; color:#04211F; font-size:14.5px; font-weight:700">سوالات متداول اقساط</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 14-D حریم خصوصی موبایل -->
+<section style="padding:52px 0 0; display:flex; flex-direction:column; gap:18px">
+  <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap">
+    <span style="font-size:12.5px; letter-spacing:.16em; color:#5FD9D0; direction:ltr">14-D</span>
+    <div role="heading" aria-level="3" style="font-size:22px; font-weight:700">حریم خصوصی و سوالات متداول — نمای موبایل</div>
+  </div>
+  <p style="margin:0; max-width:820px; font-size:14.5px; line-height:1.9; color:#9FB4B2">در موبایل فهرست چسبان به یک نوار کشویی افقی تبدیل می‌شود و متن با اندازهٔ ۱۵ پیکسل و ارتفاع خط ۲ می‌ماند.</p>
+  <div style="display:flex; gap:28px; flex-wrap:wrap">
+    <div style="width:390px; flex:0 0 auto; border-radius:26px; border:1px solid rgba(235,237,236,.16); overflow:hidden; background:#FFFFFF">
+      <div style="background:#06292A; padding:12px 18px; display:flex; align-items:center; justify-content:space-between; color:#B9CBC9; font-size:12px; direction:ltr"><span>9:41</span><span>●●● ⌁ ▮</span></div>
+      <div style="background:#06292A; padding:12px 18px 16px; display:flex; align-items:center; gap:14px">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EBEDEC" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"></path></svg>
+        <span style="font-size:16px; font-weight:700; color:#EBEDEC">حریم خصوصی</span>
+      </div>
+      <div style="display:flex; gap:8px; overflow-x:auto; padding:14px 18px; border-bottom:1px solid #EFF5F4">
+        <span style="flex:0 0 auto; display:inline-flex; align-items:center; height:34px; padding:0 14px; border-radius:999px; background:#06292A; color:#FFFFFF; font-size:13px; font-weight:600">داده‌ها</span>
+        <span style="flex:0 0 auto; display:inline-flex; align-items:center; height:34px; padding:0 14px; border-radius:999px; background:#F4F8F8; border:1px solid #DDE7E6; color:#4C6664; font-size:13px">کوکی</span>
+        <span style="flex:0 0 auto; display:inline-flex; align-items:center; height:34px; padding:0 14px; border-radius:999px; background:#F4F8F8; border:1px solid #DDE7E6; color:#4C6664; font-size:13px">اشتراک‌گذاری</span>
+        <span style="flex:0 0 auto; display:inline-flex; align-items:center; height:34px; padding:0 14px; border-radius:999px; background:#F4F8F8; border:1px solid #DDE7E6; color:#4C6664; font-size:13px">حقوق شما</span>
+      </div>
+      <div style="padding:20px 18px 26px; display:flex; flex-direction:column; gap:18px">
+        <span style="font-size:12.5px; color:#8FA5A3">آخرین بازنگری: ۱۵ شهریور ۱۴۰۵</span>
+        <h2 style="margin:0; font-size:20px; font-weight:700; color:#06292A">چه داده‌ای جمع می‌کنیم</h2>
+        <p style="margin:0; font-size:15px; line-height:2; color:#4C6664">برای ثبت سفارش فقط نام، شمارهٔ موبایل و نشانی تحویل لازم است. کد ملی تنها در خرید اقساطی و صدور فاکتور رسمی گرفته می‌شود.</p>
+        <div style="display:flex; flex-direction:column; gap:10px">
+          <span style="display:flex; gap:11px; align-items:flex-start; font-size:14.5px; line-height:1.95; color:#4C6664"><span style="width:6px; height:6px; border-radius:50%; background:#0EBAAF; margin-top:9px; flex:0 0 auto"></span>اطلاعات کارت بانکی هرگز روی سرور ما ذخیره نمی‌شود.</span>
+          <span style="display:flex; gap:11px; align-items:flex-start; font-size:14.5px; line-height:1.95; color:#4C6664"><span style="width:6px; height:6px; border-radius:50%; background:#0EBAAF; margin-top:9px; flex:0 0 auto"></span>سریال دستگاه برای اعتبارسنجی گارانتی نگهداری می‌شود.</span>
+          <span style="display:flex; gap:11px; align-items:flex-start; font-size:14.5px; line-height:1.95; color:#4C6664"><span style="width:6px; height:6px; border-radius:50%; background:#0EBAAF; margin-top:9px; flex:0 0 auto"></span>حذف حساب و داده‌ها با یک درخواست در پنل کاربری.</span>
+        </div>
+        <div style="background:#F4F8F8; border-radius:12px; padding:16px 18px; display:flex; flex-direction:column; gap:8px">
+          <span style="font-size:14.5px; font-weight:700; color:#06292A">درخواست حذف داده</span>
+          <span style="font-size:13.5px; line-height:1.9; color:#4C6664">ظرف ۷۲ ساعت رسیدگی می‌شود؛ سوابق فاکتور به حکم قانون ۱۰ سال نگهداری می‌ماند.</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="width:390px; flex:0 0 auto; border-radius:26px; border:1px solid rgba(235,237,236,.16); overflow:hidden; background:#FFFFFF">
+      <div style="background:#06292A; padding:12px 18px; display:flex; align-items:center; justify-content:space-between; color:#B9CBC9; font-size:12px; direction:ltr"><span>9:41</span><span>●●● ⌁ ▮</span></div>
+      <div style="background:#06292A; padding:12px 18px 20px; display:flex; flex-direction:column; gap:14px">
+        <div style="display:flex; align-items:center; gap:14px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EBEDEC" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"></path></svg>
+          <span style="font-size:16px; font-weight:700; color:#EBEDEC">سوالات متداول</span>
+        </div>
+        <span style="display:flex; align-items:center; gap:10px; height:46px; border-radius:11px; background:rgba(235,237,236,.1); padding:0 14px">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9FB4B2" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+          <span style="font-size:14px; color:#9FB4B2">جستجو در سوال‌ها…</span>
+        </span>
+      </div>
+      <div style="padding:18px; display:flex; flex-direction:column; gap:11px">
+        <div style="border:1px solid #0EBAAF; border-radius:12px; background:#F7FDFC; padding:16px; display:flex; flex-direction:column; gap:12px">
+          <span style="display:flex; align-items:center; gap:12px"><span style="flex:1; font-size:15px; font-weight:600; color:#06292A; line-height:1.7">استوک با کارکرده چه فرقی دارد؟</span><span style="width:26px; height:26px; border-radius:8px; background:#0EBAAF; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-size:16px; font-weight:700">−</span></span>
+          <span style="font-size:14px; line-height:2; color:#4C6664">کالای استوک وارداتی است و معمولاً از شرکت‌های اروپایی با چرخهٔ تعویض ۳ ساله می‌آید؛ کارکردهٔ داخلی سابقهٔ نامعلومی دارد. ما هر دستگاه را تست و درجه‌بندی می‌کنیم.</span>
+        </div>
+        <span style="display:flex; align-items:center; gap:12px; border:1px solid #DDE7E6; border-radius:12px; padding:16px"><span style="flex:1; font-size:15px; font-weight:600; color:#06292A; line-height:1.7">اگر باتری زود خالی شد چه؟</span><span style="width:26px; height:26px; border-radius:8px; background:#F4F8F8; color:#4C6664; display:inline-flex; align-items:center; justify-content:center; font-size:16px; font-weight:700">+</span></span>
+        <span style="display:flex; align-items:center; gap:12px; border:1px solid #DDE7E6; border-radius:12px; padding:16px"><span style="flex:1; font-size:15px; font-weight:600; color:#06292A; line-height:1.7">امکان تست حضوری هست؟</span><span style="width:26px; height:26px; border-radius:8px; background:#F4F8F8; color:#4C6664; display:inline-flex; align-items:center; justify-content:center; font-size:16px; font-weight:700">+</span></span>
+        <span style="display:flex; align-items:center; gap:12px; border:1px solid #DDE7E6; border-radius:12px; padding:16px"><span style="flex:1; font-size:15px; font-weight:600; color:#06292A; line-height:1.7">ویندوز و آفیس نصب است؟</span><span style="width:26px; height:26px; border-radius:8px; background:#F4F8F8; color:#4C6664; display:inline-flex; align-items:center; justify-content:center; font-size:16px; font-weight:700">+</span></span>
+        <span style="display:flex; align-items:center; gap:12px; border:1px solid #DDE7E6; border-radius:12px; padding:16px"><span style="flex:1; font-size:15px; font-weight:600; color:#06292A; line-height:1.7">ارسال به شهرستان چند روز است؟</span><span style="width:26px; height:26px; border-radius:8px; background:#F4F8F8; color:#4C6664; display:inline-flex; align-items:center; justify-content:center; font-size:16px; font-weight:700">+</span></span>
+        <span style="margin-top:6px; display:inline-flex; align-items:center; justify-content:center; gap:9px; height:50px; border-radius:12px; background:#F58220; color:#FFFFFF; font-size:15px; font-weight:700">تماس با پشتیبانی</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:52px 0 0; display:flex; flex-direction:column; gap:14px">
+  <div role="heading" aria-level="3" style="font-size:18px; font-weight:700">یادداشت پیاده‌سازی</div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px">
+    <span style="border:1px solid rgba(235,237,236,.14); border-radius:12px; padding:18px; font-size:13.5px; line-height:1.95; color:#B9CBC9">صفحات متنی از یک قالب واحد می‌آیند؛ فقط محتوای CMS عوض می‌شود. عرض متن ۷۲۰ پیکسل ثابت بماند.</span>
+    <span style="border:1px solid rgba(235,237,236,.14); border-radius:12px; padding:18px; font-size:13.5px; line-height:1.95; color:#B9CBC9">سوالات متداول با اسکیمای <span style="direction:ltr; display:inline-block">FAQPage</span> علامت‌گذاری شود؛ پاسخ‌ها در سرور رندر شوند نه فقط با جاوااسکریپت.</span>
+    <span style="border:1px solid rgba(235,237,236,.14); border-radius:12px; padding:18px; font-size:13.5px; line-height:1.95; color:#B9CBC9">ماشین‌حساب اقساط باید نرخ کارمزد را از تنظیمات بگیرد؛ عدد نباید در کد ثابت شود.</span>
+    <span style="border:1px solid rgba(235,237,236,.14); border-radius:12px; padding:18px; font-size:13.5px; line-height:1.95; color:#B9CBC9">تاریخ بازنگری هر صفحه در هدر نمایش داده شود — هم برای اعتماد کاربر، هم برای سئو.</span>
+  </div>
+</section>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const FA = n => Math.round(n).toLocaleString("en-US").replace(/[0-9]/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+const QA = [
+  ["استوک با کارکرده چه فرقی دارد؟", "کالای استوک دستگاه وارداتی است که معمولاً از چرخهٔ تعویض سه‌سالهٔ شرکت‌های اروپایی می‌آید؛ سابقهٔ نگهداری‌اش مشخص است. کارکردهٔ داخلی سابقهٔ نامعلوم دارد. هر دستگاه استوک در کارگاه ما تست و درجه‌بندی می‌شود و برگهٔ تست دارد."],
+  ["درجه‌بندی A+ تا C یعنی چه؟", "درجه فقط به وضعیت ظاهری بدنه و قاب مربوط است، نه سلامت فنی. A+ یعنی بدون خش محسوس، A خش‌های ریز، B خش و سایش قابل‌مشاهده، C بدنهٔ کارکرده با احتمال فرورفتگی. سلامت فنی همهٔ درجه‌ها یکسان تست می‌شود."],
+  ["اگر باتری زود خالی شد چه؟", "درصد سلامت باتری هر دستگاه پیش از فروش اعلام می‌شود. اگر ظرف ۶ ماه ظرفیت باتری بیش از ۱۵٪ پایین‌تر از عدد اعلام‌شده برسد، باتری رایگان تعویض می‌شود."],
+  ["امکان تست حضوری پیش از خرید هست؟", "بله. در فروشگاه تهران می‌توانید دستگاه را روشن کنید، تست حافظه و نمایشگر بگیرید و بعد تصمیم بگیرید. برای تست حضوری بهتر است یک روز قبل هماهنگ کنید تا دستگاه آماده باشد."],
+  ["ویندوز و آفیس نصب است؟", "ویندوز با لایسنس دیجیتال دستگاه نصب و فعال تحویل داده می‌شود. آفیس به‌صورت نسخهٔ آزمایشی نصب است؛ لایسنس دائم را جداگانه می‌توانید سفارش دهید."],
+  ["مرجوعی چطور کار می‌کند؟", "تا ۷ روز پس از تحویل بدون نیاز به دلیل. جعبه، برگهٔ تست و متعلقات باید کامل باشد. اگر دلیل مرجوعی ایراد فنی باشد، هزینهٔ ارسال برگشت با ماست؛ در غیر این صورت با خریدار."],
+  ["ارسال به شهرستان چند روز طول می‌کشد؟", "با پست پیشتاز ۲ تا ۴ روز کاری، با تیپاکس ۱ تا ۲ روز کاری. سفارش‌های ثبت‌شده تا ساعت ۱۳ همان روز ارسال می‌شوند."]
+];
+class Component extends DCLogic {
+  state = { open: 0, price: 32900000, term: 12 };
+  renderVals() {
+    const { price, term } = this.state;
+    const down = price * 0.3, financed = price - down;
+    const monthly = (financed * (1 + 0.23 * (term / 12))) / term;
+    return {
+      faqs: QA.map(([q, a], i) => {
+        const open = this.state.open === i;
+        return {
+          q, a, open, sign: open ? "−" : "+",
+          bg: open ? "#F7FDFC" : "#FFFFFF",
+          border: open ? "#0EBAAF" : "#DDE7E6",
+          iconBg: open ? "#0EBAAF" : "#F4F8F8",
+          iconColor: open ? "#FFFFFF" : "#4C6664",
+          toggle: () => this.setState(s => ({ open: s.open === i ? -1 : i }))
+        };
+      }),
+      terms: [6, 9, 12, 18].map(t => ({
+        label: FA(t) + " قسط",
+        bg: term === t ? "#06292A" : "#FFFFFF",
+        color: term === t ? "#FFFFFF" : "#4C6664",
+        border: term === t ? "#06292A" : "#DDE7E6",
+        pick: () => this.setState({ term: t })
+      })),
+      price,
+      priceFa: FA(price), downFa: FA(down), financedFa: FA(financed), monthlyFa: FA(monthly),
+      setPrice: e => this.setState({ price: Number(e.target.value) })
+    };
+  }
+}
+
+</script>
+</body>
+</html>

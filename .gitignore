@@ -1,0 +1,4 @@
+# OS cruft only — nothing from the project itself is excluded.
+Thumbs.db
+desktop.ini
+.DS_Store
