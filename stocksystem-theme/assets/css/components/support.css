@@ -1,0 +1,234 @@
+/**
+ * Terms, privacy, and general FAQ pages. Source: 14 Support Pages.dc.html.
+ */
+
+/* ---- Shared legal-page header ---- */
+.legal-page__header {
+	background: var(--c-paper-alt);
+	border-bottom: var(--border-default) solid var(--c-line);
+	padding-block: var(--sp-24);
+}
+
+.legal-page__header h1 {
+	margin: 0;
+	font-size: var(--fs-page-title);
+	font-weight: 800;
+	color: var(--c-text);
+}
+
+.legal-page {
+	padding-block: var(--sp-40) var(--sp-56);
+}
+
+/* ---- Terms: sidebar TOC + content ---- */
+.legal-page__grid {
+	display: grid;
+	grid-template-columns: 260px minmax(0, 1fr);
+	gap: var(--sp-40);
+	align-items: start;
+}
+
+@media (max-width: 1023px) {
+	.legal-page__grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.legal-page__toc {
+	position: sticky;
+	top: var(--sp-20);
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-card);
+	padding: var(--sp-16);
+}
+
+.legal-page__toc-title {
+	font-size: var(--fs-13);
+	font-weight: 700;
+	color: var(--c-text);
+	padding: 0 var(--sp-8) var(--sp-10);
+}
+
+.legal-page__toc a {
+	font-size: var(--fs-13-5);
+	color: var(--c-text-2);
+	border-radius: var(--radius-input);
+	padding: var(--sp-9) var(--sp-10);
+}
+
+.legal-page__toc a:hover {
+	color: var(--c-teal-700);
+	background: var(--c-teal-050);
+}
+
+.legal-page__toc-contact {
+	margin-top: var(--sp-10);
+	padding-top: var(--sp-12);
+	border-top: var(--border-default) solid var(--c-line-soft);
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-8);
+}
+
+.legal-page__toc-contact > span {
+	font-size: var(--fs-12-5);
+	color: var(--c-text-3);
+	line-height: 1.8;
+}
+
+.legal-page__content,
+.legal-page__single {
+	max-width: 720px;
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-26);
+}
+
+.legal-page__intro {
+	margin: 0;
+	font-size: var(--fs-15-5);
+	line-height: 2.05;
+	color: var(--c-text);
+}
+
+.legal-page__section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-12);
+	scroll-margin-top: var(--sp-20);
+}
+
+.legal-page__section h2 {
+	margin: 0;
+	font-size: var(--fs-19);
+	font-weight: 700;
+	color: var(--c-text);
+}
+
+.legal-page__section p {
+	margin: 0;
+	font-size: var(--fs-15);
+	line-height: 2.05;
+	color: var(--c-text-2);
+}
+
+.legal-page__list {
+	margin: 0;
+	padding-inline-start: var(--sp-20);
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-9);
+	font-size: var(--fs-15);
+	line-height: 1.95;
+	color: var(--c-text-2);
+}
+
+.legal-page__callout {
+	display: flex;
+	gap: var(--sp-12);
+	background: var(--c-paper-alt);
+	border-radius: var(--radius-card);
+	padding: var(--sp-16) var(--sp-18);
+}
+
+.legal-page__callout p {
+	margin: 0;
+	font-size: var(--fs-14);
+	line-height: 1.95;
+	color: var(--c-text);
+}
+
+/* ---- General FAQ page ---- */
+.faq-hero {
+	background: var(--c-ink-800);
+	padding-block: var(--sp-40);
+	text-align: center;
+}
+
+.faq-hero h1 {
+	margin: 0 0 var(--sp-10);
+	font-size: var(--fs-34);
+	font-weight: 800;
+	color: var(--c-on-dark);
+}
+
+.faq-hero p {
+	margin: 0;
+	font-size: var(--fs-15-5);
+	color: var(--c-on-dark-2);
+}
+
+.faq-page {
+	padding-block: var(--sp-32) var(--sp-56);
+}
+
+.faq-page__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 320px;
+	gap: var(--sp-32);
+	align-items: start;
+}
+
+@media (max-width: 1023px) {
+	.faq-page__grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.faq-filter {
+	display: flex;
+	gap: var(--sp-9);
+	flex-wrap: wrap;
+	margin-bottom: var(--sp-20);
+}
+
+.faq-filter__chip {
+	font-family: inherit;
+	display: inline-flex;
+	align-items: center;
+	height: 38px;
+	padding-inline: var(--sp-16);
+	border-radius: var(--radius-pill);
+	background: var(--c-paper-alt);
+	border: var(--border-default) solid var(--c-line);
+	color: var(--c-text-2);
+	font-size: var(--fs-13-5);
+	cursor: pointer;
+}
+
+.faq-filter__chip.is-current {
+	background: var(--c-ink-800);
+	border-color: var(--c-ink-800);
+	color: #fff;
+	font-weight: 600;
+}
+
+.faq-page__sidebar {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-16);
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-panel);
+	padding: var(--sp-22);
+	background: var(--c-paper-alt);
+}
+
+.faq-page__sidebar-title {
+	font-size: var(--fs-16);
+	font-weight: 700;
+	color: var(--c-text);
+}
+
+.faq-page__sidebar p {
+	margin: 0;
+	font-size: var(--fs-14);
+	line-height: 1.95;
+	color: var(--c-text-2);
+}
+
+.faq-page__sidebar .btn {
+	align-self: flex-start;
+}

@@ -36,3 +36,4 @@ require STOCKSYSTEM_DIR . '/inc/woocommerce.php';
 require STOCKSYSTEM_DIR . '/inc/content-pages.php';
 require STOCKSYSTEM_DIR . '/inc/blog.php';
 require STOCKSYSTEM_DIR . '/inc/repair.php';
+require STOCKSYSTEM_DIR . '/inc/support-pages.php';

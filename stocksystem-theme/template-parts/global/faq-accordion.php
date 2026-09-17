@@ -11,6 +11,9 @@
  *   items (array) [ [ 'question' => '', 'answer' => '<p>…</p>' ], … ]
  *   id_prefix (string, optional) — keeps element ids unique when this
  *   part is rendered more than once on a page
+ *   items[]['category'] (string, optional) — adds data-faq-category so
+ *   a page can filter items client-side (14-B's category chips); items
+ *   without it just never get hidden.
  *
  * @package StockSystem
  */
@@ -54,7 +57,7 @@ foreach ( $items as $item ) {
 			$question_id = $id_prefix . '-question-' . $i;
 			$answer_id   = $id_prefix . '-answer-' . $i;
 			?>
-			<div class="faq-accordion__item">
+			<div class="faq-accordion__item"<?php echo ! empty( $item['category'] ) ? ' data-faq-category="' . esc_attr( $item['category'] ) . '"' : ''; ?>>
 				<h3 class="faq-accordion__heading">
 					<button
 						type="button"

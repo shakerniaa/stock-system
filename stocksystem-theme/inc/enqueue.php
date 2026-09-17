@@ -70,6 +70,14 @@ function stocksystem_enqueue_assets() {
 		wp_enqueue_style( 'stocksystem-grading', STOCKSYSTEM_URI . '/assets/css/components/grading.css', array( 'stocksystem-product-page' ), STOCKSYSTEM_VERSION );
 	}
 
+	if ( is_page_template( array( 'page-templates/terms.php', 'page-templates/privacy.php', 'page-templates/faq.php' ) ) ) {
+		wp_enqueue_style( 'stocksystem-support', STOCKSYSTEM_URI . '/assets/css/components/support.css', array( 'stocksystem-buttons' ), STOCKSYSTEM_VERSION );
+	}
+
+	if ( is_page_template( 'page-templates/faq.php' ) ) {
+		wp_enqueue_script( 'stocksystem-faq-filter', STOCKSYSTEM_URI . '/assets/js/faq-filter.js', array(), STOCKSYSTEM_VERSION, true );
+	}
+
 	$is_account_area = ( function_exists( 'is_account_page' ) && is_account_page() )
 		|| is_page_template( 'page-templates/order-tracking.php' );
 
