@@ -79,18 +79,47 @@ function stocksystem_wc_wrapper_end() {
 add_action( 'woocommerce_after_main_content', 'stocksystem_wc_wrapper_end', 10 );
 
 /**
- * Persian-Indic digits + ٬ (U+066C) thousands separator on every native
- * WooCommerce price render (cart, checkout, variation panels, order
- * review, admin-independent of it) — not just the hand-built product
- * card markup, which calls stocksystem_format_number() directly instead.
+ * Store currency. WooCommerce has no native "Toman" currency code — the
+ * standard approach (same one most Iranian WooCommerce stores use) is
+ * IRR (Rial) with the symbol overridden to "تومان" and prices entered
+ * directly in Toman units; WooCommerce never does unit conversion, it
+ * only ever displays whatever symbol/decimals you configure. Seeded
+ * once on activation, never overwritten if the store admin changes it.
  */
-add_filter(
-	'option_woocommerce_price_thousand_sep',
-	function () {
-		return "\u{066C}";
+function stocksystem_set_default_currency_options() {
+	$defaults = array(
+		'woocommerce_currency'            => 'IRR',
+		'woocommerce_currency_pos'        => 'right_space',
+		'woocommerce_price_num_decimals'  => '0',
+		'woocommerce_price_thousand_sep'  => "\u{066C}",
+		'woocommerce_price_decimal_sep'   => '.',
+	);
+
+	foreach ( $defaults as $option => $value ) {
+		if ( false === get_option( $option, false ) ) {
+			update_option( $option, $value );
+		}
 	}
+}
+add_action( 'after_switch_theme', 'stocksystem_set_default_currency_options' );
+
+add_filter(
+	'woocommerce_currency_symbol',
+	function ( $symbol, $currency ) {
+		return 'IRR' === $currency ? 'تومان' : $symbol;
+	},
+	10,
+	2
 );
 
+/**
+ * Persian-Indic digits on every native WooCommerce price render (cart,
+ * checkout, variation panels, order review) — not just the hand-built
+ * product card markup, which calls stocksystem_format_number() directly
+ * instead. The ٬ (U+066C) thousands separator itself comes from the
+ * woocommerce_price_thousand_sep option seeded above, editable like any
+ * other WooCommerce setting rather than forced here.
+ */
 add_filter(
 	'formatted_woocommerce_price',
 	function ( $formatted_price ) {

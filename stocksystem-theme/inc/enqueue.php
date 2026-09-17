@@ -35,5 +35,14 @@ function stocksystem_enqueue_assets() {
 		wp_enqueue_script( 'stocksystem-product-configurator', STOCKSYSTEM_URI . '/assets/js/product-configurator.js', array( 'jquery', 'wc-add-to-cart-variation' ), STOCKSYSTEM_VERSION, true );
 		wp_enqueue_script( 'stocksystem-product-page', STOCKSYSTEM_URI . '/assets/js/product-page.js', array(), STOCKSYSTEM_VERSION, true );
 	}
+
+	if ( function_exists( 'is_cart' ) && ( is_cart() || is_checkout() ) ) {
+		wp_enqueue_style( 'stocksystem-checkout', STOCKSYSTEM_URI . '/assets/css/components/checkout.css', array( 'stocksystem-product-card' ), STOCKSYSTEM_VERSION );
+		wp_enqueue_script( 'stocksystem-product-page', STOCKSYSTEM_URI . '/assets/js/product-page.js', array(), STOCKSYSTEM_VERSION, true );
+	}
+
+	if ( function_exists( 'is_checkout' ) && is_checkout() ) {
+		wp_enqueue_script( 'stocksystem-checkout', STOCKSYSTEM_URI . '/assets/js/checkout.js', array( 'jquery' ), STOCKSYSTEM_VERSION, true );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'stocksystem_enqueue_assets' );
