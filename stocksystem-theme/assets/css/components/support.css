@@ -28,7 +28,9 @@
 	align-items: start;
 }
 
-@media (max-width: 1023px) {
+/* Tablet keeps the TOC sidebar beside the content (fixed 260px,
+   plenty of room down to 768px) — only phone stacks it. */
+@media (max-width: 767px) {
 	.legal-page__grid {
 		grid-template-columns: 1fr;
 	}
@@ -172,7 +174,7 @@
 	align-items: start;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 767px) {
 	.faq-page__grid {
 		grid-template-columns: 1fr;
 	}

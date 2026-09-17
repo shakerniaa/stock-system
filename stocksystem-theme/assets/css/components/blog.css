@@ -93,7 +93,9 @@
 	padding-block: var(--sp-22) var(--sp-56);
 }
 
-@media (max-width: 1023px) {
+/* Tablet keeps article + TOC/related sidebar side-by-side — only
+   phone stacks them. */
+@media (max-width: 767px) {
 	.blog-single {
 		grid-template-columns: 1fr;
 	}

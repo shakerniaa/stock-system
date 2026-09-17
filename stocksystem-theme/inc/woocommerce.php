@@ -63,6 +63,15 @@ function stocksystem_warranty_tab_content() {
 // every product listing on the site looks consistent.
 remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20 );
 
+// template-parts/product/tabs-wrapper.php already calls
+// woocommerce_output_product_data_tabs() manually inside the gallery
+// column (03 Product.dc.html's layout puts tabs there, not after the
+// buy box) — without this, WooCommerce's own default hook on this same
+// action renders the tabs a second time right after the buy box. Only
+// visible as an obvious duplicate once gallery and buy box sit side by
+// side (tablet+) instead of stacked, which is what surfaced it.
+remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_product_data_tabs', 10 );
+
 // Swap WooCommerce's own wrappers for ours so archive/single templates sit
 // inside the same .container frame as the rest of the theme.
 remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10 );

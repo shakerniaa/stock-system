@@ -15,7 +15,8 @@
 	align-items: start;
 }
 
-@media (max-width: 1023px) {
+/* Tablet keeps this side-by-side — only phone stacks it. */
+@media (max-width: 767px) {
 	.repair-hero__grid {
 		grid-template-columns: 1fr;
 	}
@@ -197,7 +198,7 @@
 	gap: var(--sp-32);
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 767px) {
 	.repair-form-section__grid {
 		grid-template-columns: 1fr;
 	}

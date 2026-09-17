@@ -608,7 +608,10 @@ table.shop_table td {
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 1023px) {
+/* Tablet keeps the account sidebar beside the content (3fr is still
+   ~190px at 768px, enough for the nav's icon+label rows) — only phone
+   stacks it. */
+@media (max-width: 767px) {
 	.account-page__grid,
 	.order-tracking-page__grid {
 		grid-template-columns: 1fr;

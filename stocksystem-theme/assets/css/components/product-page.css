@@ -658,7 +658,10 @@
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 1023px) {
+/* Tablet keeps gallery + buy box side-by-side — only phone stacks
+   them (a 5fr column is still ~340px at 768px, enough for the buy
+   box's price/configurator). */
+@media (max-width: 767px) {
 	.single-product-layout {
 		grid-template-columns: 1fr;
 	}

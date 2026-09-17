@@ -81,7 +81,8 @@
 	line-height: 1.8;
 }
 
-@media (max-width: 1023px) {
+/* Tablet keeps these side-by-side — only phone stacks them. */
+@media (max-width: 767px) {
 	.about-hero__grid {
 		grid-template-columns: 1fr;
 	}
@@ -142,7 +143,7 @@
 	align-items: start;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 767px) {
 	.about-contact__grid {
 		grid-template-columns: 1fr;
 	}

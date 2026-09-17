@@ -261,20 +261,29 @@
 
 /* ---- Responsive ---- */
 @media (max-width: 1023px) {
-	.home-hero__grid {
-		grid-template-columns: 1fr;
-	}
-
-	.home-hero__media {
-		height: 240px;
-	}
-
 	.home-categories__grid {
 		grid-template-columns: repeat(3, 1fr);
 	}
 
 	.home-trust__grid {
 		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.home-blog__grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+/* Tablet keeps the hero side-by-side (plenty of width down to 768px)
+   and only drops the blog teaser to 1 column on phone — 2 columns
+   already fits at tablet width, same as the archive/blog grids. */
+@media (max-width: 767px) {
+	.home-hero__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.home-hero__media {
+		height: 240px;
 	}
 
 	.home-blog__grid {

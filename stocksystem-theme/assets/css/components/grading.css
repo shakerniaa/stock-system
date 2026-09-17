@@ -137,7 +137,8 @@
 	align-items: start;
 }
 
-@media (max-width: 1023px) {
+/* Tablet keeps this side-by-side — only phone stacks it. */
+@media (max-width: 767px) {
 	.grading-faq-sample__grid {
 		grid-template-columns: 1fr;
 	}

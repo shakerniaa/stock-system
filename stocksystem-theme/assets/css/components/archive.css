@@ -739,13 +739,17 @@
 		display: inline-flex;
 	}
 
+	.shop-hub__category-tiles {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+/* Tablet keeps these two-column splits side-by-side (plenty of width
+   for them down to 768px) — only phone stacks them. */
+@media (max-width: 767px) {
 	.archive-seo,
 	.shop-hub__split {
 		grid-template-columns: 1fr;
-	}
-
-	.shop-hub__category-tiles {
-		grid-template-columns: repeat(3, 1fr);
 	}
 }
 
