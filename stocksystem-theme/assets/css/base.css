@@ -130,3 +130,46 @@ ul, ol {
 .skip-link:focus {
 	top: var(--sp-12);
 }
+
+/* searchform.php's generic get_search_form() output — the header uses
+   its own .site-masthead__search markup (autocomplete dropdown), this
+   is for everywhere else that calls get_search_form() directly (404
+   page, widgets). */
+.site-search-form {
+	display: flex;
+	gap: var(--sp-8);
+	max-width: 480px;
+}
+
+.site-search-form input[type="search"] {
+	flex: 1;
+	font-family: inherit;
+	font-size: var(--fs-15);
+	color: var(--c-text);
+	background: var(--c-paper);
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-input);
+	padding: 0 var(--sp-16);
+	height: 48px;
+}
+
+.site-search-form input[type="search"]:focus-visible {
+	outline: none;
+	border-color: var(--c-teal-500);
+}
+
+.site-search-form button {
+	font-family: inherit;
+	font-size: var(--fs-14);
+	font-weight: 600;
+	color: #fff;
+	background: var(--c-teal-500);
+	border: none;
+	border-radius: var(--radius-input);
+	padding-inline: var(--sp-20);
+	cursor: pointer;
+}
+
+.site-search-form button:hover {
+	background: var(--c-teal-600);
+}

@@ -5,6 +5,12 @@
 ( function () {
 	'use strict';
 
+	function toast( message, type ) {
+		if ( window.stocksystemToast ) {
+			window.stocksystemToast.show( message, type );
+		}
+	}
+
 	document.addEventListener( 'click', function ( event ) {
 		var button = event.target.closest( '.wishlist-toggle' );
 		if ( ! button || ! window.stocksystemAjax ) {
@@ -13,10 +19,16 @@
 
 		event.preventDefault();
 
+		if ( button.classList.contains( 'is-loading' ) ) {
+			return;
+		}
+
 		var body = new URLSearchParams();
 		body.set( 'action', 'stocksystem_toggle_wishlist' );
 		body.set( 'nonce', button.getAttribute( 'data-nonce' ) );
 		body.set( 'product_id', button.getAttribute( 'data-product-id' ) );
+
+		button.classList.add( 'is-loading' );
 
 		fetch( window.stocksystemAjax.url, {
 			method: 'POST',
@@ -25,6 +37,9 @@
 			body: body.toString(),
 		} )
 			.then( function ( response ) {
+				if ( ! response.ok ) {
+					throw new Error( 'http-error' );
+				}
 				return response.json();
 			} )
 			.then( function ( json ) {
@@ -40,7 +55,19 @@
 					if ( svg ) {
 						svg.setAttribute( 'fill', json.data.in_wishlist ? 'currentColor' : 'none' );
 					}
+					toast(
+						json.data.in_wishlist ? 'به علاقه‌مندی‌ها اضافه شد' : 'از علاقه‌مندی‌ها حذف شد',
+						'success'
+					);
+				} else {
+					toast( 'مشکلی پیش آمد، دوباره تلاش کنید', 'error' );
 				}
+			} )
+			.catch( function () {
+				toast( 'اتصال برقرار نشد. اتصال اینترنت را بررسی کنید.', 'error' );
+			} )
+			.finally( function () {
+				button.classList.remove( 'is-loading' );
 			} );
 	} );
 } )();

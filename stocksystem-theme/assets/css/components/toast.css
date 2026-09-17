@@ -1,0 +1,82 @@
+/**
+ * Toast notifications (assets/js/toast.js) + generic loading-skeleton
+ * utility (item 10 of the build-order — see PROGRESS.md).
+ */
+
+#toast-container {
+	position: fixed;
+	bottom: var(--sp-20);
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: var(--z-toast);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--sp-10);
+	pointer-events: none;
+	width: 100%;
+	padding-inline: var(--sp-16);
+}
+
+.toast {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--sp-10);
+	max-width: 420px;
+	background: var(--c-ink-800);
+	color: var(--c-on-dark);
+	border-radius: var(--radius-button);
+	padding: var(--sp-12) var(--sp-18);
+	font-size: var(--fs-14);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
+	opacity: 0;
+	transform: translateY(12px);
+	transition: opacity var(--transition-hover), transform var(--transition-hover);
+}
+
+.toast.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.toast--success {
+	border-inline-start: 3px solid var(--c-status-success);
+}
+
+.toast--error {
+	border-inline-start: 3px solid var(--c-red-600);
+}
+
+/* ---- Skeleton loading placeholder ---- */
+.skeleton {
+	position: relative;
+	overflow: hidden;
+	background: var(--c-line-soft);
+	border-radius: var(--radius-input);
+	color: transparent !important;
+	pointer-events: none;
+	user-select: none;
+}
+
+.skeleton::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+	animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.skeleton::after {
+		animation: none;
+	}
+}
+
+@keyframes skeleton-shimmer {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(100%);
+	}
+}

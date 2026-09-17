@@ -14,6 +14,7 @@ function stocksystem_enqueue_assets() {
 	wp_enqueue_style( 'stocksystem-tokens', STOCKSYSTEM_URI . '/assets/css/tokens.css', array(), STOCKSYSTEM_VERSION );
 	wp_enqueue_style( 'stocksystem-base', STOCKSYSTEM_URI . '/assets/css/base.css', array( 'stocksystem-tokens', 'stocksystem-fonts' ), STOCKSYSTEM_VERSION );
 	wp_enqueue_style( 'stocksystem-buttons', STOCKSYSTEM_URI . '/assets/css/components/buttons.css', array( 'stocksystem-base' ), STOCKSYSTEM_VERSION );
+	wp_enqueue_style( 'stocksystem-toast', STOCKSYSTEM_URI . '/assets/css/components/toast.css', array( 'stocksystem-base' ), STOCKSYSTEM_VERSION );
 	wp_enqueue_style( 'stocksystem-header', STOCKSYSTEM_URI . '/assets/css/components/header.css', array( 'stocksystem-buttons' ), STOCKSYSTEM_VERSION );
 	wp_enqueue_style( 'stocksystem-footer', STOCKSYSTEM_URI . '/assets/css/components/footer.css', array( 'stocksystem-buttons' ), STOCKSYSTEM_VERSION );
 	wp_enqueue_style( 'stocksystem-product-card', STOCKSYSTEM_URI . '/assets/css/components/product-card.css', array( 'stocksystem-buttons' ), STOCKSYSTEM_VERSION );
@@ -22,6 +23,7 @@ function stocksystem_enqueue_assets() {
 
 	wp_enqueue_script( 'stocksystem-breakpoints', STOCKSYSTEM_URI . '/assets/js/breakpoints.js', array(), STOCKSYSTEM_VERSION, true );
 	wp_enqueue_script( 'stocksystem-navigation', STOCKSYSTEM_URI . '/assets/js/navigation.js', array( 'stocksystem-breakpoints' ), STOCKSYSTEM_VERSION, true );
+	wp_enqueue_script( 'stocksystem-toast', STOCKSYSTEM_URI . '/assets/js/toast.js', array(), STOCKSYSTEM_VERSION, true );
 	wp_enqueue_script( 'stocksystem-product-card', STOCKSYSTEM_URI . '/assets/js/product-card.js', array(), STOCKSYSTEM_VERSION, true );
 	wp_enqueue_script( 'stocksystem-archive-filters', STOCKSYSTEM_URI . '/assets/js/archive-filters.js', array(), STOCKSYSTEM_VERSION, true );
 	wp_enqueue_script( 'stocksystem-faq-accordion', STOCKSYSTEM_URI . '/assets/js/faq-accordion.js', array(), STOCKSYSTEM_VERSION, true );
@@ -76,6 +78,10 @@ function stocksystem_enqueue_assets() {
 
 	if ( is_page_template( 'page-templates/faq.php' ) ) {
 		wp_enqueue_script( 'stocksystem-faq-filter', STOCKSYSTEM_URI . '/assets/js/faq-filter.js', array(), STOCKSYSTEM_VERSION, true );
+	}
+
+	if ( is_404() ) {
+		wp_enqueue_style( 'stocksystem-error-404', STOCKSYSTEM_URI . '/assets/css/components/error-404.css', array( 'stocksystem-buttons' ), STOCKSYSTEM_VERSION );
 	}
 
 	$is_account_area = ( function_exists( 'is_account_page' ) && is_account_page() )

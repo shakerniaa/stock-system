@@ -548,6 +548,24 @@ ul.wc_payment_methods li.wc_payment_method label {
 	background: var(--c-amber-500);
 }
 
+.order-confirmation-banner.is-failed .order-confirmation-banner__icon {
+	background: var(--c-red-600);
+	color: #fff;
+}
+
+.order-confirmation-retry {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--sp-16);
+	padding-block: var(--sp-8) var(--sp-40);
+}
+
+.order-confirmation-retry__hint {
+	font-size: var(--fs-13-5);
+	color: var(--c-text-2);
+}
+
 .order-confirmation-banner__text {
 	display: flex;
 	flex-direction: column;

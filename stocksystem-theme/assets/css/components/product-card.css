@@ -97,6 +97,11 @@ html[dir="rtl"] .product-card__ribbon {
 	color: var(--c-red-600);
 }
 
+.wishlist-toggle.is-loading {
+	opacity: .5;
+	pointer-events: none;
+}
+
 .product-card__countdown {
 	position: absolute;
 	bottom: var(--sp-10);

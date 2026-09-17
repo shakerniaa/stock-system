@@ -18,17 +18,20 @@ if ( ! $order ) {
 	return;
 }
 
-$is_paid  = $order->is_paid();
-$shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' );
+$is_paid   = $order->is_paid();
+$is_failed = $order->has_status( array( 'failed', 'cancelled' ) );
+$shop_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' );
 ?>
 
 <div class="checkout-page">
 	<div class="container">
 		<?php get_template_part( 'template-parts/checkout/step-indicator', null, array( 'current' => 4 ) ); ?>
 
-		<div class="order-confirmation-banner<?php echo $is_paid ? '' : ' is-pending'; ?>">
+		<div class="order-confirmation-banner<?php echo $is_failed ? ' is-failed' : ( $is_paid ? '' : ' is-pending' ); ?>">
 			<span class="order-confirmation-banner__icon" aria-hidden="true">
-				<?php if ( $is_paid ) : ?>
+				<?php if ( $is_failed ) : ?>
+					<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M15 9l-6 6M9 9l6 6"></path></svg>
+				<?php elseif ( $is_paid ) : ?>
 					<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
 				<?php else : ?>
 					<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4l3 2"></path></svg>
@@ -36,16 +39,26 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
 			</span>
 			<span class="order-confirmation-banner__text">
 				<span class="order-confirmation-banner__title">
-					<?php echo $is_paid ? esc_html__( 'پرداخت با موفقیت انجام شد', 'stocksystem' ) : esc_html__( 'سفارش شما ثبت شد', 'stocksystem' ); ?>
+					<?php
+					if ( $is_failed ) {
+						esc_html_e( 'پرداخت ناموفق بود', 'stocksystem' );
+					} else {
+						echo $is_paid ? esc_html__( 'پرداخت با موفقیت انجام شد', 'stocksystem' ) : esc_html__( 'سفارش شما ثبت شد', 'stocksystem' );
+					}
+					?>
 				</span>
 				<span class="order-confirmation-banner__desc">
-					<?php
-					printf(
-						/* translators: %s: masked phone number */
-						esc_html__( 'سفارش شما ثبت شد و پیامک تأیید به شمارهٔ %s ارسال گردید.', 'stocksystem' ),
-						esc_html( $order->get_billing_phone() )
-					);
-					?>
+					<?php if ( $is_failed ) : ?>
+						<?php esc_html_e( 'مبلغی از حساب شما کسر نشده است. می‌توانید دوباره تلاش کنید یا روش پرداخت دیگری انتخاب کنید.', 'stocksystem' ); ?>
+					<?php else : ?>
+						<?php
+						printf(
+							/* translators: %s: masked phone number */
+							esc_html__( 'سفارش شما ثبت شد و پیامک تأیید به شمارهٔ %s ارسال گردید.', 'stocksystem' ),
+							esc_html( $order->get_billing_phone() )
+						);
+						?>
+					<?php endif; ?>
 				</span>
 			</span>
 			<span class="order-confirmation-banner__number">
@@ -53,6 +66,22 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
 				<span class="ltr"><?php echo esc_html( $order->get_order_number() ); ?></span>
 			</span>
 		</div>
+
+		<?php if ( $is_failed ) : ?>
+			<div class="order-confirmation-retry">
+				<a href="<?php echo esc_url( $order->get_checkout_payment_url() ); ?>" class="btn btn--primary"><?php esc_html_e( 'تلاش دوباره برای پرداخت', 'stocksystem' ); ?></a>
+				<a href="<?php echo esc_url( $shop_url ); ?>" class="btn btn--outline"><?php esc_html_e( 'بازگشت به فروشگاه', 'stocksystem' ); ?></a>
+				<span class="order-confirmation-retry__hint">
+					<?php
+					printf(
+						/* translators: %s: support phone number */
+						esc_html__( 'اگر مشکل ادامه داشت، با پشتیبانی (%s) تماس بگیرید.', 'stocksystem' ),
+						'<span class="ltr">' . esc_html( stocksystem_business( 'phone' ) ) . '</span>'
+					);
+					?>
+				</span>
+			</div>
+		<?php else : ?>
 
 		<div class="checkout-page__grid">
 			<div class="checkout-page__main">
@@ -128,5 +157,6 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
 				</div>
 			</aside>
 		</div>
+		<?php endif; ?>
 	</div>
 </div>

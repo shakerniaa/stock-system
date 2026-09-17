@@ -121,13 +121,22 @@
 
 		var lastVariation = null;
 
+		// Server-authoritative price/stock is an AJAX round-trip
+		// (wc-add-to-cart-variation.js) — show a brief skeleton on the
+		// price instead of a stale or blank number while it's in flight.
+		$form.on( 'check_variations', function () {
+			$summary.find( '.woocommerce-variation-price' ).addClass( 'skeleton' );
+		} );
+
 		$form.on( 'found_variation', function ( event, variation ) {
 			lastVariation = variation;
+			$summary.find( '.woocommerce-variation-price' ).removeClass( 'skeleton' );
 			renderMeta( variation );
 		} );
 
 		$form.on( 'reset_data hide_variation', function () {
 			lastVariation = null;
+			$summary.find( '.woocommerce-variation-price' ).removeClass( 'skeleton' );
 			renderMeta( null );
 		} );
 
