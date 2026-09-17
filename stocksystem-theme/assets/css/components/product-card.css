@@ -77,6 +77,26 @@ html[dir="rtl"] .product-card__ribbon {
 	gap: var(--sp-6);
 }
 
+.wishlist-toggle {
+	position: absolute;
+	top: var(--sp-10);
+	inset-inline-start: var(--sp-10);
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: var(--c-paper);
+	border: none;
+	color: var(--c-text-3);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 1px 3px rgba(4, 33, 31, .15);
+}
+
+.wishlist-toggle.is-active {
+	color: var(--c-red-600);
+}
+
 .product-card__countdown {
 	position: absolute;
 	bottom: var(--sp-10);

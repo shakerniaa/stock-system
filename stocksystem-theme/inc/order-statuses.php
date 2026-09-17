@@ -60,6 +60,20 @@ function stocksystem_add_order_statuses( $order_statuses ) {
 add_filter( 'wc_order_statuses', 'stocksystem_add_order_statuses' );
 
 /**
+ * "SS-48121" style order numbers (12 Checkout Flow.dc.html /
+ * 16 Shop Pages.dc.html both show this prefix) — display only, the
+ * real order ID underneath is unchanged so lookups stay simple.
+ */
+add_filter(
+	'woocommerce_order_number',
+	function ( $order_id, $order ) {
+		return 'SS-' . $order->get_id();
+	},
+	10,
+	2
+);
+
+/**
  * Timeline step data for template-parts/checkout/order-timeline.php.
  * Each step's `done` state is derived from the order's current status
  * and its status-change history (via order notes' timestamps), so the

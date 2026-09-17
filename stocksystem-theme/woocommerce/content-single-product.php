@@ -39,6 +39,8 @@ $badges  = stocksystem_product_badges( $product, $variant );
 	<div class="single-product-layout__buy-col">
 		<div class="buy-box">
 			<div class="buy-box__header">
+				<?php get_template_part( 'template-parts/product/wishlist-toggle', null, array( 'product' => $product ) ); ?>
+
 				<?php if ( ! empty( $badges ) ) : ?>
 					<span class="buy-box__badges">
 						<?php foreach ( $badges as $badge ) : ?>

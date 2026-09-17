@@ -1,0 +1,626 @@
+/**
+ * My Account: dashboard, orders, addresses, wallet, wishlist, OTP login,
+ * and the standalone order-tracking page.
+ * Source: 08 Account.dc.html, 16 Shop Pages.dc.html §16-C/16-D.
+ */
+
+/* ---- Shared form-row styling (WooCommerce's account forms use the same
+   markup conventions as checkout, but this stylesheet loads on a
+   different set of pages, hence the small duplication). ---- */
+.form-row label {
+	display: block;
+	font-size: var(--fs-13);
+	font-weight: 500;
+	color: var(--c-text-2);
+	margin-bottom: var(--sp-8);
+}
+
+.form-row input.input-text,
+.form-row textarea,
+.form-row select {
+	width: 100%;
+	min-height: 48px;
+	border: var(--border-interactive) solid var(--c-line);
+	border-radius: var(--radius-input);
+	padding: 13px 14px;
+	font-size: var(--fs-15);
+	color: var(--c-text);
+	background: var(--c-paper);
+}
+
+.form-row input.input-text:focus,
+.form-row textarea:focus,
+.form-row select:focus {
+	border-color: var(--c-teal-500);
+	outline: 3px solid rgba(14, 186, 175, .2);
+}
+
+/* ---- Page shell ---- */
+.account-page {
+	padding-block: var(--sp-32) var(--sp-48);
+}
+
+.account-page__grid {
+	display: grid;
+	grid-template-columns: 3fr 9fr;
+	gap: var(--sp-32);
+	align-items: start;
+}
+
+.account-nav ul {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-card);
+	padding: var(--sp-14);
+}
+
+.account-nav__item a {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-12);
+	min-height: 48px;
+	padding: 13px 14px;
+	border-radius: var(--radius-input);
+	font-size: var(--fs-14-5);
+	font-weight: 500;
+	color: var(--c-text-2);
+}
+
+.account-nav__item a svg {
+	flex: 0 0 auto;
+	color: var(--c-text-3);
+}
+
+.account-nav__item.is-active a {
+	background: var(--c-teal-025);
+	color: var(--c-text);
+	font-weight: 600;
+}
+
+.account-nav__item.is-active a svg {
+	color: var(--c-teal-500);
+}
+
+.account-nav__item a:hover {
+	background: var(--c-paper-alt);
+	color: var(--c-text);
+}
+
+.account-nav__item--logout {
+	margin-top: var(--sp-6);
+	padding-top: var(--sp-6);
+	border-top: var(--border-default) solid var(--c-line-soft);
+}
+
+.account-nav__item--logout a {
+	color: var(--c-status-error-600);
+}
+
+.account-page__content {
+	min-width: 0;
+}
+
+.account-panel__header {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--sp-16);
+	margin-bottom: var(--sp-16);
+}
+
+.account-panel__header h2 {
+	font-size: var(--fs-20);
+	font-weight: 700;
+	color: var(--c-text);
+}
+
+.account-panel__header a {
+	font-size: var(--fs-13-5);
+	font-weight: 600;
+	color: var(--c-teal-600);
+}
+
+.account-panel__count {
+	font-size: var(--fs-13-5);
+	color: var(--c-text-3);
+}
+
+.account-panel__empty {
+	font-size: var(--fs-14);
+	color: var(--c-text-2);
+	padding-block: var(--sp-24);
+}
+
+.account-panel__notice {
+	background: var(--c-teal-050);
+	color: var(--c-teal-700);
+	border-radius: var(--radius-input);
+	padding: var(--sp-14);
+	font-size: var(--fs-14);
+	margin-bottom: var(--sp-16);
+}
+
+/* ---- Dashboard ---- */
+.account-dashboard {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-24);
+}
+
+.account-dashboard__greeting {
+	font-size: var(--fs-15);
+	color: var(--c-text-2);
+}
+
+.account-dashboard__stats {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: var(--sp-14);
+}
+
+.account-dashboard__stat {
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-card);
+	padding: var(--sp-18);
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+}
+
+.account-dashboard__stat span {
+	font-size: var(--fs-12-5);
+	color: var(--c-text-3);
+}
+
+.account-dashboard__stat strong {
+	font-size: var(--fs-24);
+	font-weight: 800;
+	color: var(--c-text);
+}
+
+.account-dashboard__order-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	gap: var(--sp-12);
+	padding: var(--sp-14) 0;
+	border-top: var(--border-default) solid var(--c-line-soft);
+	font-size: var(--fs-13-5);
+	color: var(--c-text-2);
+}
+
+.account-dashboard__links {
+	font-size: var(--fs-13-5);
+	color: var(--c-text-2);
+}
+
+/* ---- Orders / order detail (WooCommerce core markup) ---- */
+table.woocommerce-orders-table,
+table.shop_table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table.woocommerce-orders-table th,
+table.woocommerce-orders-table td,
+table.shop_table th,
+table.shop_table td {
+	padding: var(--sp-12) var(--sp-10);
+	font-size: var(--fs-13-5);
+	text-align: start;
+	border-bottom: var(--border-default) solid var(--c-line-soft);
+}
+
+.woocommerce-orders-table__cell-order-status mark {
+	background: none;
+	color: var(--c-teal-700);
+	font-weight: 600;
+}
+
+/* ---- Wallet ---- */
+.account-wallet {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-20);
+}
+
+.account-wallet__balance-card {
+	background: var(--c-ink-800);
+	border-radius: var(--radius-panel-lg);
+	padding: var(--sp-24);
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-8);
+}
+
+.account-wallet__balance-label {
+	font-size: var(--fs-13);
+	color: var(--c-on-dark-3);
+}
+
+.account-wallet__balance-amount {
+	font-size: var(--fs-30);
+	font-weight: 800;
+	color: var(--c-teal-300);
+}
+
+.account-wallet__balance-amount span {
+	font-size: var(--fs-15);
+	font-weight: 500;
+	color: var(--c-on-dark-2);
+}
+
+.account-wallet__topup-form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-8);
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-card);
+	padding: var(--sp-20);
+}
+
+.account-wallet__topup-row {
+	display: flex;
+	gap: var(--sp-10);
+}
+
+.account-wallet__topup-row input {
+	flex: 1;
+	min-height: 48px;
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-input);
+	padding-inline: var(--sp-14);
+}
+
+.account-wallet__topup-note {
+	font-size: var(--fs-12-5);
+	color: var(--c-text-3);
+}
+
+.account-wallet__ledger {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-10);
+}
+
+.account-wallet__ledger-title {
+	font-size: var(--fs-15);
+	font-weight: 700;
+	color: var(--c-text);
+}
+
+.account-wallet__ledger-row {
+	display: grid;
+	grid-template-columns: 1fr auto auto;
+	gap: var(--sp-14);
+	align-items: center;
+	padding: var(--sp-10) 0;
+	border-top: var(--border-default) solid var(--c-line-soft);
+	font-size: var(--fs-13-5);
+}
+
+.account-wallet__ledger-date {
+	color: var(--c-text-3);
+}
+
+.account-wallet__ledger-amount.is-positive {
+	color: var(--c-status-success);
+	font-weight: 600;
+}
+
+.account-wallet__ledger-amount.is-negative {
+	color: var(--c-status-error-600);
+	font-weight: 600;
+}
+
+/* ---- Account edit / address forms (WooCommerce core markup) ---- */
+.account-edit-form,
+.woocommerce-address-fields__field-wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0 var(--sp-16);
+	max-width: 640px;
+}
+
+.account-edit-form .form-row-wide,
+.woocommerce-address-fields__field-wrapper .form-row-wide,
+.account-edit-form fieldset,
+.account-edit-form > p:last-child {
+	grid-column: 1 / -1;
+}
+
+.account-edit-form .form-row,
+.woocommerce-address-fields__field-wrapper .form-row {
+	margin-bottom: var(--sp-16);
+}
+
+.woocommerce-address-fields h2 {
+	font-size: var(--fs-20);
+	font-weight: 700;
+	color: var(--c-text);
+	margin-bottom: var(--sp-16);
+}
+
+.woocommerce-address-fields p:last-child button {
+	height: 48px;
+	padding-inline: var(--sp-24);
+	border-radius: var(--radius-button);
+	background: var(--c-teal-500);
+	color: #fff;
+	border: none;
+	font-size: var(--fs-15);
+	font-weight: 600;
+}
+
+.account-edit-form__optional {
+	font-weight: 400;
+	color: var(--c-text-3);
+}
+
+.account-edit-form__password {
+	border: none;
+	padding: 0;
+	margin: 0;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0 var(--sp-16);
+}
+
+.account-edit-form__password legend {
+	font-size: var(--fs-16);
+	font-weight: 700;
+	color: var(--c-text);
+	margin-bottom: var(--sp-12);
+	grid-column: 1 / -1;
+}
+
+.account-edit-form__password-hint {
+	grid-column: 1 / -1;
+	font-size: var(--fs-13);
+	color: var(--c-teal-700);
+	background: var(--c-teal-050);
+	border-radius: var(--radius-input);
+	padding: var(--sp-10);
+	margin-bottom: var(--sp-12);
+}
+
+/* ---- Auth (OTP login) ---- */
+.auth-page {
+	display: flex;
+	justify-content: center;
+	padding-block: var(--sp-48);
+}
+
+.auth-card {
+	width: 100%;
+	max-width: 420px;
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-14);
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-panel-lg);
+	padding: var(--sp-28);
+}
+
+.auth-card__eyebrow {
+	font-size: var(--fs-12-5);
+	font-weight: 700;
+	color: var(--c-teal-600);
+}
+
+.auth-card__title {
+	font-size: var(--fs-21);
+	font-weight: 800;
+	color: var(--c-text);
+}
+
+.auth-card__desc {
+	font-size: var(--fs-13-5);
+	line-height: 1.9;
+	color: var(--c-text-2);
+}
+
+.otp-form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-12);
+}
+
+.otp-form__step {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-10);
+}
+
+.otp-form__step[hidden] {
+	display: none;
+}
+
+.otp-form label {
+	font-size: var(--fs-13);
+	font-weight: 600;
+	color: var(--c-text);
+}
+
+.otp-form__optional-label span {
+	font-weight: 400;
+	color: var(--c-text-3);
+}
+
+.otp-form input {
+	height: 50px;
+	border: var(--border-interactive) solid var(--c-teal-500);
+	border-radius: var(--radius-button-lg);
+	padding-inline: var(--sp-14);
+	font-size: var(--fs-15);
+	color: var(--c-text);
+}
+
+.otp-form__sent-to {
+	font-size: var(--fs-13);
+	color: var(--c-text-2);
+}
+
+.otp-form__back {
+	align-self: center;
+	background: transparent;
+	border: none;
+	color: var(--c-teal-600);
+	font-size: var(--fs-13);
+	font-weight: 600;
+}
+
+.otp-form__error {
+	color: var(--c-status-error-600);
+	font-size: var(--fs-13);
+	background: var(--c-red-050);
+	border-radius: var(--radius-input);
+	padding: var(--sp-10);
+}
+
+.auth-card__divider {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-12);
+	font-size: var(--fs-12-5);
+	color: var(--c-text-3);
+}
+
+.auth-card__divider span:not(:only-child):first-child,
+.auth-card__divider span:last-child {
+	flex: 1;
+	height: 1px;
+	background: var(--c-line-soft);
+}
+
+.password-login {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-12);
+	padding-top: var(--sp-8);
+}
+
+.password-login[hidden] {
+	display: none;
+}
+
+.auth-card__lost-password {
+	text-align: center;
+	font-size: var(--fs-13);
+}
+
+/* ---- Order tracking page ---- */
+.order-tracking-page {
+	padding-block: var(--sp-32) var(--sp-48);
+}
+
+.order-tracking-page__title {
+	font-size: var(--fs-24);
+	font-weight: 700;
+	color: var(--c-text);
+	margin-bottom: var(--sp-24);
+}
+
+.order-tracking-page__grid {
+	display: grid;
+	grid-template-columns: 1fr 1.35fr;
+	gap: var(--sp-26);
+	align-items: start;
+}
+
+.order-tracking-form-panel {
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-panel);
+	padding: var(--sp-24);
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-14);
+}
+
+.order-tracking-form-panel p {
+	font-size: var(--fs-13-5);
+	line-height: 1.95;
+	color: var(--c-text-2);
+}
+
+.order-tracking-form-panel form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-10);
+}
+
+.order-tracking-form-panel input {
+	height: 48px;
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-button-lg);
+	padding-inline: var(--sp-14);
+	font-size: var(--fs-14);
+}
+
+.order-tracking-form-panel__error {
+	color: var(--c-status-error-600);
+	font-size: var(--fs-13);
+}
+
+.order-tracking-form-panel__hint {
+	font-size: var(--fs-12-5) !important;
+	color: var(--c-text-3) !important;
+}
+
+.order-tracking-result {
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-panel);
+	overflow: hidden;
+}
+
+.order-tracking-result__header {
+	background: var(--c-paper-alt);
+	padding: var(--sp-20) var(--sp-24);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sp-16);
+	font-size: var(--fs-16);
+	font-weight: 800;
+	color: var(--c-text);
+}
+
+.order-tracking-result__status {
+	background: var(--c-teal-050);
+	color: var(--c-teal-700);
+	border-radius: var(--radius-pill);
+	padding: 6px 14px;
+	font-size: var(--fs-12-5);
+	font-weight: 700;
+}
+
+.order-tracking-result .order-timeline,
+.order-tracking-result .order-confirmation-items {
+	margin: var(--sp-22);
+	margin-bottom: 0;
+}
+
+.order-tracking-result .order-confirmation-items {
+	margin-bottom: var(--sp-22);
+	border: none;
+	padding: 0;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1023px) {
+	.account-page__grid,
+	.order-tracking-page__grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 479px) {
+	.account-dashboard__stats {
+		grid-template-columns: 1fr;
+	}
+
+	.account-dashboard__order-row {
+		grid-template-columns: 1fr 1fr;
+	}
+}

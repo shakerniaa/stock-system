@@ -129,20 +129,39 @@ add_filter(
 );
 
 /**
- * order-tracking is a custom My Account endpoint (16-D), not a core
- * WooCommerce one — registered once that template lands. Falls back to
- * the account page so the topbar link never 404s in the meantime.
+ * Order tracking is a standalone guest-accessible page (page-templates/
+ * order-tracking.php), not a My Account endpoint — see that file's
+ * header comment for why. The page itself is auto-created on theme
+ * activation, same pattern as WooCommerce's own shop/cart/checkout
+ * pages, with its ID cached in an option.
  */
 function stocksystem_order_tracking_url() {
-	if ( ! function_exists( 'wc_get_page_id' ) ) {
-		return home_url( '/' );
+	$page_id = get_option( 'stocksystem_order_tracking_page_id' );
+
+	if ( $page_id && get_post_status( $page_id ) ) {
+		return get_permalink( $page_id );
 	}
 
-	$account_page_id = wc_get_page_id( 'myaccount' );
-
-	if ( $account_page_id < 1 ) {
-		return home_url( '/' );
-	}
-
-	return wc_get_endpoint_url( 'order-tracking', '', get_permalink( $account_page_id ) );
+	return home_url( '/' );
 }
+
+function stocksystem_create_order_tracking_page() {
+	if ( get_option( 'stocksystem_order_tracking_page_id' ) ) {
+		return;
+	}
+
+	$page_id = wp_insert_post(
+		array(
+			'post_title'     => __( 'پیگیری سفارش', 'stocksystem' ),
+			'post_status'    => 'publish',
+			'post_type'      => 'page',
+			'page_template'  => 'page-templates/order-tracking.php',
+			'comment_status' => 'closed',
+		)
+	);
+
+	if ( $page_id && ! is_wp_error( $page_id ) ) {
+		update_option( 'stocksystem_order_tracking_page_id', $page_id );
+	}
+}
+add_action( 'after_switch_theme', 'stocksystem_create_order_tracking_page' );

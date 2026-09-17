@@ -64,6 +64,8 @@ if ( in_array( 'badge--warning', wp_list_pluck( $badges, 'class' ), true ) ) {
 		<?php endif; ?>
 
 		<?php get_template_part( 'template-parts/product/clearance-countdown', null, array( 'product' => $product ) ); ?>
+
+		<?php get_template_part( 'template-parts/product/wishlist-toggle', null, array( 'product' => $product ) ); ?>
 	</div>
 
 	<div class="product-card__body">

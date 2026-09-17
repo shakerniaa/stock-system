@@ -29,4 +29,7 @@ require STOCKSYSTEM_DIR . '/inc/product-notify.php';
 require STOCKSYSTEM_DIR . '/inc/order-statuses.php';
 require STOCKSYSTEM_DIR . '/inc/wallet.php';
 require STOCKSYSTEM_DIR . '/inc/checkout-fields.php';
+require STOCKSYSTEM_DIR . '/inc/otp-auth.php';
+require STOCKSYSTEM_DIR . '/inc/account-endpoints.php';
+require STOCKSYSTEM_DIR . '/inc/wishlist.php';
 require STOCKSYSTEM_DIR . '/inc/woocommerce.php';

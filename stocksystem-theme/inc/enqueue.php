@@ -26,6 +26,16 @@ function stocksystem_enqueue_assets() {
 	wp_enqueue_script( 'stocksystem-archive-filters', STOCKSYSTEM_URI . '/assets/js/archive-filters.js', array(), STOCKSYSTEM_VERSION, true );
 	wp_enqueue_script( 'stocksystem-faq-accordion', STOCKSYSTEM_URI . '/assets/js/faq-accordion.js', array(), STOCKSYSTEM_VERSION, true );
 
+	wp_enqueue_script( 'stocksystem-wishlist', STOCKSYSTEM_URI . '/assets/js/wishlist.js', array(), STOCKSYSTEM_VERSION, true );
+	wp_localize_script(
+		'stocksystem-wishlist',
+		'stocksystemAjax',
+		array(
+			'url'        => admin_url( 'admin-ajax.php' ),
+			'accountUrl' => function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account/' ),
+		)
+	);
+
 	if ( is_front_page() ) {
 		wp_enqueue_style( 'stocksystem-home', STOCKSYSTEM_URI . '/assets/css/components/home.css', array( 'stocksystem-product-card' ), STOCKSYSTEM_VERSION );
 	}
@@ -43,6 +53,16 @@ function stocksystem_enqueue_assets() {
 
 	if ( function_exists( 'is_checkout' ) && is_checkout() ) {
 		wp_enqueue_script( 'stocksystem-checkout', STOCKSYSTEM_URI . '/assets/js/checkout.js', array( 'jquery' ), STOCKSYSTEM_VERSION, true );
+	}
+
+	$is_account_area = ( function_exists( 'is_account_page' ) && is_account_page() )
+		|| is_page_template( 'page-templates/order-tracking.php' );
+
+	if ( $is_account_area ) {
+		wp_enqueue_style( 'stocksystem-account', STOCKSYSTEM_URI . '/assets/css/components/account.css', array( 'stocksystem-product-card' ), STOCKSYSTEM_VERSION );
+		if ( function_exists( 'is_account_page' ) && is_account_page() && ! is_user_logged_in() ) {
+			wp_enqueue_script( 'stocksystem-otp-login', STOCKSYSTEM_URI . '/assets/js/otp-login.js', array( 'stocksystem-wishlist' ), STOCKSYSTEM_VERSION, true );
+		}
 	}
 }
 add_action( 'wp_enqueue_scripts', 'stocksystem_enqueue_assets' );

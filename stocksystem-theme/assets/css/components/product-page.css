@@ -200,9 +200,16 @@
 }
 
 .buy-box__header {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	gap: var(--sp-12);
+}
+
+.buy-box__header .wishlist-toggle {
+	top: 0;
+	inset-inline-start: auto;
+	inset-inline-end: 0;
 }
 
 .buy-box__badges {
