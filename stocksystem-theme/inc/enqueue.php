@@ -36,8 +36,10 @@ function stocksystem_enqueue_assets() {
 		)
 	);
 
+	wp_enqueue_style( 'stocksystem-blog', STOCKSYSTEM_URI . '/assets/css/components/blog.css', array( 'stocksystem-buttons' ), STOCKSYSTEM_VERSION );
+
 	if ( is_front_page() ) {
-		wp_enqueue_style( 'stocksystem-home', STOCKSYSTEM_URI . '/assets/css/components/home.css', array( 'stocksystem-product-card' ), STOCKSYSTEM_VERSION );
+		wp_enqueue_style( 'stocksystem-home', STOCKSYSTEM_URI . '/assets/css/components/home.css', array( 'stocksystem-product-card', 'stocksystem-blog' ), STOCKSYSTEM_VERSION );
 	}
 
 	if ( function_exists( 'is_product' ) && is_product() ) {

@@ -256,43 +256,8 @@
 	gap: var(--sp-22);
 }
 
-.home-blog__card {
-	display: flex;
-	flex-direction: column;
-	gap: var(--sp-12);
-	color: var(--c-text);
-}
-
-.home-blog__cover {
-	height: 170px;
-	border-radius: var(--radius-card);
-	background: var(--c-paper-alt);
-	overflow: hidden;
-	display: block;
-}
-
-.home-blog__cover img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.home-blog__meta {
-	font-size: var(--fs-12);
-	color: var(--c-text-3);
-}
-
-.home-blog__category {
-	color: var(--c-teal-600);
-	font-weight: 600;
-}
-
-.home-blog__title {
-	font-size: var(--fs-18);
-	font-weight: 600;
-	line-height: 1.6;
-	color: var(--c-text);
-}
+/* Card itself is .blog-card, shared with the blog index/archive grids —
+   see assets/css/components/blog.css. */
 
 /* ---- Responsive ---- */
 @media (max-width: 1023px) {

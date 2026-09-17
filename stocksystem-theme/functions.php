@@ -34,3 +34,4 @@ require STOCKSYSTEM_DIR . '/inc/account-endpoints.php';
 require STOCKSYSTEM_DIR . '/inc/wishlist.php';
 require STOCKSYSTEM_DIR . '/inc/woocommerce.php';
 require STOCKSYSTEM_DIR . '/inc/content-pages.php';
+require STOCKSYSTEM_DIR . '/inc/blog.php';
