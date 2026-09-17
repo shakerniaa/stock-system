@@ -33,7 +33,7 @@ while ( have_posts() ) :
 	);
 	?>
 
-	<div class="container blog-single__crumb">
+	<div class="container page-crumb">
 		<a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>"><?php esc_html_e( 'بلاگ', 'stocksystem' ); ?></a>
 		<span>/</span>
 		<?php $category = get_the_category(); ?>

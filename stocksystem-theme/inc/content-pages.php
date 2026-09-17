@@ -16,12 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * slug => [ title, page template ].
  */
 function stocksystem_content_pages() {
-	// Nav (header/footer) already links to /repair/, /stock-condition/,
-	// and /terms/ too — add them here once their page templates exist
-	// (PROGRESS.md tracks this as still open).
+	// Nav (header/footer) already links to /stock-condition/ and /terms/
+	// too — add them here once their page templates exist (PROGRESS.md
+	// tracks this as still open).
 	return array(
 		'about'   => array( __( 'دربارهٔ ما', 'stocksystem' ), 'page-templates/about-contact.php' ),
 		'contact' => array( __( 'تماس با ما', 'stocksystem' ), 'page-templates/about-contact.php' ),
+		'repair'  => array( __( 'تعمیرات تخصصی', 'stocksystem' ), 'page-templates/repair.php' ),
 	);
 }
 

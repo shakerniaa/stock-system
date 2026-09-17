@@ -18,7 +18,7 @@ $categories = get_categories( array( 'hide_empty' => true ) );
 
 <header class="archive-header">
 	<div class="container">
-		<div class="blog-index__crumb">
+		<div class="page-crumb">
 			<a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>"><?php esc_html_e( 'بلاگ', 'stocksystem' ); ?></a>
 			<span>/</span>
 			<span><?php the_archive_title(); ?></span>
