@@ -111,3 +111,37 @@ function stocksystem_save_product_brand_fields( $term_id ) {
 }
 add_action( 'edited_product_brand', 'stocksystem_save_product_brand_fields' );
 add_action( 'created_product_brand', 'stocksystem_save_product_brand_fields' );
+
+/* ---- product_grading: short label shown on the grading page's cards
+   (07 Stock Condition.dc.html) alongside the term's own name (A/B/C)
+   and description (the long paragraph, already editable via the
+   taxonomy's built-in description field). ---- */
+
+function stocksystem_product_grading_fields( $term ) {
+	$title = is_object( $term ) ? get_term_meta( $term->term_id, 'grade_title', true ) : '';
+	?>
+	<tr class="form-field">
+		<th scope="row"><label for="grade_title"><?php esc_html_e( 'عنوان کوتاه (مثلاً «در حد نو»)', 'stocksystem' ); ?></label></th>
+		<td><input type="text" name="grade_title" id="grade_title" value="<?php echo esc_attr( $title ); ?>"></td>
+	</tr>
+	<?php
+}
+add_action( 'product_grading_edit_form_fields', 'stocksystem_product_grading_fields' );
+
+function stocksystem_product_grading_fields_add() {
+	?>
+	<div class="form-field">
+		<label for="grade_title"><?php esc_html_e( 'عنوان کوتاه (مثلاً «در حد نو»)', 'stocksystem' ); ?></label>
+		<input type="text" name="grade_title" id="grade_title">
+	</div>
+	<?php
+}
+add_action( 'product_grading_add_form_fields', 'stocksystem_product_grading_fields_add' );
+
+function stocksystem_save_product_grading_fields( $term_id ) {
+	if ( isset( $_POST['grade_title'] ) ) {
+		update_term_meta( $term_id, 'grade_title', sanitize_text_field( wp_unslash( $_POST['grade_title'] ) ) );
+	}
+}
+add_action( 'edited_product_grading', 'stocksystem_save_product_grading_fields' );
+add_action( 'created_product_grading', 'stocksystem_save_product_grading_fields' );

@@ -65,6 +65,11 @@ function stocksystem_enqueue_assets() {
 		wp_enqueue_style( 'stocksystem-repair', STOCKSYSTEM_URI . '/assets/css/components/repair.css', array( 'stocksystem-buttons' ), STOCKSYSTEM_VERSION );
 	}
 
+	if ( is_page_template( 'page-templates/stock-condition.php' ) ) {
+		wp_enqueue_style( 'stocksystem-product-page', STOCKSYSTEM_URI . '/assets/css/components/product-page.css', array( 'stocksystem-product-card' ), STOCKSYSTEM_VERSION );
+		wp_enqueue_style( 'stocksystem-grading', STOCKSYSTEM_URI . '/assets/css/components/grading.css', array( 'stocksystem-product-page' ), STOCKSYSTEM_VERSION );
+	}
+
 	$is_account_area = ( function_exists( 'is_account_page' ) && is_account_page() )
 		|| is_page_template( 'page-templates/order-tracking.php' );
 
