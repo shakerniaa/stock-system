@@ -20,6 +20,11 @@
 
 	function initAccordion( accordion ) {
 		var buttons = accordion.querySelectorAll( '.faq-accordion__question' );
+		var first = buttons[ 0 ] && document.getElementById( buttons[ 0 ].getAttribute( 'aria-controls' ) );
+
+		if ( accordion.hasAttribute( 'data-open-first' ) && first ) {
+			openItem( buttons[ 0 ], first );
+		}
 
 		buttons.forEach( function ( button ) {
 			var answer = document.getElementById( button.getAttribute( 'aria-controls' ) );

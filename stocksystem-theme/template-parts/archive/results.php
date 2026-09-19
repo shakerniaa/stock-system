@@ -12,6 +12,17 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+// Nothing matched and there are no filters to relax: show just the empty
+// state, full width (13 Search Results §13-C has no sidebar).
+if ( ! have_posts() && empty( stocksystem_active_filter_chips() ) ) {
+	?>
+	<div class="archive-layout archive-layout--empty">
+		<?php get_template_part( 'template-parts/archive/empty-results' ); ?>
+	</div>
+	<?php
+	return;
+}
 ?>
 <div class="archive-layout">
 	<?php get_template_part( 'template-parts/archive/active-filters' ); ?>

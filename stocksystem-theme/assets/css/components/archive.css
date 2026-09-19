@@ -619,6 +619,15 @@
 	color: var(--c-text);
 }
 
+.shop-hub__budget-count {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--sp-8);
+	font-size: var(--fs-12-5);
+	font-weight: 500;
+	color: var(--c-text-3);
+}
+
 .shop-hub__brand-tiles {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);

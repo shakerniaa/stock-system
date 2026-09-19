@@ -31,11 +31,44 @@ $is_product_search = isset( $_GET['post_type'] ) && 'product' === $_GET['post_ty
 		<p class="archive-header__count">
 			<?php
 			global $wp_query;
-			printf(
-				/* translators: %s: result count, Persian digits */
-				esc_html__( '%s نتیجه', 'stocksystem' ),
-				esc_html( stocksystem_to_persian_digits( $wp_query->found_posts ) )
-			);
+
+			if ( $is_product_search ) {
+				printf(
+					/* translators: %s: result count, Persian digits */
+					esc_html__( '%s کالا یافت شد', 'stocksystem' ),
+					esc_html( stocksystem_to_persian_digits( $wp_query->found_posts ) )
+				);
+
+				// "· N کالا موجود در انبار" (13 Search Results) — a second query with
+				// the same vars; skipped when a price filter is active because
+				// WooCommerce applies that only to the main query.
+				if ( $wp_query->found_posts && ! isset( $_GET['min_price'] ) && ! isset( $_GET['max_price'] ) ) {
+					$in_stock_query = new WP_Query(
+						array_merge(
+							$wp_query->query_vars,
+							array(
+								'posts_per_page' => 1,
+								'paged'          => 1,
+								'fields'         => 'ids',
+								'no_found_rows'  => false,
+								'meta_query'     => array_merge( (array) $wp_query->get( 'meta_query' ), array( array( 'key' => '_stock_status', 'value' => 'instock' ) ) ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+							)
+						)
+					);
+
+					printf(
+						/* translators: %s: in-stock result count, Persian digits */
+						' · ' . esc_html__( '%s کالا موجود در انبار', 'stocksystem' ),
+						esc_html( stocksystem_to_persian_digits( $in_stock_query->found_posts ) )
+					);
+				}
+			} else {
+				printf(
+					/* translators: %s: result count, Persian digits */
+					esc_html__( '%s نتیجه', 'stocksystem' ),
+					esc_html( stocksystem_to_persian_digits( $wp_query->found_posts ) )
+				);
+			}
 			?>
 		</p>
 	</div>

@@ -96,6 +96,78 @@ function stocksystem_category_icon( $name ) {
  * Product brands for the mega menu brand column.
  * Falls back to the brand list shown in 11 Desktop States.dc.html.
  */
+/**
+ * Published-product count per brand term id. WordPress' stored term count is
+ * unreliable for the brand taxonomy (always 0), so count relationships
+ * directly — one query, cached for the request.
+ *
+ * @return int[] term_id => count
+ */
+function stocksystem_brand_product_counts() {
+	static $counts = null;
+
+	if ( null !== $counts ) {
+		return $counts;
+	}
+
+	global $wpdb;
+
+	// phpcs:disable WordPress.DB.DirectDatabaseQuery
+	$rows = $wpdb->get_results(
+		"SELECT tt.term_id AS term_id, COUNT(DISTINCT p.ID) AS total
+		FROM {$wpdb->term_taxonomy} tt
+		INNER JOIN {$wpdb->term_relationships} tr ON tr.term_taxonomy_id = tt.term_taxonomy_id
+		INNER JOIN {$wpdb->posts} p ON p.ID = tr.object_id AND p.post_type = 'product' AND p.post_status = 'publish'
+		WHERE tt.taxonomy = 'product_brand'
+		GROUP BY tt.term_id"
+	);
+	// phpcs:enable WordPress.DB.DirectDatabaseQuery
+
+	$counts = array();
+	foreach ( (array) $rows as $row ) {
+		$counts[ (int) $row->term_id ] = (int) $row->total;
+	}
+
+	return $counts;
+}
+
+/**
+ * Published products priced within a stocksystem_price_ranges() bucket
+ * (min inclusive, max exclusive; null max = open-ended).
+ */
+function stocksystem_price_range_count( $range ) {
+	$meta_query = array(
+		array(
+			'key'     => '_price',
+			'value'   => (float) $range['min'],
+			'compare' => '>=',
+			'type'    => 'NUMERIC',
+		),
+	);
+
+	if ( null !== $range['max'] ) {
+		$meta_query[] = array(
+			'key'     => '_price',
+			'value'   => (float) $range['max'],
+			'compare' => '<',
+			'type'    => 'NUMERIC',
+		);
+	}
+
+	$query = new WP_Query(
+		array(
+			'post_type'      => 'product',
+			'post_status'    => 'publish',
+			'posts_per_page' => 1,
+			'fields'         => 'ids',
+			'no_found_rows'  => false,
+			'meta_query'     => $meta_query, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+		)
+	);
+
+	return (int) $query->found_posts;
+}
+
 function stocksystem_nav_brands() {
 	$fallback = array(
 		(object) array( 'name' => 'HP', 'url' => '#' ),
@@ -113,13 +185,34 @@ function stocksystem_nav_brands() {
 		array(
 			'taxonomy'   => 'product_brand',
 			'hide_empty' => false,
-			'number'     => 5,
 		)
 	);
 
 	if ( is_wp_error( $terms ) || empty( $terms ) ) {
 		return $fallback;
 	}
+
+	// Only brands that actually have products, biggest first.
+	$counts = stocksystem_brand_product_counts();
+	$terms  = array_filter(
+		$terms,
+		function ( $term ) use ( $counts ) {
+			return ! empty( $counts[ $term->term_id ] );
+		}
+	);
+
+	if ( empty( $terms ) ) {
+		return $fallback;
+	}
+
+	usort(
+		$terms,
+		function ( $a, $b ) use ( $counts ) {
+			return ( $counts[ $b->term_id ] <=> $counts[ $a->term_id ] ) ?: strcmp( $a->name, $b->name );
+		}
+	);
+
+	$terms = array_slice( $terms, 0, 5 );
 
 	return array_map(
 		function ( $term ) {

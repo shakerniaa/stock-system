@@ -31,6 +31,22 @@ while ( have_posts() ) :
 			'no_found_rows'  => true,
 		)
 	);
+
+	// The design always shows two related articles: top up with the latest
+	// ones when the category has fewer than that.
+	if ( count( $related ) < 2 ) {
+		$related = array_merge(
+			$related,
+			get_posts(
+				array(
+					'numberposts'   => 2 - count( $related ),
+					'post_status'   => 'publish',
+					'post__not_in'  => array_merge( array( get_the_ID() ), wp_list_pluck( $related, 'ID' ) ),
+					'no_found_rows' => true,
+				)
+			)
+		);
+	}
 	?>
 
 	<div class="container page-crumb">

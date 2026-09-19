@@ -44,15 +44,16 @@ function stocksystem_archive_taxonomy_facets() {
 }
 
 /**
- * Published products carrying $term, limited to the product category being
- * browsed (when on one). WordPress' stored term count is unreliable for the
+ * Published products carrying $term, limited to the product category (or
+ * search) being browsed. WordPress' stored term count is unreliable for the
  * brand taxonomy, and a per-category count is what a filter should show.
  */
 function stocksystem_facet_term_count( $term ) {
 	static $cache = array();
 
-	$scope = is_tax( 'product_cat' ) ? (int) get_queried_object_id() : 0;
-	$key   = $term->term_id . ':' . $scope;
+	$scope  = is_tax( 'product_cat' ) ? (int) get_queried_object_id() : 0;
+	$search = is_search() ? get_search_query( false ) : '';
+	$key    = $term->term_id . ':' . $scope . ':' . $search;
 
 	if ( isset( $cache[ $key ] ) ) {
 		return $cache[ $key ];
@@ -74,16 +75,20 @@ function stocksystem_facet_term_count( $term ) {
 		);
 	}
 
-	$query = new WP_Query(
-		array(
-			'post_type'      => 'product',
-			'post_status'    => 'publish',
-			'posts_per_page' => 1,
-			'fields'         => 'ids',
-			'no_found_rows'  => false,
-			'tax_query'      => $tax_query, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-		)
+	$query_args = array(
+		'post_type'      => 'product',
+		'post_status'    => 'publish',
+		'posts_per_page' => 1,
+		'fields'         => 'ids',
+		'no_found_rows'  => false,
+		'tax_query'      => $tax_query, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 	);
+
+	if ( $search ) {
+		$query_args['s'] = $search;
+	}
+
+	$query = new WP_Query( $query_args );
 
 	$cache[ $key ] = (int) $query->found_posts;
 

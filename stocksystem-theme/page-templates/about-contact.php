@@ -19,6 +19,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 
 $hours = stocksystem_business( 'store_hours' );
+
+// Real count, not the design's placeholder «۴۲۸».
+$in_stock_count = function_exists( 'wc_get_products' )
+	? count(
+		wc_get_products(
+			array(
+				'status'       => 'publish',
+				'stock_status' => 'instock',
+				'limit'        => -1,
+				'return'       => 'ids',
+			)
+		)
+	)
+	: 0;
 ?>
 
 <section class="about-hero">
@@ -49,6 +63,12 @@ $hours = stocksystem_business( 'store_hours' );
 			<span class="about-stats__value"><?php echo esc_html( stocksystem_to_persian_digits( '10' ) ); ?></span>
 			<span class="about-stats__label"><?php esc_html_e( 'سال سابقهٔ فنی', 'stocksystem' ); ?></span>
 		</span>
+		<?php if ( $in_stock_count > 0 ) : ?>
+			<span class="about-stats__item">
+				<span class="about-stats__value"><?php echo esc_html( stocksystem_to_persian_digits( $in_stock_count ) ); ?></span>
+				<span class="about-stats__label"><?php esc_html_e( 'کالای موجود و تست‌شده', 'stocksystem' ); ?></span>
+			</span>
+		<?php endif; ?>
 		<span class="about-stats__item">
 			<span class="about-stats__value"><?php echo esc_html( stocksystem_to_persian_digits( '100' ) ); ?>٪</span>
 			<span class="about-stats__label"><?php esc_html_e( 'تست پیش از فروش', 'stocksystem' ); ?></span>

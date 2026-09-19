@@ -11,6 +11,8 @@
  *   items (array) [ [ 'question' => '', 'answer' => '<p>…</p>' ], … ]
  *   id_prefix (string, optional) — keeps element ids unique when this
  *   part is rendered more than once on a page
+ *   open_first (bool, optional) — expand the first question on load
+ *   (14-B shows the first answer open)
  *   items[]['category'] (string, optional) — adds data-faq-category so
  *   a page can filter items client-side (14-B's category chips); items
  *   without it just never get hidden.
@@ -46,7 +48,7 @@ foreach ( $items as $item ) {
 	);
 }
 ?>
-<section class="faq-accordion">
+<section class="faq-accordion"<?php echo ! empty( $args['open_first'] ) ? ' data-open-first' : ''; ?>>
 	<?php if ( ! empty( $args['title'] ) ) : ?>
 		<h2 class="faq-accordion__title"><?php echo esc_html( $args['title'] ); ?></h2>
 	<?php endif; ?>

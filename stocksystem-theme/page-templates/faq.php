@@ -20,6 +20,13 @@ $items      = stocksystem_general_faq_items();
 	<div class="container">
 		<h1><?php esc_html_e( 'چه سوالی دارید؟', 'stocksystem' ); ?></h1>
 		<p><?php esc_html_e( 'پرتکرارترین سوال‌های خریداران استوک سیستم.', 'stocksystem' ); ?></p>
+		<?php // Revealed by faq-filter.js — without JS there is nothing to search with. ?>
+		<label class="faq-search" hidden>
+			<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+			<span class="screen-reader-text"><?php esc_html_e( 'جست‌وجو در سوال‌ها', 'stocksystem' ); ?></span>
+			<input type="search" class="faq-search__input" placeholder="<?php esc_attr_e( 'جست‌وجو در سوال‌ها…', 'stocksystem' ); ?>" autocomplete="off">
+		</label>
+		<p class="faq-empty" hidden><?php esc_html_e( 'سوالی با این عبارت پیدا نشد. می‌توانید مستقیم با ما تماس بگیرید.', 'stocksystem' ); ?></p>
 	</div>
 </section>
 
@@ -38,8 +45,9 @@ $items      = stocksystem_general_faq_items();
 				'template-parts/global/faq-accordion',
 				null,
 				array(
-					'items'     => $items,
-					'id_prefix' => 'general-faq',
+					'items'      => $items,
+					'id_prefix'  => 'general-faq',
+					'open_first' => true,
 				)
 			);
 			?>

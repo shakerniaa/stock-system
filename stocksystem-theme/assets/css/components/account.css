@@ -853,3 +853,49 @@ table.shop_table td {
 	border: none;
 	background: var(--c-paper-alt);
 }
+
+/* ---- Order tracking result: date, address, totals (16 §16-D) ---- */
+.order-tracking-result__date {
+	margin: var(--sp-6) 0 var(--sp-16);
+	font-size: var(--fs-13);
+	color: var(--c-text-2);
+}
+
+.order-tracking-result__details {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-16);
+	margin-top: var(--sp-20);
+}
+
+.order-tracking-result__block {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-6);
+	padding: var(--sp-16);
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-card);
+}
+
+.order-tracking-result__block p {
+	margin: 0;
+	font-size: var(--fs-13-5);
+	line-height: 1.9;
+	color: var(--c-text-2);
+}
+
+.order-tracking-result__block.checkout-summary__lines {
+	background: var(--c-paper-alt);
+	border-color: transparent;
+	gap: var(--sp-9);
+}
+
+.order-tracking-result__total {
+	padding-top: var(--sp-9);
+	border-top: var(--border-default) solid var(--c-line);
+	font-weight: 700;
+}
+
+.order-tracking-result__support {
+	align-self: flex-start;
+}

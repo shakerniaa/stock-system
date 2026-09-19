@@ -11,6 +11,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// WooCommerce's template loader picks this file for every ?post_type=product
+// request, including searches — those belong to search.php (results + filters),
+// not the hub below.
+if ( is_search() ) {
+	locate_template( 'search.php', true, false );
+	return;
+}
+
 get_header( 'shop' );
 
 $categories = stocksystem_nav_categories();
@@ -36,10 +44,11 @@ $bestsellers = function_exists( 'wc_get_products' ) ? wc_get_products(
 		<p class="archive-header__count">
 			<?php
 			printf(
-				/* translators: 1: total device count, 2: category count, both Persian digits */
-				esc_html__( '%1$s دستگاه تست‌شده در %2$s دسته · همه با برگهٔ وضعیت', 'stocksystem' ),
+				/* translators: 1: total device count, 2: category count (Persian digits), 3: warranty text */
+				esc_html__( '%1$s دستگاه تست‌شده در %2$s دسته · همه با برگهٔ وضعیت و %3$s', 'stocksystem' ),
 				esc_html( stocksystem_to_persian_digits( $total_count ) ),
-				esc_html( stocksystem_to_persian_digits( count( $categories ) ) )
+				esc_html( stocksystem_to_persian_digits( count( $categories ) ) ),
+				esc_html( stocksystem_business( 'warranty_text' ) )
 			);
 			?>
 		</p>
@@ -78,7 +87,7 @@ $bestsellers = function_exists( 'wc_get_products' ) ? wc_get_products(
 				<?php foreach ( $ranges as $range ) : ?>
 					<a class="shop-hub__budget-row" href="<?php echo esc_url( add_query_arg( array( 'min_price' => $range['min'], 'max_price' => $range['max'] ), $shop_url ) ); ?>">
 						<span><?php echo esc_html( $range['label'] ); ?> <?php esc_html_e( 'تومان', 'stocksystem' ); ?></span>
-						<span aria-hidden="true">←</span>
+						<span class="shop-hub__budget-count"><?php echo esc_html( stocksystem_to_persian_digits( stocksystem_price_range_count( $range ) ) ); ?> <?php esc_html_e( 'کالا', 'stocksystem' ); ?> <span aria-hidden="true">←</span></span>
 					</a>
 				<?php endforeach; ?>
 			</div>

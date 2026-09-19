@@ -22,6 +22,7 @@ get_header();
 <header class="legal-page__header">
 	<div class="container">
 		<h1><?php esc_html_e( 'سیاست حفظ حریم خصوصی', 'stocksystem' ); ?></h1>
+		<p class="legal-page__meta"><?php printf( /* translators: %s: Jalali date */ esc_html__( 'آخرین بازنگری: %s', 'stocksystem' ), esc_html( stocksystem_jdate( 'j F Y', (int) get_post_modified_time( 'U', true ) ) ) ); ?></p>
 	</div>
 </header>
 

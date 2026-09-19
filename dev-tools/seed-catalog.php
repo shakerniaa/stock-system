@@ -60,7 +60,7 @@ foreach ( array( 'لپ‌تاپ استوک', 'آل‌این‌وان', 'کیس �
 
 // ---- Brands (matches stocksystem_nav_brands() fallback) ----
 $brands = array();
-foreach ( array( 'HP', 'Dell', 'Lenovo', 'Apple', 'Asus' ) as $name ) {
+foreach ( array( 'HP', 'Dell', 'Lenovo', 'Microsoft', 'Apple', 'Asus' ) as $name ) {
 	$brands[ $name ] = ss_term( $name, 'product_brand' );
 }
 
@@ -207,6 +207,7 @@ $created[] = ss_make_simple_product( array(
 
 $created[] = ss_make_simple_product( array(
 	'name'              => 'Microsoft Surface Laptop 4',
+	'brand'             => 'Microsoft',
 	'sku'               => 'SS-MS-SL4-8-256',
 	'regular_price'     => 41500000,
 	'stock_qty'         => 0,
@@ -427,10 +428,15 @@ ss_make_post(
 	'cover-comparison.png',
 	$img_dir
 );
+// Inline product callout (05 Blog "محصول مرتبط با این مقاله") — the product
+// id differs per database, so look it up by SKU.
+$promo_product_id = function_exists( 'wc_get_product_id_by_sku' ) ? wc_get_product_id_by_sku( 'SS-HP840G8-16-512' ) : 0;
+$promo_shortcode  = $promo_product_id ? '[stocksystem_product_promo id="' . $promo_product_id . '"]' : '';
+
 ss_make_post(
 	'چطور سلامت باتری لپ‌تاپ استوک را قبل از خرید چک کنیم؟',
 	'عیب‌یابی',
-	"<p>باتری، اولین چیزی است که در یک لپ‌تاپ کارکرده افت می‌کند. خوشبختانه ویندوز ابزار داخلی دقیقی دارد که در چند ثانیه گزارش کاملی از ظرفیت واقعی باتری می‌سازد.</p><h2>خواندن گزارش باتری</h2><p>در Command Prompt فرمان powercfg /batteryreport را اجرا کنید و عدد Design Capacity را با Full Charge Capacity مقایسه کنید.</p><h2>چرخهٔ شارژ چقدر مهم است؟</h2><p>اگر ظرفیت فعلی زیر ۸۰٪ ظرفیت اولیه باشد، قیمت دستگاه باید حداقل به اندازهٔ یک باتری نو اصلاح شود.</p>",
+	"<p>باتری، اولین چیزی است که در یک لپ‌تاپ کارکرده افت می‌کند. خوشبختانه ویندوز ابزار داخلی دقیقی دارد که در چند ثانیه گزارش کاملی از ظرفیت واقعی باتری می‌سازد.</p><h2>خواندن گزارش باتری</h2><p>در Command Prompt فرمان powercfg /batteryreport را اجرا کنید و عدد Design Capacity را با Full Charge Capacity مقایسه کنید.</p>" . $promo_shortcode . "<h2>چرخهٔ شارژ چقدر مهم است؟</h2><p>اگر ظرفیت فعلی زیر ۸۰٪ ظرفیت اولیه باشد، قیمت دستگاه باید حداقل به اندازهٔ یک باتری نو اصلاح شود.</p>",
 	'cover-battery.png',
 	$img_dir
 );
