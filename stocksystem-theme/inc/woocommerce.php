@@ -122,7 +122,7 @@ function stocksystem_set_default_currency_options() {
 		'woocommerce_currency'            => 'IRR',
 		'woocommerce_currency_pos'        => 'right_space',
 		'woocommerce_price_num_decimals'  => '0',
-		'woocommerce_price_thousand_sep'  => "\u{066C}",
+		'woocommerce_price_thousand_sep'  => ',',
 		'woocommerce_price_decimal_sep'   => '.',
 	);
 
@@ -147,7 +147,7 @@ add_filter(
  * Persian-Indic digits on every native WooCommerce price render (cart,
  * checkout, variation panels, order review) — not just the hand-built
  * product card markup, which calls stocksystem_format_number() directly
- * instead. The ٬ (U+066C) thousands separator itself comes from the
+ * instead. The ASCII comma thousands separator (owner's choice: ۳,۳۵۰,۰۰۰) comes from the
  * woocommerce_price_thousand_sep option seeded above, editable like any
  * other WooCommerce setting rather than forced here.
  */

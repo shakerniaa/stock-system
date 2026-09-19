@@ -57,9 +57,10 @@
 	inset-inline-start: 0;
 	background: var(--c-teal-500);
 	color: var(--c-ink-900);
-	padding: var(--sp-6) var(--sp-14);
+	padding: var(--sp-8) var(--sp-16);
 	font-size: var(--fs-11-5);
 	font-weight: 800;
+	line-height: 1.5;
 	border-end-end-radius: var(--radius-card);
 }
 
@@ -68,23 +69,23 @@
    as in 15 Product States §12. */
 .product-card__badges {
 	position: absolute;
-	top: var(--sp-10);
-	inset-inline-start: var(--sp-10);
+	top: var(--sp-12);
+	inset-inline-start: var(--sp-12);
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	gap: var(--sp-6);
+	gap: var(--sp-8);
 }
 
 .product-card__ribbon ~ .product-card__badges {
 	top: auto;
-	bottom: var(--sp-10);
+	bottom: var(--sp-12);
 }
 
 .wishlist-toggle {
 	position: absolute;
-	top: var(--sp-10);
-	inset-inline-end: var(--sp-10);
+	top: var(--sp-12);
+	inset-inline-end: var(--sp-12);
 	width: 32px;
 	height: 32px;
 	border-radius: 50%;
@@ -108,8 +109,8 @@
 
 .product-card__countdown {
 	position: absolute;
-	bottom: var(--sp-10);
-	inset-inline-start: var(--sp-10);
+	bottom: var(--sp-12);
+	inset-inline-start: var(--sp-12);
 	background: var(--c-ink-800);
 	color: #fff;
 	border-radius: var(--radius-input);
@@ -121,11 +122,12 @@
 .badge {
 	display: inline-flex;
 	align-items: center;
-	gap: 5px;
+	gap: 6px;
 	border-radius: var(--radius-pill);
-	padding: 4px 10px;
-	font-size: var(--fs-11);
+	padding: 5px 12px;
+	font-size: var(--fs-11-5);
 	font-weight: 700;
+	line-height: 1.5;
 	white-space: nowrap;
 }
 
@@ -174,8 +176,8 @@
 .product-card__body {
 	display: flex;
 	flex-direction: column;
-	gap: var(--sp-9);
-	padding: var(--sp-14);
+	gap: var(--sp-10);
+	padding: var(--sp-16);
 	flex: 1;
 }
 
@@ -264,10 +266,16 @@
 
 /* Buttons in the card body should fill the column, not just intrinsic width */
 .product-card__body .btn {
-	height: 38px;
+	height: 40px;
 	border-radius: var(--radius-button-lg);
 	font-size: var(--fs-13);
 	margin-top: auto;
+}
+
+/* Keep the price clear of the button when the card is short on content. */
+.product-card__price + .btn,
+.product-card__body > .btn:not(:first-child) {
+	margin-top: var(--sp-8);
 }
 
 /* Variable-product chips (state 6) */

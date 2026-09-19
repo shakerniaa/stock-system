@@ -184,6 +184,7 @@
 	--shadow-panel: 0 24px 48px -20px rgba(4, 33, 31, .35);
 
 	/* ---- Numerals ----
-	   Decision: thousands separator is U+066C (٬), not "," or "٫". */
-	--thousands-separator: "\066C";
+	   Owner's choice (overrides the kit's U+066C): Persian digits grouped
+	   with an ASCII comma — ۳,۳۵۰,۰۰۰ — for legibility. */
+	--thousands-separator: ",";
 }

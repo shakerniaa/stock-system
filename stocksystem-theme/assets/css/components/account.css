@@ -394,13 +394,13 @@ table.shop_table td {
 
 .auth-card {
 	width: 100%;
-	max-width: 420px;
+	max-width: 440px;
 	display: flex;
 	flex-direction: column;
-	gap: var(--sp-14);
+	gap: var(--sp-16);
 	border: var(--border-default) solid var(--c-line);
 	border-radius: var(--radius-panel-lg);
-	padding: var(--sp-28);
+	padding: var(--sp-32);
 }
 
 .auth-card__eyebrow {
@@ -424,13 +424,19 @@ table.shop_table td {
 .otp-form {
 	display: flex;
 	flex-direction: column;
-	gap: var(--sp-12);
+	gap: var(--sp-16);
 }
 
 .otp-form__step {
 	display: flex;
 	flex-direction: column;
-	gap: var(--sp-10);
+	gap: var(--sp-18);
+}
+
+.otp-form__field {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-8);
 }
 
 .otp-form__step[hidden] {
@@ -497,8 +503,32 @@ table.shop_table td {
 .password-login {
 	display: flex;
 	flex-direction: column;
-	gap: var(--sp-12);
+	gap: var(--sp-16);
 	padding-top: var(--sp-8);
+}
+
+.password-login .woocommerce-form-login {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-18);
+}
+
+.password-login .form-row {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-8);
+	margin: 0;
+}
+
+.password-login .form-row label {
+	margin: 0;
+	font-weight: 600;
+	color: var(--c-text);
+}
+
+.password-login input.input-text {
+	height: 50px;
+	border-radius: var(--radius-button-lg);
 }
 
 .password-login[hidden] {
@@ -508,6 +538,7 @@ table.shop_table td {
 .auth-card__lost-password {
 	text-align: center;
 	font-size: var(--fs-13);
+	color: var(--c-teal-600);
 }
 
 /* ---- Order tracking page ---- */

@@ -1,9 +1,9 @@
 <?php
 /**
  * Persian-Indic numeral formatting for all user-facing numbers.
- * Thousands separator is U+066C (٬) per DECISIONS-v1.1.md — not "," or
- * the Arabic decimal separator "٫", both of which appear inconsistently
- * across the .dc.html files and are wrong.
+ * Persian-Indic digits grouped with an ASCII comma (۳,۳۵۰,۰۰۰) — the owner's
+ * explicit choice for legibility, overriding the kit's U+066C (٬) rule.
+ * Never the Arabic decimal separator "٫".
  *
  * @package StockSystem
  */
@@ -23,13 +23,13 @@ function stocksystem_to_persian_digits( $value ) {
 }
 
 /**
- * Format an integer amount with U+066C thousands grouping and
+ * Format an integer amount with comma thousands grouping and
  * Persian-Indic digits. Use for prices, quantities, and any other
  * user-facing number; leave SKUs, phone numbers, and model names as
  * Latin strings inside dir="ltr" spans instead.
  */
 function stocksystem_format_number( $amount ) {
-	$grouped = number_format( (float) $amount, 0, '.', "\u{066C}" );
+	$grouped = number_format( (float) $amount, 0, '.', ',' );
 
 	return stocksystem_to_persian_digits( $grouped );
 }

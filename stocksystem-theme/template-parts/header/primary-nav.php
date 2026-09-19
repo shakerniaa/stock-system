@@ -30,11 +30,17 @@ $shop_url    = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalin
 		<span class="primary-nav__separator" aria-hidden="true"></span>
 
 		<ul class="primary-nav__links">
-			<?php foreach ( $categories as $category ) : ?>
-				<li><a href="<?php echo esc_url( $category->url ); ?>"><?php echo esc_html( $category->name ); ?></a></li>
+			<?php foreach ( $categories as $i => $category ) : ?>
+				<li>
+					<a
+						href="<?php echo esc_url( $category->url ); ?>"
+						data-mega-target="<?php echo esc_attr( stocksystem_mega_key( $category, $i ) ); ?>"
+						<?php echo ( ! empty( $category->id ) && is_tax( 'product_cat', $category->id ) ) ? 'aria-current="page"' : ''; ?>
+					><?php echo esc_html( $category->name ); ?></a>
+				</li>
 			<?php endforeach; ?>
-			<li><a href="<?php echo esc_url( home_url( '/repair/' ) ); ?>"><?php esc_html_e( 'تعمیرات تخصصی', 'stocksystem' ); ?></a></li>
-			<li><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>"><?php esc_html_e( 'بلاگ', 'stocksystem' ); ?></a></li>
+			<li><a href="<?php echo esc_url( home_url( '/repair/' ) ); ?>"<?php echo is_page( 'repair' ) ? ' aria-current="page"' : ''; ?>><?php esc_html_e( 'تعمیرات تخصصی', 'stocksystem' ); ?></a></li>
+			<li><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>"<?php echo ( is_home() || is_singular( 'post' ) || is_category() ) ? ' aria-current="page"' : ''; ?>><?php esc_html_e( 'بلاگ', 'stocksystem' ); ?></a></li>
 		</ul>
 	</div>
 

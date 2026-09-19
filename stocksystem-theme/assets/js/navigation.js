@@ -21,7 +21,12 @@
 		}
 	}
 
-	/* ---- Mega menu: hover open, 200ms close delay ---- */
+	/* ---- Mega menu ----
+	   Opens on hovering/focusing «همهٔ دسته‌ها» (global view) or a category
+	   link in the nav bar; hovering/focusing a category — in the bar or in
+	   the menu's own column — swaps in that category's brands, price links
+	   and featured product. 200ms close delay; leaving the nav bar for the
+	   plain links (repair, blog) closes it. */
 	function initMegaMenu() {
 		var toggle = document.getElementById( 'mega-menu-toggle' );
 		var menu = document.getElementById( 'mega-menu' );
@@ -29,13 +34,45 @@
 			return;
 		}
 
-		var closeTimer = null;
 		var nav = toggle.closest( '.primary-nav' );
+		var panes = menu.querySelectorAll( '[data-mega-pane]' );
+		var targets = nav.querySelectorAll( '[data-mega-target]' );
+		var plainLinks = nav.querySelectorAll( '.primary-nav__links a:not([data-mega-target])' );
+		var current = 'all';
+		var closeTimer = null;
+		var switchTimer = null;
 
-		function scheduleClose() {
-			closeTimer = window.setTimeout( function () {
-				closePanel( menu, toggle );
-			}, 200 );
+		function paint() {
+			var open = ! menu.hidden;
+			panes.forEach( function ( pane ) {
+				pane.hidden = pane.getAttribute( 'data-mega-pane' ) !== current;
+			} );
+			targets.forEach( function ( link ) {
+				link.classList.toggle( 'is-active', open && link.getAttribute( 'data-mega-target' ) === current );
+			} );
+			toggle.classList.toggle( 'is-active', open && 'all' === current );
+		}
+
+		function activate( key ) {
+			current = key;
+			paint();
+		}
+
+		function open( key ) {
+			cancelClose();
+			openPanel( menu, toggle );
+			activate( key );
+		}
+
+		function close() {
+			closePanel( menu, toggle );
+			current = 'all';
+			paint();
+		}
+
+		function scheduleClose( delay ) {
+			cancelClose();
+			closeTimer = window.setTimeout( close, delay );
 		}
 
 		function cancelClose() {
@@ -45,26 +82,75 @@
 			}
 		}
 
-		nav.addEventListener( 'mouseenter', function () {
-			cancelClose();
-			openPanel( menu, toggle );
+		nav.addEventListener( 'mouseenter', cancelClose );
+		nav.addEventListener( 'mouseleave', function () {
+			window.clearTimeout( switchTimer );
+			scheduleClose( 200 );
 		} );
-		nav.addEventListener( 'mouseleave', scheduleClose );
+
+		toggle.addEventListener( 'mouseenter', function () {
+			open( 'all' );
+		} );
+		toggle.addEventListener( 'focus', function () {
+			open( 'all' );
+		} );
 
 		toggle.addEventListener( 'click', function () {
-			if ( 'true' === toggle.getAttribute( 'aria-expanded' ) ) {
-				closePanel( menu, toggle );
+			if ( 'true' === toggle.getAttribute( 'aria-expanded' ) && 'all' === current ) {
+				close();
 			} else {
-				openPanel( menu, toggle );
+				open( 'all' );
 			}
 		} );
 
-		toggle.addEventListener( 'keydown', function ( event ) {
-			if ( 'Escape' === event.key ) {
-				closePanel( menu, toggle );
+		targets.forEach( function ( link ) {
+			var key = link.getAttribute( 'data-mega-target' );
+			var inBar = !! link.closest( '.primary-nav__links' );
+
+			function show() {
+				window.clearTimeout( switchTimer );
+				// A short intent delay inside the menu stops the panes flickering
+				// while the pointer crosses the column on its way somewhere else.
+				if ( inBar || menu.hidden ) {
+					open( key );
+				} else {
+					switchTimer = window.setTimeout( function () {
+						open( key );
+					}, 70 );
+				}
+			}
+
+			link.addEventListener( 'mouseenter', show );
+			link.addEventListener( 'focus', show );
+			link.addEventListener( 'mouseleave', function () {
+				window.clearTimeout( switchTimer );
+			} );
+		} );
+
+		plainLinks.forEach( function ( link ) {
+			link.addEventListener( 'mouseenter', function () {
+				window.clearTimeout( switchTimer );
+				scheduleClose( 80 );
+			} );
+			link.addEventListener( 'focus', function () {
+				scheduleClose( 80 );
+			} );
+		} );
+
+		nav.addEventListener( 'focusout', function ( event ) {
+			if ( ! event.relatedTarget || ! nav.contains( event.relatedTarget ) ) {
+				scheduleClose( 120 );
+			}
+		} );
+
+		nav.addEventListener( 'keydown', function ( event ) {
+			if ( 'Escape' === event.key && ! menu.hidden ) {
+				close();
 				toggle.focus();
 			}
 		} );
+
+		paint();
 	}
 
 	/* ---- Mini-cart: toggle open/close, auto-close 4s after cart update ---- */

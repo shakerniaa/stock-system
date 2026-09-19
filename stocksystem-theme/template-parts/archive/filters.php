@@ -110,7 +110,7 @@ $exclude           = ! empty( $args['exclude'] ) ? (array) $args['exclude'] : ar
 			<span class="archive-filters__chip-radios">
 				<?php
 				$runtime_options = array(
-					'low'  => __( 'زیر ۲٬۰۰۰', 'stocksystem' ),
+					'low'  => __( 'زیر ۲,۰۰۰', 'stocksystem' ),
 					'mid'  => __( '۲ تا ۵ هزار', 'stocksystem' ),
 					'high' => __( 'بالای ۵ هزار', 'stocksystem' ),
 				);

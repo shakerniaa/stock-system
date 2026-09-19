@@ -24,7 +24,7 @@
 	}
 
 	function formatToman( amount ) {
-		var grouped = Math.round( amount ).toLocaleString( 'en-US' ).replace( /,/g, '٬' );
+		var grouped = Math.round( amount ).toLocaleString( 'en-US' );
 		return toPersianDigits( grouped );
 	}
 

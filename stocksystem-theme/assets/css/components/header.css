@@ -181,12 +181,23 @@
 	font-weight: 600;
 }
 
-.primary-nav__all-categories[aria-expanded="true"] {
+.primary-nav__all-categories {
+	transition: background-color var(--transition-hover), color var(--transition-hover);
+}
+
+.primary-nav__all-categories:hover,
+.primary-nav__all-categories:focus-visible {
+	background: var(--overlay-on-dark-10);
+}
+
+/* Teal only while the global («همه») view is showing — when the menu was
+   opened from a category link the bar link carries the highlight instead. */
+.primary-nav__all-categories.is-active {
 	background: var(--c-teal-500);
 	color: var(--c-ink-900);
 }
 
-.primary-nav__all-categories[aria-expanded="true"] svg {
+.primary-nav__all-categories.is-active svg {
 	stroke: var(--c-ink-900);
 }
 
@@ -204,8 +215,44 @@
 }
 
 .primary-nav__links a {
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: 50px;
 	color: var(--c-on-dark-2);
 	white-space: nowrap;
+	transition: color var(--transition-hover);
+}
+
+/* Teal underline that grows in on hover/focus, and stays for the current
+   page and for the category whose mega-menu view is showing. */
+.primary-nav__links a::after {
+	content: '';
+	position: absolute;
+	inset-inline: 0;
+	bottom: 0;
+	height: 2px;
+	background: var(--c-teal-500);
+	transform: scaleX(0);
+	transition: transform var(--transition-hover);
+}
+
+.primary-nav__links a:hover,
+.primary-nav__links a:focus-visible,
+.primary-nav__links a.is-active,
+.primary-nav__links a[aria-current="page"] {
+	color: var(--c-on-dark);
+}
+
+.primary-nav__links a:hover::after,
+.primary-nav__links a:focus-visible::after,
+.primary-nav__links a.is-active::after,
+.primary-nav__links a[aria-current="page"]::after {
+	transform: scaleX(1);
+}
+
+.primary-nav__links a:focus-visible {
+	outline: none;
 }
 
 /* ---- Mega menu ---- */
@@ -225,13 +272,43 @@
 
 .mega-menu__inner {
 	display: grid;
-	grid-template-columns: 1.1fr 1fr .9fr 1.2fr;
+	grid-template-columns: 1.1fr 3.1fr;
 	gap: var(--sp-36);
 	padding-block: var(--sp-28) var(--sp-32);
+	min-height: 320px;
 }
 
-.mega-menu--no-feature .mega-menu__inner {
-	grid-template-columns: 1.1fr 1fr .9fr;
+.mega-menu__pane {
+	display: grid;
+	grid-template-columns: 1fr .9fr 1.2fr;
+	gap: var(--sp-36);
+	animation: mega-pane-in .16s ease-out;
+}
+
+.mega-menu__pane--no-feature {
+	grid-template-columns: 1fr .9fr;
+}
+
+.mega-menu__pane[hidden] {
+	display: none;
+}
+
+@keyframes mega-pane-in {
+	from {
+		opacity: 0;
+		transform: translateY(4px);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.mega-menu__pane {
+		animation: none;
+	}
 }
 
 .mega-menu__col {
@@ -264,8 +341,9 @@
 	color: var(--c-text-2);
 }
 
-.mega-menu__col a.is-current,
-.mega-menu__col a:hover {
+.mega-menu__col a.is-active,
+.mega-menu__col a:hover,
+.mega-menu__col a:focus-visible {
 	background: var(--c-paper-alt);
 	color: var(--c-text);
 	font-weight: 600;
@@ -284,6 +362,7 @@
 
 .mega-menu__brand-grid a {
 	justify-content: center;
+	gap: var(--sp-8);
 	border: var(--border-default) solid var(--c-line);
 	font-size: var(--fs-13-5);
 	font-weight: 600;

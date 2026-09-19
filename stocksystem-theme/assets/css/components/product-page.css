@@ -652,17 +652,30 @@
 }
 
 /* ---- Related products ---- */
+/* It's a child of the two-column product grid — without spanning both
+   columns it was squeezed into the gallery column (4 cards in ~60% width). */
 .related-products {
+	grid-column: 1 / -1;
 	background: var(--c-paper-alt);
-	padding-block: var(--sp-44);
-	margin-top: var(--sp-8);
+	border-radius: var(--radius-panel-lg);
+	padding: var(--sp-36) var(--sp-32) var(--sp-40);
+	margin-top: var(--sp-16);
+}
+
+.related-products > .container {
+	max-width: none;
+	padding-inline: 0;
 }
 
 .related-products__title {
 	font-size: var(--fs-26);
 	font-weight: 700;
 	color: var(--c-text);
-	margin-bottom: var(--sp-24);
+	margin-bottom: var(--sp-28);
+}
+
+.related-products .product-grid {
+	gap: var(--sp-24);
 }
 
 /* ---- Responsive ---- */
@@ -732,6 +745,8 @@
 
 	.single-product-layout .related-products {
 		order: 5;
+		padding: var(--sp-24) var(--sp-16);
+		margin-top: var(--sp-8);
 	}
 
 	.woocommerce-product-gallery__image img {

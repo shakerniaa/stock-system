@@ -56,6 +56,8 @@ function stocksystem_nav_categories() {
 	return array_map(
 		function ( $term ) {
 			return (object) array(
+				'id'    => $term->term_id,
+				'slug'  => $term->slug,
 				'name'  => $term->name,
 				'count' => $term->count,
 				'url'   => get_term_link( $term ),
@@ -278,4 +280,109 @@ function stocksystem_nav_featured_product() {
 	);
 
 	return ! empty( $products ) ? $products[0] : null;
+}
+
+/**
+ * Per-category mega-menu content: the brands that actually have products in
+ * the category (with counts) and a featured product from it, so hovering a
+ * category in the menu changes what the other columns offer instead of
+ * showing the same global lists. Products are stored as ids; the whole map
+ * is cached briefly and dropped whenever a product or term changes.
+ *
+ * @return array[] category term id => [ 'brands' => [ [name, slug, count] ], 'featured' => product id|0 ]
+ */
+function stocksystem_mega_menu_data() {
+	static $memo = null;
+
+	if ( null !== $memo ) {
+		return $memo;
+	}
+
+	$cached = get_transient( 'stocksystem_mega_menu_data' );
+	if ( is_array( $cached ) ) {
+		$memo = $cached;
+		return $memo;
+	}
+
+	global $wpdb;
+
+	$data = array();
+
+	if ( taxonomy_exists( 'product_brand' ) ) {
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery
+		$rows = $wpdb->get_results(
+			"SELECT cat.term_id AS cat_id, t.name AS name, t.slug AS slug, COUNT(DISTINCT p.ID) AS total
+			FROM {$wpdb->term_relationships} trc
+			INNER JOIN {$wpdb->term_taxonomy} cat ON cat.term_taxonomy_id = trc.term_taxonomy_id AND cat.taxonomy = 'product_cat'
+			INNER JOIN {$wpdb->term_relationships} trb ON trb.object_id = trc.object_id
+			INNER JOIN {$wpdb->term_taxonomy} br ON br.term_taxonomy_id = trb.term_taxonomy_id AND br.taxonomy = 'product_brand'
+			INNER JOIN {$wpdb->terms} t ON t.term_id = br.term_id
+			INNER JOIN {$wpdb->posts} p ON p.ID = trc.object_id AND p.post_type = 'product' AND p.post_status = 'publish'
+			GROUP BY cat.term_id, t.term_id, t.name, t.slug
+			ORDER BY total DESC, t.name ASC"
+		);
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery
+
+		foreach ( (array) $rows as $row ) {
+			$data[ (int) $row->cat_id ]['brands'][] = array(
+				'name'  => $row->name,
+				'slug'  => $row->slug,
+				'count' => (int) $row->total,
+			);
+		}
+	}
+
+	if ( function_exists( 'wc_get_products' ) ) {
+		foreach ( stocksystem_nav_categories() as $category ) {
+			if ( empty( $category->id ) ) {
+				continue;
+			}
+
+			$featured = 0;
+			foreach ( array( array( 'tag' => array( 'featured' ) ), array( 'on_sale' => true ), array() ) as $extra ) {
+				$found = wc_get_products(
+					array_merge(
+						array(
+							'limit'        => 1,
+							'status'       => 'publish',
+							'stock_status' => 'instock',
+							'category'     => array( $category->slug ),
+							'orderby'  => 'date',
+							'order'    => 'DESC',
+							'return'   => 'ids',
+						),
+						$extra
+					)
+				);
+
+				if ( ! empty( $found ) ) {
+					$featured = (int) $found[0];
+					break;
+				}
+			}
+
+			$data[ (int) $category->id ]['featured'] = $featured;
+		}
+	}
+
+	set_transient( 'stocksystem_mega_menu_data', $data, 15 * MINUTE_IN_SECONDS );
+	$memo = $data;
+
+	return $memo;
+}
+
+function stocksystem_flush_mega_menu_data() {
+	delete_transient( 'stocksystem_mega_menu_data' );
+}
+add_action( 'save_post_product', 'stocksystem_flush_mega_menu_data' );
+add_action( 'deleted_post', 'stocksystem_flush_mega_menu_data' );
+add_action( 'set_object_terms', 'stocksystem_flush_mega_menu_data' );
+add_action( 'edited_term', 'stocksystem_flush_mega_menu_data' );
+
+/**
+ * Stable key tying a category link (nav bar or mega menu) to its mega-menu
+ * pane: the term id, or the list position for the placeholder categories.
+ */
+function stocksystem_mega_key( $category, $index ) {
+	return ! empty( $category->id ) ? 'cat-' . $category->id : 'i-' . $index;
 }
