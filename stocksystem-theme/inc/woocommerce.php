@@ -99,7 +99,7 @@ add_filter(
 add_filter(
 	'woocommerce_product_single_add_to_cart_text',
 	function ( $text, $product ) {
-		if ( $product && $product->is_type( 'simple' ) ) {
+		if ( $product && $product->is_type( array( 'simple', 'grouped' ) ) ) {
 			return __( 'افزودن به سبد', 'stocksystem' );
 		}
 		return $text;

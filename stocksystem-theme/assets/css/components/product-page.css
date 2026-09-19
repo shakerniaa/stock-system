@@ -1111,3 +1111,132 @@
 	font-size: var(--fs-13);
 	color: var(--c-status-warning-700);
 }
+
+/* ---- Grouped product (model choice) ----
+   WooCommerce prints a <table>; here each child is a card row —
+   name + price + stock on the reading side, quantity stepper opposite —
+   and the add-to-cart button drops under the list instead of squeezing
+   the table into a flex row. */
+.buy-box__panel form.cart.grouped_form {
+	flex-direction: column;
+	align-items: stretch;
+	gap: var(--sp-16);
+}
+
+.woocommerce-grouped-product-list,
+.woocommerce-grouped-product-list tbody {
+	display: block;
+	width: 100%;
+}
+
+.woocommerce-grouped-product-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-10);
+}
+
+.woocommerce-grouped-product-list tbody {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-10);
+}
+
+.woocommerce-grouped-product-list-item {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-areas:
+		"label qty"
+		"price qty";
+	align-items: center;
+	gap: var(--sp-4) var(--sp-12);
+	padding: var(--sp-12) var(--sp-14);
+	background: var(--c-paper);
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-card);
+}
+
+.woocommerce-grouped-product-list-item td {
+	display: block;
+	padding: 0;
+	border: 0;
+	min-width: 0;
+}
+
+.woocommerce-grouped-product-list-item__quantity {
+	grid-area: qty;
+}
+
+.woocommerce-grouped-product-list-item__label {
+	grid-area: label;
+	font-size: var(--fs-14);
+	font-weight: 700;
+}
+
+.woocommerce-grouped-product-list-item__label a {
+	color: var(--c-text);
+	unicode-bidi: plaintext;
+}
+
+.woocommerce-grouped-product-list-item__price {
+	grid-area: price;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--sp-4) var(--sp-10);
+	font-size: var(--fs-13);
+	color: var(--c-text-2);
+}
+
+.woocommerce-grouped-product-list-item__price .price {
+	font-weight: 800;
+	color: var(--c-text);
+}
+
+.woocommerce-grouped-product-list-item__price .stock {
+	margin: 0;
+	font-size: var(--fs-12);
+	font-weight: 600;
+}
+
+.woocommerce-grouped-product-list-item__price .stock.in-stock {
+	color: var(--c-status-success);
+}
+
+.woocommerce-grouped-product-list-item__price .stock.out-of-stock {
+	color: var(--c-status-error-600);
+}
+
+.woocommerce-grouped-product-list-item .quantity-stepper__btn,
+.woocommerce-grouped-product-list-item .quantity-stepper input.qty {
+	height: 40px;
+}
+
+.woocommerce-grouped-product-list-item .quantity-stepper__btn {
+	width: 36px;
+}
+
+.woocommerce-grouped-product-list-item .quantity-stepper input.qty {
+	width: 36px;
+}
+
+.woocommerce-grouped-product-list-item__price .price {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 var(--sp-8);
+}
+
+.woocommerce-grouped-product-list-item__price .price del {
+	font-weight: 500;
+	color: var(--c-text-3);
+}
+
+.woocommerce-grouped-product-list-item__price .price ins {
+	text-decoration: none;
+	color: var(--c-red-600);
+}
+
+.buy-box__panel form.cart.grouped_form .single_add_to_cart_button {
+	flex: 0 0 auto;
+	width: 100%;
+}
