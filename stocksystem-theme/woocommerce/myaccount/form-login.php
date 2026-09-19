@@ -45,6 +45,17 @@ $password_open = ! empty( $_POST['login'] ) || ! empty( $_POST['username'] );
 				</div>
 
 				<button type="button" class="btn btn--primary btn--block" id="otp-request-btn"><?php esc_html_e( 'دریافت کد ورود', 'stocksystem' ); ?></button>
+
+				<p class="otp-form__legal">
+					<?php
+					printf(
+						/* translators: 1: terms link, 2: privacy link */
+						esc_html__( 'با ادامه، %1$s و %2$s را می‌پذیرید.', 'stocksystem' ),
+						'<a href="' . esc_url( home_url( '/terms/' ) ) . '">' . esc_html__( 'قوانین و مقررات', 'stocksystem' ) . '</a>',
+						'<a href="' . esc_url( get_privacy_policy_url() ? get_privacy_policy_url() : home_url( '/privacy/' ) ) . '">' . esc_html__( 'سیاست حریم خصوصی', 'stocksystem' ) . '</a>'
+					);
+					?>
+				</p>
 			</div>
 
 			<div class="otp-form__step" id="otp-step-code" hidden>

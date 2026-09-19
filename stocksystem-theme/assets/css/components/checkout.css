@@ -375,6 +375,85 @@
 	display: none;
 }
 
+.form-row.woocommerce-invalid input.input-text,
+.form-row.woocommerce-invalid select,
+.form-row.woocommerce-invalid .select2-selection {
+	border-color: var(--c-red-600);
+	background: #FFFBFB;
+}
+
+.form-row.woocommerce-invalid > label {
+	color: var(--c-red-700);
+}
+
+/* «گیرندهٔ سفارش شخص دیگری است» — a checkbox row that reveals the recipient's
+   address form. WooCommerce's JS shows/hides .shipping_address itself. */
+.checkout-recipient-toggle {
+	margin: 0;
+}
+
+.checkout-recipient-toggle label {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--sp-12);
+	margin: 0;
+	cursor: pointer;
+}
+
+.checkout-recipient-toggle input {
+	position: absolute;
+	opacity: 0;
+	width: 1px;
+	height: 1px;
+}
+
+.checkout-recipient-toggle__box {
+	flex: 0 0 auto;
+	width: 22px;
+	height: 22px;
+	margin-top: 2px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: var(--border-interactive) solid #C3D4D2;
+	border-radius: 6px;
+	background: var(--c-paper);
+	color: transparent;
+	transition: background-color var(--transition-hover), border-color var(--transition-hover);
+}
+
+.checkout-recipient-toggle input:checked + .checkout-recipient-toggle__box {
+	background: var(--c-teal-500);
+	border-color: var(--c-teal-500);
+	color: #fff;
+}
+
+.checkout-recipient-toggle input:focus-visible + .checkout-recipient-toggle__box {
+	outline: var(--focus-ring-width) solid var(--focus-ring-color);
+	outline-offset: var(--focus-ring-offset);
+}
+
+.checkout-recipient-toggle__text {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-4);
+	font-size: var(--fs-15);
+	font-weight: 600;
+	color: var(--c-text);
+}
+
+.checkout-recipient-toggle__text small {
+	font-size: var(--fs-13);
+	font-weight: 400;
+	color: var(--c-text-2);
+}
+
+.woocommerce-shipping-fields .shipping_address {
+	margin-top: var(--sp-20);
+	padding-top: var(--sp-20);
+	border-top: var(--border-default) solid var(--c-line-soft);
+}
+
 /* WooCommerce wraps the actual fields in *__field-wrapper; with its own
    layout stylesheet disabled, nothing laid them out — every field stacked
    full-width with no row gap, so each label sat as close to the previous

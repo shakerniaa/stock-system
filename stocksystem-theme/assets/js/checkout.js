@@ -90,8 +90,40 @@
 			}
 		}
 
+		// WooCommerce doesn't put the `required` attribute on the recipient
+		// (shipping) fields, so the browser check can't catch them; without this
+		// a half-filled recipient form would only fail at "place order", two
+		// steps away from the fields.
+		function recipientIncomplete() {
+			var toggle = document.getElementById( 'ship-to-different-address-checkbox' );
+			if ( ! toggle || ! toggle.checked ) {
+				return false;
+			}
+
+			var missing = null;
+			form.querySelectorAll( '.shipping_address .validate-required' ).forEach( function ( row ) {
+				var field = row.querySelector( 'input:not([type="hidden"]), select, textarea' );
+				var empty = field && '' === String( field.value ).trim();
+				row.classList.toggle( 'woocommerce-invalid', !! empty );
+				if ( empty && ! missing ) {
+					missing = field;
+				}
+			} );
+
+			if ( missing ) {
+				missing.scrollIntoView( { behavior: 'smooth', block: 'center' } );
+				missing.focus();
+				if ( window.stocksystemToast ) {
+					window.stocksystemToast.show( 'مشخصات و نشانی گیرندهٔ سفارش را کامل کنید.', 'error' );
+				}
+				return true;
+			}
+
+			return false;
+		}
+
 		continueBtn.addEventListener( 'click', function () {
-			if ( ! form.reportValidity() ) {
+			if ( ! form.reportValidity() || recipientIncomplete() ) {
 				return;
 			}
 

@@ -11,6 +11,60 @@
 		}
 	}
 
+	// Wishlist page: the × removes the row (same endpoint as the heart toggle).
+	document.addEventListener( 'click', function ( event ) {
+		var remove = event.target.closest( '.wishlist-row__remove' );
+		if ( ! remove || ! window.stocksystemAjax || remove.disabled ) {
+			return;
+		}
+
+		var row = remove.closest( '.wishlist-row' );
+		var body = new URLSearchParams();
+		body.set( 'action', 'stocksystem_toggle_wishlist' );
+		body.set( 'nonce', remove.getAttribute( 'data-nonce' ) );
+		body.set( 'product_id', remove.getAttribute( 'data-product-id' ) );
+		remove.disabled = true;
+		row.classList.add( 'is-removing' );
+
+		fetch( window.stocksystemAjax.url, {
+			method: 'POST',
+			credentials: 'same-origin',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: body.toString(),
+		} )
+			.then( function ( response ) {
+				return response.json();
+			} )
+			.then( function ( json ) {
+				if ( ! json.success || json.data.in_wishlist ) {
+					throw new Error( 'not-removed' );
+				}
+
+				var table = row.closest( '.wishlist-table' );
+				row.remove();
+				var left = table.querySelectorAll( '.wishlist-row' ).length;
+				var count = document.querySelector( '[data-wishlist-count]' );
+				if ( count ) {
+					count.textContent = String( left ).replace( /[0-9]/g, function ( d ) {
+						return '۰۱۲۳۴۵۶۷۸۹'.charAt( Number( d ) );
+					} ) + ' کالا ذخیره شده';
+				}
+				if ( ! left ) {
+					table.hidden = true;
+					var empty = document.querySelector( '[data-wishlist-empty]' );
+					if ( empty ) {
+						empty.hidden = false;
+					}
+				}
+				toast( 'از علاقه‌مندی‌ها حذف شد', 'success' );
+			} )
+			.catch( function () {
+				remove.disabled = false;
+				row.classList.remove( 'is-removing' );
+				toast( 'حذف انجام نشد، دوباره تلاش کنید.', 'error' );
+			} );
+	} );
+
 	document.addEventListener( 'click', function ( event ) {
 		var button = event.target.closest( '.wishlist-toggle' );
 		if ( ! button || ! window.stocksystemAjax ) {

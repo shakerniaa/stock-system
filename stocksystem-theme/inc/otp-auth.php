@@ -407,3 +407,24 @@ function stocksystem_handle_save_name() {
 	exit;
 }
 add_action( 'admin_post_stocksystem_save_name', 'stocksystem_handle_save_name' );
+
+/**
+ * Lost-password field takes "mobile or email": turn a phone typed with
+ * Persian digits / +98 into the stored user_login form before WooCommerce
+ * looks the account up.
+ */
+function stocksystem_normalize_lost_password_login() {
+	if ( empty( $_POST['wc_reset_password'] ) || empty( $_POST['user_login'] ) ) {
+		return;
+	}
+
+	$login = trim( wp_unslash( $_POST['user_login'] ) );
+
+	if ( false === strpos( $login, '@' ) ) {
+		$phone = stocksystem_normalize_phone( $login );
+		if ( stocksystem_is_valid_phone( $phone ) ) {
+			$_POST['user_login'] = $phone;
+		}
+	}
+}
+add_action( 'wp_loaded', 'stocksystem_normalize_lost_password_login', 5 );
