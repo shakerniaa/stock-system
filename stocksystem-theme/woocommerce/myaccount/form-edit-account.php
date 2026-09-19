@@ -21,6 +21,10 @@ do_action( 'woocommerce_before_edit_account_form' );
 $otp_temp_password = get_user_meta( $user->ID, '_otp_temp_password', true );
 ?>
 
+<div class="account-panel__header">
+	<h2><?php esc_html_e( 'جزئیات حساب', 'stocksystem' ); ?></h2>
+</div>
+
 <form class="woocommerce-EditAccountForm edit-account account-edit-form" action="" method="post" <?php do_action( 'woocommerce_edit_account_form_tag' ); ?>>
 
 	<?php do_action( 'woocommerce_edit_account_form_start' ); ?>

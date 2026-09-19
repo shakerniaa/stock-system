@@ -1398,3 +1398,236 @@ table.shop_table td {
 		flex: 1;
 	}
 }
+
+/* ---- Order detail (view-order) ---- */
+.account-order-detail {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-20);
+}
+
+.account-order-detail .account-panel__header {
+	margin-bottom: 0;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.account-order-detail .account-panel__header .account-order__status {
+	margin-inline-start: 0;
+}
+
+.account-order-detail__pay {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sp-16);
+	flex-wrap: wrap;
+	margin: var(--sp-18) var(--sp-22) 0;
+	padding: var(--sp-14) var(--sp-16);
+	border-radius: var(--radius-input);
+	background: var(--c-amber-050);
+	color: var(--c-amber-700);
+	font-size: var(--fs-14);
+	font-weight: 600;
+}
+
+.account-order-detail .account-order .order-timeline {
+	margin: var(--sp-18) var(--sp-22) 0;
+}
+
+.account-order-detail__section-title {
+	font-size: var(--fs-15);
+	font-weight: 700;
+	color: var(--c-text);
+}
+
+.account-order__item-name {
+	line-height: 1.6;
+}
+
+a.account-order__item-name:hover {
+	color: var(--c-teal-700);
+}
+
+.account-order__item-info {
+	flex: 1;
+	min-width: 0;
+}
+
+.account-order__item-price {
+	flex: 0 0 auto;
+	font-size: var(--fs-14-5);
+	font-weight: 700;
+	color: var(--c-text);
+}
+
+.account-order-detail__grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--sp-20);
+	align-items: start;
+}
+
+.account-order-detail__card {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-10);
+	padding: var(--sp-18) var(--sp-22);
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-card);
+}
+
+.account-order-detail__card p,
+.account-order-detail__card address {
+	margin: 0;
+	font-size: var(--fs-13-5);
+	line-height: 1.9;
+	font-style: normal;
+	color: var(--c-text-2);
+}
+
+.account-order-detail__muted {
+	font-size: var(--fs-13) !important;
+	color: var(--c-text-3) !important;
+}
+
+.account-order-detail__totals {
+	background: var(--c-paper-alt);
+	border-color: transparent;
+}
+
+.account-order-detail__notes {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-12);
+}
+
+.account-order-detail__notes time {
+	display: block;
+	font-size: var(--fs-12);
+	color: var(--c-text-3);
+}
+
+.account-order-detail__notes p {
+	margin: 0;
+}
+
+.account-order-detail__actions {
+	display: flex;
+	gap: var(--sp-12);
+	flex-wrap: wrap;
+}
+
+@media (max-width: 767px) {
+	.account-order-detail__grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.account-order__item {
+		flex-wrap: wrap;
+	}
+
+	.account-order__item-price {
+		margin-inline-start: auto;
+	}
+}
+
+/* ---- Addresses ---- */
+.account-addresses,
+.account-address-form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-16);
+}
+
+.account-addresses .account-panel__header,
+.account-address-form .account-panel__header {
+	margin-bottom: 0;
+}
+
+.account-addresses__lead {
+	margin: 0;
+	font-size: var(--fs-13-5);
+	color: var(--c-text-2);
+}
+
+.account-addresses__list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-12);
+}
+
+.account-address {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-8);
+	padding: var(--sp-16);
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-panel);
+}
+
+.account-address.is-default {
+	border: var(--border-interactive) solid var(--c-teal-500);
+	background: var(--c-teal-025);
+}
+
+.account-address__head {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-10);
+}
+
+.account-address__head h3 {
+	margin: 0;
+	font-size: var(--fs-14-5);
+	font-weight: 700;
+	color: var(--c-text);
+}
+
+.account-address__edit {
+	margin-inline-start: auto;
+	font-size: var(--fs-12-5);
+	font-weight: 600;
+	color: var(--c-teal-600);
+}
+
+.account-address__edit:hover {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.account-address address {
+	font-style: normal;
+	font-size: var(--fs-13);
+	line-height: 1.9;
+	color: var(--c-text-2);
+}
+
+.account-address-form .woocommerce-address-fields__field-wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--sp-16) var(--sp-16);
+}
+
+.account-address-form .woocommerce-address-fields__field-wrapper .form-row {
+	margin: 0;
+}
+
+.account-address-form .woocommerce-address-fields__field-wrapper .form-row-wide {
+	grid-column: 1 / -1;
+}
+
+.account-address-form__actions {
+	display: flex;
+	gap: var(--sp-12);
+	margin-top: var(--sp-20);
+}
+
+@media (max-width: 599px) {
+	.account-address-form .woocommerce-address-fields__field-wrapper {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
