@@ -793,6 +793,23 @@
 	}
 }
 
+/* Tablet: 7fr/5fr leaves the buy box ~300px (price, stepper and CTA get
+   cramped); an even split gives it room without stacking. */
+@media (min-width: 768px) and (max-width: 1023px) {
+	.single-product-layout {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: var(--sp-24);
+	}
+
+	.buy-box__title {
+		font-size: var(--fs-26);
+	}
+
+	.buy-box__price {
+		font-size: var(--fs-26);
+	}
+}
+
 /* Phone consult CTA under add-to-cart (03 Product.dc.html). */
 .buy-box__consult {
 	margin-top: var(--sp-10);

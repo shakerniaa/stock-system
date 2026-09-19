@@ -729,7 +729,9 @@
 		bottom: 0;
 		top: auto;
 		max-height: 85vh;
-		z-index: var(--z-mobile-drawer);
+		/* above its own backdrop (same layer + later in the DOM would paint the
+		   backdrop over the sheet: dimmed and unclickable) */
+		z-index: calc(var(--z-mobile-drawer) + 1);
 		background: var(--c-paper);
 		border-radius: var(--radius-panel-lg) var(--radius-panel-lg) 0 0;
 		box-shadow: var(--shadow-float);

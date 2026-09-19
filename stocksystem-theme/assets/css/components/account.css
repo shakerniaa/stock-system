@@ -1358,7 +1358,28 @@ table.shop_table td {
 	border-color: var(--c-red-600);
 }
 
-@media (max-width: 767px) {
+/* Tablet: the sidebar is ~185px wide, so tighten the nav rows to keep labels
+   («کیف پول و اعتبار») on one line. Phones switch to the pill row instead. */
+@media (min-width: 768px) and (max-width: 1023px) {
+	.account-nav ul {
+		padding: var(--sp-10);
+	}
+
+	.account-nav__item a {
+		gap: var(--sp-8);
+		padding-inline: var(--sp-10);
+		font-size: var(--fs-14);
+	}
+
+	.account-nav__item a svg {
+		width: 17px;
+		height: 17px;
+	}
+}
+
+/* With the account sidebar beside it the list is only ~500px wide at tablet
+   widths, so it stacks (like phones) below the full-desktop breakpoint. */
+@media (max-width: 1023px) {
 	.wishlist-table__head {
 		display: none;
 	}

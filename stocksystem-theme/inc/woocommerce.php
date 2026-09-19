@@ -90,6 +90,19 @@ add_filter(
 	2
 );
 
+// Same short label on the product page's own button.
+add_filter(
+	'woocommerce_product_single_add_to_cart_text',
+	function ( $text, $product ) {
+		if ( $product && $product->is_type( 'simple' ) ) {
+			return __( 'افزودن به سبد', 'stocksystem' );
+		}
+		return $text;
+	},
+	10,
+	2
+);
+
 // The theme has no sidebar.php; WooCommerce's default sidebar hook would
 // call get_sidebar() and log a "theme without sidebar.php" deprecation.
 remove_action( 'woocommerce_sidebar', 'woocommerce_get_sidebar', 10 );
