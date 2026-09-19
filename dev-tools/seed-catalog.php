@@ -64,6 +64,21 @@ foreach ( array( 'HP', 'Dell', 'Lenovo', 'Microsoft', 'Apple', 'Asus' ) as $name
 	$brands[ $name ] = ss_term( $name, 'product_brand' );
 }
 
+// Product tags drive the card badges/ribbons by *slug* (see
+// stocksystem_product_badges()); the visible name must be Persian since tag
+// archives show it as the page title.
+foreach ( array(
+	'bestseller'    => 'پرفروش‌ترین',
+	'new-arrival'   => 'تازه‌رسید',
+	'featured'      => 'ویژه',
+	'free-shipping' => 'ارسال رایگان',
+	'clearance'     => 'حراج ویژه',
+) as $tag_slug => $tag_name ) {
+	if ( ! term_exists( $tag_slug, 'product_tag' ) ) {
+		wp_insert_term( $tag_name, 'product_tag', array( 'slug' => $tag_slug ) );
+	}
+}
+
 // grading terms already seeded by stocksystem_seed_grading_terms() — just fetch ids.
 $grades = array();
 foreach ( array( 'A', 'B', 'C' ) as $slug ) {

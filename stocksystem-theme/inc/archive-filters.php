@@ -51,9 +51,11 @@ function stocksystem_archive_taxonomy_facets() {
 function stocksystem_facet_term_count( $term ) {
 	static $cache = array();
 
-	$scope  = is_tax( 'product_cat' ) ? (int) get_queried_object_id() : 0;
-	$search = is_search() ? get_search_query( false ) : '';
-	$key    = $term->term_id . ':' . $scope . ':' . $search;
+	// The archive being browsed (category, brand or tag) narrows the counts.
+	$scope_tax = is_tax( array( 'product_cat', 'product_brand', 'product_tag' ) ) ? get_queried_object()->taxonomy : '';
+	$scope     = $scope_tax ? (int) get_queried_object_id() : 0;
+	$search    = is_search() ? get_search_query( false ) : '';
+	$key       = $term->term_id . ':' . $scope_tax . ':' . $scope . ':' . $search;
 
 	if ( isset( $cache[ $key ] ) ) {
 		return $cache[ $key ];
@@ -67,9 +69,9 @@ function stocksystem_facet_term_count( $term ) {
 		),
 	);
 
-	if ( $scope ) {
+	if ( $scope && $scope_tax !== $term->taxonomy ) {
 		$tax_query[] = array(
-			'taxonomy' => 'product_cat',
+			'taxonomy' => $scope_tax,
 			'field'    => 'term_id',
 			'terms'    => array( $scope ),
 		);
@@ -105,7 +107,7 @@ function stocksystem_apply_archive_filters( $query ) {
 		return;
 	}
 
-	if ( ! $query->is_post_type_archive( 'product' ) && ! $query->is_tax( array( 'product_cat', 'product_brand' ) ) && ! $query->is_search() ) {
+	if ( ! $query->is_post_type_archive( 'product' ) && ! $query->is_tax( array( 'product_cat', 'product_brand', 'product_tag' ) ) && ! $query->is_search() ) {
 		return;
 	}
 

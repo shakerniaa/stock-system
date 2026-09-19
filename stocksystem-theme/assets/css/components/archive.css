@@ -24,6 +24,14 @@
 	margin-top: var(--sp-8);
 }
 
+.archive-header__desc {
+	max-width: 680px;
+	margin-top: var(--sp-8);
+	font-size: var(--fs-14);
+	line-height: 1.9;
+	color: var(--c-text-2);
+}
+
 .archive-header__chips {
 	display: flex;
 	gap: var(--sp-8);

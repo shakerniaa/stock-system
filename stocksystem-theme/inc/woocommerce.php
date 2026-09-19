@@ -43,6 +43,11 @@ function stocksystem_product_tabs( $tabs ) {
 		'callback' => 'stocksystem_warranty_tab_content',
 	);
 
+	// «نظرات (۲)» — WooCommerce prints the count in Latin digits.
+	if ( isset( $tabs['reviews'] ) ) {
+		$tabs['reviews']['title'] = stocksystem_to_persian_digits( $tabs['reviews']['title'] );
+	}
+
 	return $tabs;
 }
 add_filter( 'woocommerce_product_tabs', 'stocksystem_product_tabs' );
@@ -102,6 +107,9 @@ add_filter(
 	10,
 	2
 );
+
+// Reviews use an initial-letter avatar instead of a Gravatar request per review.
+remove_action( 'woocommerce_review_before', 'woocommerce_review_display_gravatar', 10 );
 
 // The theme has no sidebar.php; WooCommerce's default sidebar hook would
 // call get_sidebar() and log a "theme without sidebar.php" deprecation.

@@ -16,6 +16,10 @@ get_header( 'shop' );
 $term    = get_queried_object();
 $battery = get_term_meta( $term->term_id, 'avg_battery_health', true );
 $return_rate = get_term_meta( $term->term_id, 'return_rate_percent', true );
+
+// The stored term count is always 0 for this taxonomy; count published products.
+$brand_counts = stocksystem_brand_product_counts();
+$brand_count  = isset( $brand_counts[ $term->term_id ] ) ? $brand_counts[ $term->term_id ] : 0;
 ?>
 
 <div class="archive-header">
@@ -38,7 +42,7 @@ $return_rate = get_term_meta( $term->term_id, 'return_rate_percent', true );
 					printf(
 						/* translators: %s: in-stock device count, Persian digits */
 						esc_html__( '%s دستگاه موجود', 'stocksystem' ),
-						esc_html( stocksystem_to_persian_digits( $term->count ) )
+						esc_html( stocksystem_to_persian_digits( $brand_count ) )
 					);
 					?>
 				</span>
