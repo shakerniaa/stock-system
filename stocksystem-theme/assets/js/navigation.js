@@ -22,11 +22,12 @@
 	}
 
 	/* ---- Mega menu ----
-	   Opens on hovering/focusing «همهٔ دسته‌ها» (global view) or a category
-	   link in the nav bar; hovering/focusing a category — in the bar or in
-	   the menu's own column — swaps in that category's brands, price links
-	   and featured product. 200ms close delay; leaving the nav bar for the
-	   plain links (repair, blog) closes it. */
+	   Opens ONLY from «همهٔ دسته‌ها» (hover, focus or click). Inside the
+	   menu, hovering/focusing a category swaps in that category's brands,
+	   price links and featured product (70ms intent delay so the panes
+	   don't flicker while the pointer crosses the column). Leaving the nav
+	   area, or moving onto the plain bar links, closes it after 200ms/80ms
+	   and resets it to the global view. */
 	function initMegaMenu() {
 		var toggle = document.getElementById( 'mega-menu-toggle' );
 		var menu = document.getElementById( 'mega-menu' );
@@ -36,35 +37,37 @@
 
 		var nav = toggle.closest( '.primary-nav' );
 		var panes = menu.querySelectorAll( '[data-mega-pane]' );
-		var targets = nav.querySelectorAll( '[data-mega-target]' );
-		var plainLinks = nav.querySelectorAll( '.primary-nav__links a:not([data-mega-target])' );
+		var categoryLinks = menu.querySelectorAll( '[data-mega-target]' );
+		var barLinks = nav.querySelectorAll( '.primary-nav__links a' );
 		var current = 'all';
 		var closeTimer = null;
 		var switchTimer = null;
 
 		function paint() {
-			var open = ! menu.hidden;
 			panes.forEach( function ( pane ) {
 				pane.hidden = pane.getAttribute( 'data-mega-pane' ) !== current;
 			} );
-			targets.forEach( function ( link ) {
-				link.classList.toggle( 'is-active', open && link.getAttribute( 'data-mega-target' ) === current );
+			categoryLinks.forEach( function ( link ) {
+				link.classList.toggle( 'is-active', link.getAttribute( 'data-mega-target' ) === current );
 			} );
-			toggle.classList.toggle( 'is-active', open && 'all' === current );
+			toggle.classList.toggle( 'is-active', ! menu.hidden );
 		}
 
-		function activate( key ) {
-			current = key;
+		function cancelClose() {
+			if ( closeTimer ) {
+				window.clearTimeout( closeTimer );
+				closeTimer = null;
+			}
+		}
+
+		function open() {
+			cancelClose();
+			openPanel( menu, toggle );
 			paint();
 		}
 
-		function open( key ) {
-			cancelClose();
-			openPanel( menu, toggle );
-			activate( key );
-		}
-
 		function close() {
+			window.clearTimeout( switchTimer );
 			closePanel( menu, toggle );
 			current = 'all';
 			paint();
@@ -75,65 +78,45 @@
 			closeTimer = window.setTimeout( close, delay );
 		}
 
-		function cancelClose() {
-			if ( closeTimer ) {
-				window.clearTimeout( closeTimer );
-				closeTimer = null;
-			}
-		}
-
 		nav.addEventListener( 'mouseenter', cancelClose );
 		nav.addEventListener( 'mouseleave', function () {
-			window.clearTimeout( switchTimer );
 			scheduleClose( 200 );
 		} );
 
-		toggle.addEventListener( 'mouseenter', function () {
-			open( 'all' );
-		} );
-		toggle.addEventListener( 'focus', function () {
-			open( 'all' );
-		} );
-
+		toggle.addEventListener( 'mouseenter', open );
+		toggle.addEventListener( 'focus', open );
 		toggle.addEventListener( 'click', function () {
-			if ( 'true' === toggle.getAttribute( 'aria-expanded' ) && 'all' === current ) {
-				close();
+			if ( menu.hidden ) {
+				open();
 			} else {
-				open( 'all' );
+				close();
 			}
 		} );
 
-		targets.forEach( function ( link ) {
+		barLinks.forEach( function ( link ) {
+			link.addEventListener( 'mouseenter', function () {
+				scheduleClose( 80 );
+			} );
+			link.addEventListener( 'focus', function () {
+				scheduleClose( 80 );
+			} );
+		} );
+
+		categoryLinks.forEach( function ( link ) {
 			var key = link.getAttribute( 'data-mega-target' );
-			var inBar = !! link.closest( '.primary-nav__links' );
 
 			function show() {
 				window.clearTimeout( switchTimer );
-				// A short intent delay inside the menu stops the panes flickering
-				// while the pointer crosses the column on its way somewhere else.
-				if ( inBar || menu.hidden ) {
-					open( key );
-				} else {
-					switchTimer = window.setTimeout( function () {
-						open( key );
-					}, 70 );
-				}
+				switchTimer = window.setTimeout( function () {
+					current = key;
+					paint();
+				}, 70 );
 			}
 
 			link.addEventListener( 'mouseenter', show );
 			link.addEventListener( 'focus', show );
 			link.addEventListener( 'mouseleave', function () {
 				window.clearTimeout( switchTimer );
-			} );
-		} );
-
-		plainLinks.forEach( function ( link ) {
-			link.addEventListener( 'mouseenter', function () {
-				window.clearTimeout( switchTimer );
-				scheduleClose( 80 );
-			} );
-			link.addEventListener( 'focus', function () {
-				scheduleClose( 80 );
 			} );
 		} );
 

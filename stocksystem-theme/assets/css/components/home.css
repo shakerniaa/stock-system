@@ -282,7 +282,7 @@
 
 .home-trust__grid {
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(4, minmax(0, 1fr));
 	gap: var(--sp-28);
 }
 
@@ -293,15 +293,23 @@
 	color: var(--c-teal-500);
 }
 
+.home-trust__item > svg {
+	flex: 0 0 auto;
+	width: 26px;
+	height: 26px;
+}
+
 .home-trust__text {
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
+	gap: 4px;
+	min-width: 0;
 }
 
 .home-trust__title {
 	font-size: var(--fs-16);
 	font-weight: 600;
+	line-height: 26px; /* = icon height, so icon and first line share one centre */
 	color: var(--c-on-dark);
 }
 

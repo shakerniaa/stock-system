@@ -23,6 +23,22 @@ function stocksystem_to_persian_digits( $value ) {
 }
 
 /**
+ * Persian/Arabic-Indic digits -> Latin, for anything a user types
+ * (phone numbers, one-time codes) before it is validated or compared.
+ */
+function stocksystem_to_latin_digits( $value ) {
+	return strtr(
+		(string) $value,
+		array(
+			'۰' => '0', '۱' => '1', '۲' => '2', '۳' => '3', '۴' => '4',
+			'۵' => '5', '۶' => '6', '۷' => '7', '۸' => '8', '۹' => '9',
+			'٠' => '0', '١' => '1', '٢' => '2', '٣' => '3', '٤' => '4',
+			'٥' => '5', '٦' => '6', '٧' => '7', '٨' => '8', '٩' => '9',
+		)
+	);
+}
+
+/**
  * Format an integer amount with comma thousands grouping and
  * Persian-Indic digits. Use for prices, quantities, and any other
  * user-facing number; leave SKUs, phone numbers, and model names as

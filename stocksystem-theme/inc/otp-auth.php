@@ -26,9 +26,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'STOCKSYSTEM_OTP_TTL', 5 * MINUTE_IN_SECONDS );
 define( 'STOCKSYSTEM_OTP_PLACEHOLDER_EMAIL_DOMAIN', 'customers.stocksystem.local' );
+define( 'STOCKSYSTEM_OTP_RESEND_SECONDS', 60 );
+define( 'STOCKSYSTEM_OTP_MAX_ATTEMPTS', 5 );
 
 function stocksystem_normalize_phone( $phone ) {
-	$digits = preg_replace( '/\D/', '', (string) $phone );
+	$digits = preg_replace( '/\D/', '', stocksystem_to_latin_digits( $phone ) );
 	// Accept "989..." or "0912..." and normalize to the local "09..." form.
 	if ( 0 === strpos( $digits, '98' ) && 12 === strlen( $digits ) ) {
 		$digits = '0' . substr( $digits, 2 );
@@ -63,21 +65,46 @@ function stocksystem_ajax_request_otp() {
 	$phone = stocksystem_normalize_phone( $_POST['phone'] ?? '' );
 
 	if ( ! stocksystem_is_valid_phone( $phone ) ) {
-		wp_send_json_error( array( 'message' => __( 'شمارهٔ موبایل معتبر نیست.', 'stocksystem' ) ) );
+		wp_send_json_error(
+			array(
+				'code'    => 'invalid_phone',
+				'message' => __( 'شمارهٔ موبایل معتبر نیست. آن را به شکل ۰۹۱۲۳۴۵۶۷۸۹ (۱۱ رقم) وارد کنید.', 'stocksystem' ),
+			)
+		);
 	}
 
-	// Basic rate limit: one request per 60 seconds per phone.
-	if ( get_transient( 'stocksystem_otp_throttle_' . $phone ) ) {
-		wp_send_json_error( array( 'message' => __( 'کمی صبر کنید و دوباره تلاش کنید.', 'stocksystem' ) ) );
+	// Rate limit: one request per STOCKSYSTEM_OTP_RESEND_SECONDS per phone. The
+	// transient holds the time the next request is allowed, so the browser can
+	// show an exact countdown instead of a vague "wait a bit".
+	$next_allowed = (int) get_transient( 'stocksystem_otp_throttle_' . $phone );
+	if ( $next_allowed > time() ) {
+		$wait = $next_allowed - time();
+		wp_send_json_error(
+			array(
+				'code'        => 'throttled',
+				'retry_after' => $wait,
+				'message'     => sprintf(
+					/* translators: %s: seconds, Persian digits */
+					__( 'کد قبلی هنوز معتبر است. برای دریافت کد جدید %s ثانیه صبر کنید.', 'stocksystem' ),
+					stocksystem_to_persian_digits( $wait )
+				),
+			)
+		);
 	}
 
 	$code = (string) wp_rand( 1000, 9999 );
 	set_transient( 'stocksystem_otp_' . $phone, wp_hash_password( $code ), STOCKSYSTEM_OTP_TTL );
-	set_transient( 'stocksystem_otp_throttle_' . $phone, 1, 60 );
+	set_transient( 'stocksystem_otp_throttle_' . $phone, time() + STOCKSYSTEM_OTP_RESEND_SECONDS, STOCKSYSTEM_OTP_RESEND_SECONDS );
+	delete_transient( 'stocksystem_otp_attempts_' . $phone );
 
 	stocksystem_send_otp_sms( $phone, $code );
 
-	$response = array( 'message' => __( 'کد ورود پیامک شد.', 'stocksystem' ) );
+	$response = array(
+		'message'    => __( 'کد ورود پیامک شد.', 'stocksystem' ),
+		'phone'      => $phone,
+		'resend_in'  => STOCKSYSTEM_OTP_RESEND_SECONDS,
+		'expires_in' => STOCKSYSTEM_OTP_TTL,
+	);
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		$response['debug_code'] = $code; // Never exposed outside WP_DEBUG.
 	}
@@ -91,25 +118,81 @@ function stocksystem_ajax_verify_otp() {
 	check_ajax_referer( 'stocksystem_otp', 'nonce' );
 
 	$phone = stocksystem_normalize_phone( $_POST['phone'] ?? '' );
-	$code  = sanitize_text_field( wp_unslash( $_POST['code'] ?? '' ) );
-	$name  = sanitize_text_field( wp_unslash( $_POST['name'] ?? '' ) );
+	$code  = preg_replace( '/\D/', '', stocksystem_to_latin_digits( sanitize_text_field( wp_unslash( $_POST['code'] ?? '' ) ) ) );
 
-	if ( ! stocksystem_is_valid_phone( $phone ) || '' === $code ) {
-		wp_send_json_error( array( 'message' => __( 'اطلاعات وارد‌شده نامعتبر است.', 'stocksystem' ) ) );
+	if ( ! stocksystem_is_valid_phone( $phone ) ) {
+		wp_send_json_error(
+			array(
+				'code'    => 'invalid_phone',
+				'message' => __( 'شمارهٔ موبایل معتبر نیست. به مرحلهٔ قبل برگردید و شماره را اصلاح کنید.', 'stocksystem' ),
+			)
+		);
+	}
+
+	if ( 4 !== strlen( $code ) ) {
+		wp_send_json_error(
+			array(
+				'code'    => 'invalid_format',
+				'message' => __( 'کد ۴ رقمی را کامل وارد کنید.', 'stocksystem' ),
+			)
+		);
 	}
 
 	$stored_hash = get_transient( 'stocksystem_otp_' . $phone );
 
-	if ( ! $stored_hash || ! wp_check_password( $code, $stored_hash ) ) {
-		wp_send_json_error( array( 'message' => __( 'کد وارد‌شده نادرست یا منقضی‌شده است.', 'stocksystem' ) ) );
+	if ( ! $stored_hash ) {
+		wp_send_json_error(
+			array(
+				'code'    => 'expired',
+				'message' => __( 'این کد منقضی شده است. یک کد جدید دریافت کنید.', 'stocksystem' ),
+			)
+		);
+	}
+
+	if ( ! wp_check_password( $code, $stored_hash ) ) {
+		$attempts = (int) get_transient( 'stocksystem_otp_attempts_' . $phone ) + 1;
+
+		if ( $attempts >= STOCKSYSTEM_OTP_MAX_ATTEMPTS ) {
+			delete_transient( 'stocksystem_otp_' . $phone );
+			delete_transient( 'stocksystem_otp_attempts_' . $phone );
+			wp_send_json_error(
+				array(
+					'code'    => 'too_many',
+					'message' => __( 'چند بار کد اشتباه وارد شد و این کد باطل شد. یک کد جدید دریافت کنید.', 'stocksystem' ),
+				)
+			);
+		}
+
+		set_transient( 'stocksystem_otp_attempts_' . $phone, $attempts, STOCKSYSTEM_OTP_TTL );
+		$remaining = STOCKSYSTEM_OTP_MAX_ATTEMPTS - $attempts;
+
+		wp_send_json_error(
+			array(
+				'code'      => 'wrong_code',
+				'remaining' => $remaining,
+				'message'   => sprintf(
+					/* translators: %s: remaining attempts, Persian digits */
+					__( 'کد واردشده درست نیست. %s فرصت دیگر دارید؛ کد را دوباره از پیامک بخوانید.', 'stocksystem' ),
+					stocksystem_to_persian_digits( $remaining )
+				),
+			)
+		);
 	}
 
 	delete_transient( 'stocksystem_otp_' . $phone );
+	delete_transient( 'stocksystem_otp_attempts_' . $phone );
 
-	$user = stocksystem_find_or_create_user_by_phone( $phone, $name );
+	// Deliberately no name here: asking for it at the moment of login/signup is
+	// friction. It is collected later (dashboard prompt / checkout).
+	$user = stocksystem_find_or_create_user_by_phone( $phone );
 
 	if ( is_wp_error( $user ) ) {
-		wp_send_json_error( array( 'message' => $user->get_error_message() ) );
+		wp_send_json_error(
+			array(
+				'code'    => 'account_error',
+				'message' => $user->get_error_message(),
+			)
+		);
 	}
 
 	wp_set_current_user( $user->ID );
@@ -279,3 +362,48 @@ function stocksystem_save_account_phone( $user_id ) {
 	update_user_meta( $user_id, 'billing_phone', $phone );
 }
 add_action( 'woocommerce_save_account_details', 'stocksystem_save_account_phone' );
+
+/**
+ * The account has a real name (not just the phone-number placeholder that
+ * OTP sign-up creates).
+ */
+function stocksystem_user_has_name( $user_id ) {
+	return '' !== trim( (string) get_user_meta( $user_id, 'first_name', true ) . (string) get_user_meta( $user_id, 'last_name', true ) );
+}
+
+/**
+ * Dashboard "complete your name" prompt (shown to OTP-created accounts).
+ */
+function stocksystem_handle_save_name() {
+	if ( ! is_user_logged_in() || ! isset( $_POST['stocksystem_name_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['stocksystem_name_nonce'] ) ), 'stocksystem_save_name' ) ) {
+		wp_safe_redirect( wc_get_page_permalink( 'myaccount' ) );
+		exit;
+	}
+
+	$name = trim( preg_replace( '/\s+/u', ' ', sanitize_text_field( wp_unslash( $_POST['full_name'] ?? '' ) ) ) );
+
+	if ( mb_strlen( $name ) < 3 || false === mb_strpos( $name, ' ' ) ) {
+		// admin-post.php doesn't load WooCommerce's frontend notice API, so the
+		// result travels as a query arg and dashboard.php prints it.
+		wp_safe_redirect( add_query_arg( 'name_status', 'invalid', wc_get_page_permalink( 'myaccount' ) ) );
+		exit;
+	}
+
+	$user_id    = get_current_user_id();
+	$name_parts = explode( ' ', $name, 2 );
+
+	wp_update_user(
+		array(
+			'ID'           => $user_id,
+			'display_name' => $name,
+			'first_name'   => $name_parts[0],
+			'last_name'    => $name_parts[1],
+		)
+	);
+	update_user_meta( $user_id, 'billing_first_name', $name_parts[0] );
+	update_user_meta( $user_id, 'billing_last_name', $name_parts[1] );
+
+	wp_safe_redirect( add_query_arg( 'name_status', 'saved', wc_get_page_permalink( 'myaccount' ) ) );
+	exit;
+}
+add_action( 'admin_post_stocksystem_save_name', 'stocksystem_handle_save_name' );

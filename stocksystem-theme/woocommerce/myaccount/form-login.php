@@ -23,55 +23,60 @@ if ( is_user_logged_in() ) {
 	return;
 }
 ?>
+<?php
+// A failed password login reloads the page: reopen that form (its errors
+// would otherwise sit inside a collapsed block nobody can see).
+$password_open = ! empty( $_POST['login'] ) || ! empty( $_POST['username'] );
+?>
 <div class="auth-page">
 	<div class="auth-card">
+		<?php do_action( 'woocommerce_before_customer_login_form' ); ?>
+
 		<span class="auth-card__eyebrow"><?php esc_html_e( 'ورود یا ثبت‌نام', 'stocksystem' ); ?></span>
 		<h1 class="auth-card__title"><?php esc_html_e( 'ورود به حساب', 'stocksystem' ); ?></h1>
-		<p class="auth-card__desc"><?php esc_html_e( 'شمارهٔ موبایل را وارد کنید؛ کد ورود پیامک می‌شود. اگر حساب نداشته باشید، همین‌جا برایتان ساخته می‌شود.', 'stocksystem' ); ?></p>
+		<p class="auth-card__desc"><?php esc_html_e( 'شمارهٔ موبایل را وارد کنید تا کد ورود برایتان پیامک شود. اگر حساب نداشته باشید، خودکار ساخته می‌شود.', 'stocksystem' ); ?></p>
 
-		<form class="otp-form" id="otp-form" data-nonce="<?php echo esc_attr( wp_create_nonce( 'stocksystem_otp' ) ); ?>">
+		<form class="otp-form" id="otp-form" novalidate data-nonce="<?php echo esc_attr( wp_create_nonce( 'stocksystem_otp' ) ); ?>">
 			<div class="otp-form__step" id="otp-step-phone">
 				<div class="otp-form__field">
 					<label for="otp-phone"><?php esc_html_e( 'شمارهٔ موبایل', 'stocksystem' ); ?></label>
-					<input type="tel" id="otp-phone" name="phone" class="ltr" placeholder="0912 345 6789" required pattern="09[0-9]{9}">
-				</div>
-
-				<div class="otp-form__field">
-					<label for="otp-name" class="otp-form__optional-label">
-						<?php esc_html_e( 'نام و نام خانوادگی', 'stocksystem' ); ?>
-						<span><?php esc_html_e( '(فقط برای حساب‌های تازه)', 'stocksystem' ); ?></span>
-					</label>
-					<input type="text" id="otp-name" name="name" placeholder="<?php esc_attr_e( 'مثلاً رضا کاظمی', 'stocksystem' ); ?>">
+					<input type="tel" id="otp-phone" name="phone" class="ltr" placeholder="0912 345 6789" inputmode="numeric" autocomplete="tel" aria-describedby="otp-phone-error">
+					<p class="otp-form__error" id="otp-phone-error" role="alert" hidden></p>
 				</div>
 
 				<button type="button" class="btn btn--primary btn--block" id="otp-request-btn"><?php esc_html_e( 'دریافت کد ورود', 'stocksystem' ); ?></button>
 			</div>
 
 			<div class="otp-form__step" id="otp-step-code" hidden>
-				<p class="otp-form__sent-to"></p>
+				<p class="otp-form__sent-to" aria-live="polite"></p>
+
 				<div class="otp-form__field">
 					<label for="otp-code"><?php esc_html_e( 'کد ۴ رقمی', 'stocksystem' ); ?></label>
-					<input type="text" id="otp-code" name="code" class="ltr" inputmode="numeric" maxlength="4" pattern="[0-9]{4}">
+					<input type="text" id="otp-code" name="code" class="ltr otp-form__code" inputmode="numeric" autocomplete="one-time-code" maxlength="4" placeholder="••••" aria-describedby="otp-code-error">
+					<p class="otp-form__error" id="otp-code-error" role="alert" hidden></p>
 				</div>
-				<button type="button" class="btn btn--primary btn--block" id="otp-verify-btn"><?php esc_html_e( 'ورود', 'stocksystem' ); ?></button>
-				<button type="button" class="otp-form__back" id="otp-back-btn"><?php esc_html_e( '← اصلاح شماره', 'stocksystem' ); ?></button>
-			</div>
 
-			<p class="otp-form__error" id="otp-error" role="alert" hidden></p>
+				<button type="button" class="btn btn--primary btn--block" id="otp-verify-btn"><?php esc_html_e( 'ورود', 'stocksystem' ); ?></button>
+
+				<div class="otp-form__actions">
+					<button type="button" class="otp-form__link" id="otp-resend-btn" disabled><?php esc_html_e( 'ارسال مجدد کد', 'stocksystem' ); ?></button>
+					<button type="button" class="otp-form__link" id="otp-back-btn"><?php esc_html_e( 'اصلاح شماره', 'stocksystem' ); ?></button>
+				</div>
+				<p class="otp-form__info" id="otp-info" role="status" hidden></p>
+			</div>
 		</form>
 
 		<span class="auth-card__divider"><span></span><?php esc_html_e( 'یا', 'stocksystem' ); ?><span></span></span>
 
-		<button type="button" class="btn btn--outline btn--block" id="password-login-toggle"><?php esc_html_e( 'ورود با رمز عبور', 'stocksystem' ); ?></button>
+		<button type="button" class="btn btn--outline btn--block" id="password-login-toggle"><?php echo $password_open ? esc_html__( 'انصراف از ورود با رمز', 'stocksystem' ) : esc_html__( 'ورود با رمز عبور', 'stocksystem' ); ?></button>
 
-		<div class="password-login" id="password-login-form" hidden>
-			<?php do_action( 'woocommerce_before_customer_login_form' ); ?>
+		<div class="password-login" id="password-login-form"<?php echo $password_open ? '' : ' hidden'; ?>>
 			<form class="woocommerce-form woocommerce-form-login login" method="post">
 				<?php do_action( 'woocommerce_login_form_start' ); ?>
 
 				<p class="form-row form-row-wide">
 					<label for="username"><?php esc_html_e( 'شمارهٔ موبایل یا ایمیل', 'stocksystem' ); ?></label>
-					<input type="text" class="input-text" name="username" id="username" autocomplete="username">
+					<input type="text" class="input-text" name="username" id="username" autocomplete="username" value="<?php echo ! empty( $_POST['username'] ) ? esc_attr( wp_unslash( $_POST['username'] ) ) : ''; ?>">
 				</p>
 				<p class="form-row form-row-wide">
 					<label for="password"><?php esc_html_e( 'رمز عبور', 'stocksystem' ); ?></label>

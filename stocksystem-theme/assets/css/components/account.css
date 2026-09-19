@@ -464,25 +464,138 @@ table.shop_table td {
 }
 
 .otp-form__sent-to {
-	font-size: var(--fs-13);
+	margin: 0;
+	font-size: var(--fs-13-5);
+	line-height: 1.9;
 	color: var(--c-text-2);
 }
 
-.otp-form__back {
-	align-self: center;
+.otp-form__sent-to strong {
+	color: var(--c-text);
+}
+
+.otp-form__debug {
+	color: var(--c-text-3);
+	font-size: var(--fs-12);
+}
+
+/* The code box: big, centred, spaced digits — it's the one thing to type. */
+.otp-form input.otp-form__code {
+	text-align: center;
+	font-size: var(--fs-24);
+	font-weight: 700;
+	letter-spacing: .5em;
+	padding-inline: var(--sp-14) calc(var(--sp-14) - .5em);
+	direction: ltr;
+}
+
+.otp-form input:focus-visible {
+	outline: var(--focus-ring-width) solid rgba(14, 186, 175, .25);
+	outline-offset: 0;
+}
+
+.otp-form__actions {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sp-12);
+}
+
+.otp-form__link {
 	background: transparent;
 	border: none;
+	padding: var(--sp-6) 0;
 	color: var(--c-teal-600);
 	font-size: var(--fs-13);
 	font-weight: 600;
+	cursor: pointer;
 }
 
-.otp-form__error {
-	color: var(--c-status-error-600);
-	font-size: var(--fs-13);
-	background: var(--c-red-050);
+.otp-form__link:hover:not(:disabled) {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.otp-form__link:disabled {
+	color: var(--c-text-3);
+	font-weight: 500;
+	cursor: default;
+}
+
+.otp-form__info {
+	margin: 0;
+	padding: var(--sp-10) var(--sp-12);
 	border-radius: var(--radius-input);
-	padding: var(--sp-10);
+	background: var(--c-teal-050);
+	color: var(--c-teal-700);
+	font-size: var(--fs-13);
+	line-height: 1.8;
+}
+
+.otp-form__info[hidden],
+.otp-form__error[hidden] {
+	display: none;
+}
+
+/* Inline field error: red text with an icon, right under the field. */
+.otp-form__error {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--sp-8);
+	margin: 0;
+	padding: var(--sp-10) var(--sp-12);
+	border-radius: var(--radius-input);
+	background: var(--c-red-050);
+	border: var(--border-default) solid rgba(198, 40, 40, .28);
+	color: var(--c-red-700);
+	font-size: var(--fs-13);
+	font-weight: 600;
+	line-height: 1.8;
+}
+
+.otp-form__error::before {
+	content: '!';
+	flex: 0 0 auto;
+	width: 18px;
+	height: 18px;
+	margin-top: 2px;
+	border-radius: 50%;
+	background: var(--c-red-600);
+	color: #fff;
+	font-size: 12px;
+	font-weight: 800;
+	line-height: 18px;
+	text-align: center;
+}
+
+.otp-form__field.has-error input {
+	border-color: var(--c-red-600);
+	background: #FFFBFB;
+}
+
+.otp-form__field.is-shaking {
+	animation: otp-shake .35s ease-in-out;
+}
+
+@keyframes otp-shake {
+	20%, 60% {
+		transform: translateX(-6px);
+	}
+
+	40%, 80% {
+		transform: translateX(6px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.otp-form__field.is-shaking {
+		animation: none;
+	}
+}
+
+.otp-form .btn.is-loading {
+	opacity: .75;
+	cursor: progress;
 }
 
 .auth-card__divider {
@@ -929,4 +1042,60 @@ table.shop_table td {
 
 .order-tracking-result__support {
 	align-self: flex-start;
+}
+
+/* ---- "Complete your name" prompt on the dashboard ---- */
+.account-name-prompt {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-14);
+	margin-bottom: var(--sp-20);
+	padding: var(--sp-18) var(--sp-20);
+	border: var(--border-default) solid var(--c-teal-500);
+	border-radius: var(--radius-card);
+	background: var(--c-teal-025);
+}
+
+.account-name-prompt__text {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-4);
+}
+
+.account-name-prompt__text strong {
+	font-size: var(--fs-15);
+	color: var(--c-text);
+}
+
+.account-name-prompt__text span {
+	font-size: var(--fs-13);
+	line-height: 1.8;
+	color: var(--c-text-2);
+}
+
+.account-name-prompt__row {
+	display: flex;
+	gap: var(--sp-10);
+}
+
+.account-name-prompt__row input {
+	flex: 1;
+	min-width: 0;
+	height: 46px;
+	padding-inline: var(--sp-14);
+	border: var(--border-interactive) solid var(--c-line);
+	border-radius: var(--radius-input);
+	background: var(--c-paper);
+	font-size: var(--fs-14-5);
+}
+
+.account-name-prompt__row .btn {
+	height: 46px;
+	padding-inline: var(--sp-24);
+}
+
+@media (max-width: 479px) {
+	.account-name-prompt__row {
+		flex-direction: column;
+	}
 }

@@ -29,17 +29,28 @@
 
 .product-card__media {
 	position: relative;
-	height: 180px;
+	height: 190px;
 	flex: 0 0 auto;
+	box-sizing: border-box;
+	/* top strip is reserved for the badges/heart so they don't sit on the photo */
+	padding: 46px var(--sp-16) var(--sp-12);
 	background: var(--c-paper-alt);
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
+.product-card__media > a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 100%;
+	max-height: 100%;
+}
+
 .product-card__image {
-	max-width: 86%;
-	max-height: 86%;
+	max-width: 100%;
+	max-height: 100%;
 	width: auto;
 	height: auto;
 	object-fit: contain;
@@ -70,16 +81,15 @@
 .product-card__badges {
 	position: absolute;
 	top: var(--sp-12);
-	inset-inline-start: var(--sp-12);
+	inset-inline: var(--sp-12) 56px; /* leaves the heart's corner free */
 	display: flex;
-	flex-direction: column;
+	flex-flow: row wrap;
 	align-items: flex-start;
-	gap: var(--sp-8);
+	gap: var(--sp-6) var(--sp-8);
 }
 
 .product-card__ribbon ~ .product-card__badges {
-	top: auto;
-	bottom: var(--sp-12);
+	top: 44px;
 }
 
 .wishlist-toggle {
@@ -272,11 +282,6 @@
 	margin-top: auto;
 }
 
-/* Keep the price clear of the button when the card is short on content. */
-.product-card__price + .btn,
-.product-card__body > .btn:not(:first-child) {
-	margin-top: var(--sp-8);
-}
 
 /* Variable-product chips (state 6) */
 .product-card__chips {
@@ -408,12 +413,8 @@
 	}
 
 	.product-card__media {
-		height: 150px;
-	}
-
-	.product-card__image {
-		max-width: 88%;
-		max-height: 88%;
+		height: 156px;
+		padding: 40px var(--sp-8) var(--sp-8);
 	}
 
 	.product-card__body {
@@ -455,17 +456,20 @@
 		padding-inline: var(--sp-8);
 		font-size: var(--fs-13);
 		white-space: nowrap;
-		margin-top: var(--sp-4);
 	}
 
 	.product-card__badges {
 		top: var(--sp-8);
-		inset-inline-start: var(--sp-8);
+		inset-inline: var(--sp-8) 44px;
 	}
 
 	.product-card__ribbon ~ .product-card__badges {
-		top: auto;
-		bottom: var(--sp-8);
+		top: 34px;
+	}
+
+	.badge {
+		padding: 4px 9px;
+		font-size: var(--fs-11);
 	}
 
 	.wishlist-toggle {

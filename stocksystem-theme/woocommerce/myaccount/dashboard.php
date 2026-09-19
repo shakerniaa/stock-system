@@ -36,15 +36,43 @@ $recent_orders = wc_get_orders(
 );
 ?>
 <div class="account-dashboard">
+	<?php $has_name = stocksystem_user_has_name( $current_user->ID ); ?>
 	<p class="account-dashboard__greeting">
 		<?php
-		printf(
-			/* translators: %s: customer display name */
-			esc_html__( 'سلام %s، به حساب کاربری خود خوش آمدید.', 'stocksystem' ),
-			'<strong>' . esc_html( $current_user->display_name ) . '</strong>'
-		);
+		if ( $has_name ) {
+			printf(
+				/* translators: %s: customer display name */
+				esc_html__( 'سلام %s، به حساب کاربری خود خوش آمدید.', 'stocksystem' ),
+				'<strong>' . esc_html( $current_user->display_name ) . '</strong>'
+			);
+		} else {
+			esc_html_e( 'سلام، به حساب کاربری خود خوش آمدید.', 'stocksystem' );
+		}
 		?>
 	</p>
+
+	<?php $name_status = isset( $_GET['name_status'] ) ? sanitize_key( wp_unslash( $_GET['name_status'] ) ) : ''; ?>
+	<?php if ( 'saved' === $name_status ) : ?>
+		<div class="woocommerce-message" role="status"><?php esc_html_e( 'نام شما ذخیره شد.', 'stocksystem' ); ?></div>
+	<?php elseif ( 'invalid' === $name_status ) : ?>
+		<div class="woocommerce-error" role="alert"><?php esc_html_e( 'نام و نام خانوادگی را با هم وارد کنید؛ مثلاً رضا کاظمی.', 'stocksystem' ); ?></div>
+	<?php endif; ?>
+
+	<?php if ( ! $has_name ) : ?>
+		<form class="account-name-prompt" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+			<input type="hidden" name="action" value="stocksystem_save_name">
+			<?php wp_nonce_field( 'stocksystem_save_name', 'stocksystem_name_nonce' ); ?>
+			<div class="account-name-prompt__text">
+				<strong><?php esc_html_e( 'نام خود را تکمیل کنید', 'stocksystem' ); ?></strong>
+				<span><?php esc_html_e( 'برای سفارش‌ها و فاکتور از این نام استفاده می‌شود؛ هر وقت خواستید می‌توانید آن را عوض کنید.', 'stocksystem' ); ?></span>
+			</div>
+			<div class="account-name-prompt__row">
+				<label class="screen-reader-text" for="account-full-name"><?php esc_html_e( 'نام و نام خانوادگی', 'stocksystem' ); ?></label>
+				<input type="text" id="account-full-name" name="full_name" required placeholder="<?php esc_attr_e( 'مثلاً رضا کاظمی', 'stocksystem' ); ?>" autocomplete="name">
+				<button type="submit" class="btn btn--primary"><?php esc_html_e( 'ذخیره', 'stocksystem' ); ?></button>
+			</div>
+		</form>
+	<?php endif; ?>
 
 	<div class="account-dashboard__stats">
 		<div class="account-dashboard__stat">
