@@ -695,3 +695,61 @@
 		display: flex;
 	}
 }
+
+/* ---- Checkout header: logo + secure note only (12 Checkout Flow.dc.html) ---- */
+.checkout-header {
+	background: var(--c-ink-800);
+	padding-block: var(--sp-14);
+}
+
+.checkout-header__inner {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-24);
+}
+
+.checkout-header__logo img {
+	height: 36px;
+	width: auto;
+}
+
+.checkout-header__secure {
+	margin-inline-start: auto;
+	display: flex;
+	align-items: center;
+	gap: var(--sp-10);
+	font-size: var(--fs-13);
+	color: var(--c-on-dark-2);
+}
+
+.checkout-header__secure svg {
+	color: var(--c-teal-500);
+	flex: 0 0 auto;
+}
+
+.checkout-header__secure-short {
+	display: none;
+}
+
+@media (max-width: 599px) {
+	.checkout-header {
+		padding-block: var(--sp-12);
+	}
+
+	.checkout-header__logo img {
+		height: 28px;
+	}
+
+	.checkout-header__secure {
+		font-size: var(--fs-12);
+		gap: var(--sp-6);
+	}
+
+	.checkout-header__secure-full {
+		display: none;
+	}
+
+	.checkout-header__secure-short {
+		display: inline;
+	}
+}

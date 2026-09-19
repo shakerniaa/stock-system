@@ -435,6 +435,41 @@ ss_make_post(
 	$img_dir
 );
 
+// ---- Demo customer + orders so the My Account dashboard has something
+// to show (dev only — password below is a throwaway local test value). ----
+$demo_phone = '09121234567';
+$demo_user  = get_user_by( 'login', $demo_phone );
+if ( ! $demo_user ) {
+	$demo_id = wc_create_new_customer( 'reza.demo@example.test', $demo_phone, 'TestPass123!' );
+	if ( ! is_wp_error( $demo_id ) ) {
+		wp_update_user( array( 'ID' => $demo_id, 'display_name' => 'رضا کاظمی', 'first_name' => 'رضا', 'last_name' => 'کاظمی' ) );
+		update_user_meta( $demo_id, 'billing_phone', $demo_phone );
+		update_user_meta( $demo_id, 'billing_first_name', 'رضا' );
+		update_user_meta( $demo_id, 'billing_last_name', 'کاظمی' );
+		$demo_user = get_user_by( 'id', $demo_id );
+	}
+}
+if ( $demo_user && ! wc_get_orders( array( 'customer_id' => $demo_user->ID, 'limit' => 1 ) ) ) {
+	foreach ( array(
+		array( 'HP EliteBook 840 G8', 'processing' ),
+		array( 'Dell Inspiron 3520', 'completed' ),
+	) as $row ) {
+		$pid = ss_existing_product_id( $row[0] );
+		if ( ! $pid ) {
+			continue;
+		}
+		$order = wc_create_order( array( 'customer_id' => $demo_user->ID ) );
+		$order->add_product( wc_get_product( $pid ), 1 );
+		$order->set_billing_first_name( 'رضا' );
+		$order->set_billing_last_name( 'کاظمی' );
+		$order->set_billing_phone( $demo_phone );
+		$order->set_payment_method_title( 'پرداخت در محل' );
+		$order->calculate_totals();
+		$order->set_status( $row[1] );
+		$order->save();
+	}
+}
+
 echo "Created product IDs: " . implode( ', ', $created ) . "\n";
 echo "Categories: " . implode( ', ', array_keys( $categories ) ) . "\n";
 echo "Brands: " . implode( ', ', array_keys( $brands ) ) . "\n";

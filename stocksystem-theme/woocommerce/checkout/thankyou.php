@@ -24,8 +24,8 @@ $shop_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink(
 ?>
 
 <div class="checkout-page">
+	<?php get_template_part( 'template-parts/checkout/step-indicator', null, array( 'current' => 4 ) ); ?>
 	<div class="container">
-		<?php get_template_part( 'template-parts/checkout/step-indicator', null, array( 'current' => 4 ) ); ?>
 
 		<div class="order-confirmation-banner<?php echo $is_failed ? ' is-failed' : ( $is_paid ? '' : ' is-pending' ); ?>">
 			<span class="order-confirmation-banner__icon" aria-hidden="true">
@@ -52,10 +52,12 @@ $shop_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink(
 						<?php esc_html_e( 'مبلغی از حساب شما کسر نشده است. می‌توانید دوباره تلاش کنید یا روش پرداخت دیگری انتخاب کنید.', 'stocksystem' ); ?>
 					<?php else : ?>
 						<?php
+						$phone        = preg_replace( '/\D+/', '', (string) $order->get_billing_phone() );
+						$masked_phone = strlen( $phone ) >= 8 ? substr( $phone, 0, 4 ) . '···' . substr( $phone, -4 ) : $phone;
 						printf(
 							/* translators: %s: masked phone number */
 							esc_html__( 'سفارش شما ثبت شد و پیامک تأیید به شمارهٔ %s ارسال گردید.', 'stocksystem' ),
-							esc_html( $order->get_billing_phone() )
+							'<span class="ltr">' . esc_html( stocksystem_to_persian_digits( $masked_phone ) ) . '</span>'
 						);
 						?>
 					<?php endif; ?>

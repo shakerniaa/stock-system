@@ -7,13 +7,11 @@
  * which step is visually hidden via CSS, so nothing about WC's own
  * mechanics needs to change, only what's shown at once.
  *
- * Simplification: WooCommerce couples shipping-*method* selection with
- * the order-review/payment block (review-order.php), not with the
- * billing address form — splitting that apart would mean overriding
- * review-order.php too and fighting the AJAX refresh cycle. So "step 2"
- * here is address + order notes, and shipping method choice appears
- * alongside payment in "step 3" — still a coherent flow (you provide an
- * address, then see shipping options/cost together with how you'll pay).
+ * Simplification: WooCommerce prices shipping from the address and only
+ * refreshes rates through its order-review AJAX, so "step 2" here is
+ * address + order notes, and the shipping-method choice sits with payment
+ * in "step 3": checkout/payment.php (main column: shipping + payment
+ * cards) and checkout/review-order.php (aside: summary + place order).
  *
  * @package StockSystem
  */
@@ -33,8 +31,8 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 ?>
 
 <div class="checkout-page">
+	<?php get_template_part( 'template-parts/checkout/step-indicator', null, array( 'current' => 2 ) ); ?>
 	<div class="container">
-		<?php get_template_part( 'template-parts/checkout/step-indicator', null, array( 'current' => 2 ) ); ?>
 		<h1 class="checkout-page__title"><?php esc_html_e( 'تسویه‌حساب', 'stocksystem' ); ?></h1>
 
 		<form name="checkout" method="post" class="checkout woocommerce-checkout" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data">
@@ -59,20 +57,29 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 			<?php endif; ?>
 
 			<div id="checkout-step-payment" class="checkout-step" hidden>
-				<div class="checkout-page__grid">
-					<div class="checkout-page__main">
-						<span class="checkout-page__section-title"><?php esc_html_e( 'روش ارسال و پرداخت', 'stocksystem' ); ?></span>
-						<?php do_action( 'woocommerce_checkout_before_order_review_heading' ); ?>
-						<?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
-						<div id="order_review" class="woocommerce-checkout-review-order">
-							<?php do_action( 'woocommerce_checkout_order_review' ); ?>
-						</div>
-						<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
-						<button type="button" class="btn btn--outline" id="checkout-back-to-info">← <?php esc_html_e( 'بازگشت به اطلاعات', 'stocksystem' ); ?></button>
-					</div>
+				<?php do_action( 'woocommerce_checkout_before_order_review_heading' ); ?>
+				<?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
+				<div id="order_review" class="woocommerce-checkout-review-order">
+					<?php do_action( 'woocommerce_checkout_order_review' ); ?>
 				</div>
+				<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
+				<button type="button" class="btn btn--outline checkout-back" id="checkout-back-to-info">← <?php esc_html_e( 'بازگشت به اطلاعات', 'stocksystem' ); ?></button>
 			</div>
 		</form>
+
+		<div class="mobile-summary-bar" data-checkout-bar>
+			<span class="mobile-summary-bar__total">
+				<span class="mobile-summary-bar__label"><?php esc_html_e( 'قابل پرداخت', 'stocksystem' ); ?></span>
+				<span class="mobile-summary-bar__amount" data-checkout-bar-total><?php wc_cart_totals_order_total_html(); ?></span>
+			</span>
+			<button
+				type="button"
+				class="btn btn--primary mobile-summary-bar__cta"
+				data-checkout-bar-cta
+				data-label-continue="<?php esc_attr_e( 'ادامه به پرداخت', 'stocksystem' ); ?>"
+				data-label-pay="<?php esc_attr_e( 'ثبت و پرداخت', 'stocksystem' ); ?>"
+			><?php esc_html_e( 'ادامه به پرداخت', 'stocksystem' ); ?></button>
+		</div>
 	</div>
 </div>
 

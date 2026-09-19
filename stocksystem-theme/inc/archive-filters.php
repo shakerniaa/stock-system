@@ -44,6 +44,53 @@ function stocksystem_archive_taxonomy_facets() {
 }
 
 /**
+ * Published products carrying $term, limited to the product category being
+ * browsed (when on one). WordPress' stored term count is unreliable for the
+ * brand taxonomy, and a per-category count is what a filter should show.
+ */
+function stocksystem_facet_term_count( $term ) {
+	static $cache = array();
+
+	$scope = is_tax( 'product_cat' ) ? (int) get_queried_object_id() : 0;
+	$key   = $term->term_id . ':' . $scope;
+
+	if ( isset( $cache[ $key ] ) ) {
+		return $cache[ $key ];
+	}
+
+	$tax_query = array(
+		array(
+			'taxonomy' => $term->taxonomy,
+			'field'    => 'term_id',
+			'terms'    => array( $term->term_id ),
+		),
+	);
+
+	if ( $scope ) {
+		$tax_query[] = array(
+			'taxonomy' => 'product_cat',
+			'field'    => 'term_id',
+			'terms'    => array( $scope ),
+		);
+	}
+
+	$query = new WP_Query(
+		array(
+			'post_type'      => 'product',
+			'post_status'    => 'publish',
+			'posts_per_page' => 1,
+			'fields'         => 'ids',
+			'no_found_rows'  => false,
+			'tax_query'      => $tax_query, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+		)
+	);
+
+	$cache[ $key ] = (int) $query->found_posts;
+
+	return $cache[ $key ];
+}
+
+/**
  * Applies the sidebar's checkbox/toggle facets to the main archive query.
  * Price range is left to WooCommerce's own WC_Query::price_filter(),
  * which already reads min_price/max_price unconditionally.

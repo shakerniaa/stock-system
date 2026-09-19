@@ -19,6 +19,50 @@
 }
 
 /* ---- Gallery (WooCommerce core markup, restyled) ---- */
+.woocommerce-product-gallery {
+	position: relative;
+}
+
+/* WooCommerce's fullscreen trigger — its own stylesheet is disabled, so
+   without this the emoji sits unstyled above the image. */
+.woocommerce-product-gallery__trigger {
+	position: absolute;
+	top: var(--sp-12);
+	inset-inline-end: var(--sp-12);
+	z-index: 2;
+	width: 36px;
+	height: 36px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: var(--c-paper);
+	color: var(--c-ink-800);
+	box-shadow: 0 1px 3px rgba(4, 33, 31, .15);
+}
+
+.woocommerce-product-gallery__trigger span {
+	display: none;
+}
+
+.woocommerce-product-gallery__trigger::before {
+	content: '';
+	width: 18px;
+	height: 18px;
+	background: currentColor;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M16.5 16.5L21 21M11 8v6M8 11h6'/%3E%3C/svg%3E") center / contain no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M16.5 16.5L21 21M11 8v6M8 11h6'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.woocommerce-product-gallery__trigger:hover {
+	color: var(--c-teal-600);
+}
+
+.woocommerce-product-gallery__trigger:focus-visible {
+	outline: 2px solid var(--c-teal-500);
+	outline-offset: 2px;
+}
+
 .woocommerce-product-gallery__image {
 	border-radius: var(--radius-card);
 	background: var(--c-paper-alt);
@@ -325,42 +369,6 @@
 	cursor: not-allowed;
 }
 
-/* Quantity stepper */
-.quantity-stepper {
-	display: inline-flex;
-	align-items: center;
-	border: var(--border-interactive) solid var(--c-line);
-	background: var(--c-paper);
-	border-radius: var(--radius-input);
-	overflow: hidden;
-}
-
-.quantity-stepper__btn {
-	width: 44px;
-	height: 52px;
-	background: transparent;
-	border: none;
-	color: var(--c-text);
-	font-size: var(--fs-18);
-}
-
-.quantity-stepper input.qty {
-	width: 40px;
-	height: 52px;
-	border: none;
-	text-align: center;
-	font-size: var(--fs-16);
-	font-weight: 600;
-	color: var(--c-text);
-	background: transparent;
-	-moz-appearance: textfield;
-}
-
-.quantity-stepper input.qty::-webkit-inner-spin-button,
-.quantity-stepper input.qty::-webkit-outer-spin-button {
-	-webkit-appearance: none;
-}
-
 /* Trust bullets */
 .buy-box__trust {
 	display: flex;
@@ -658,12 +666,115 @@
 }
 
 /* ---- Responsive ---- */
+/* Fixed add-to-cart bar (10 Mobile Flows A3): hidden above tablet, and on
+   phones revealed by product-page.js once the real button scrolls away. */
+.mobile-buy-bar {
+	display: none;
+}
+
+.mobile-buy-bar__call {
+	flex: 0 0 auto;
+	width: 48px;
+	height: 48px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 1.5px solid var(--c-ink-800);
+	border-radius: var(--radius-button);
+	color: var(--c-ink-800);
+}
+
+.mobile-buy-bar__call:hover {
+	background: var(--c-paper-alt);
+}
+
+.mobile-buy-bar__cta {
+	flex: 1;
+	height: 48px;
+	font-size: var(--fs-15);
+	font-weight: 600;
+}
+
+
 /* Tablet keeps gallery + buy box side-by-side — only phone stacks
    them (a 5fr column is still ~340px at 768px, enough for the buy
    box's price/configurator). */
 @media (max-width: 767px) {
 	.single-product-layout {
 		grid-template-columns: 1fr;
+		gap: var(--sp-16);
+		padding-block: var(--sp-12) var(--sp-24);
+	}
+
+	/* 10 Mobile Flows A3: title, price and CTA sit right under the gallery;
+	   the test report and tabs follow. Flattening the two column wrappers
+	   lets their children be re-ordered as one stack. */
+	.single-product-layout__gallery-col,
+	.single-product-layout__buy-col {
+		display: contents;
+	}
+
+	.single-product-layout .woocommerce-product-gallery {
+		order: 1;
+	}
+
+	.single-product-layout .buy-box {
+		order: 2;
+	}
+
+	.single-product-layout .test-report {
+		order: 3;
+	}
+
+	.single-product-layout .product-tabs {
+		order: 4;
+	}
+
+	.single-product-layout .related-products {
+		order: 5;
+	}
+
+	.woocommerce-product-gallery__image img {
+		height: auto;
+		aspect-ratio: 16 / 10;
+	}
+
+	.buy-box__title {
+		font-size: var(--fs-20);
+		line-height: 1.45;
+	}
+
+	.buy-box__price {
+		font-size: var(--fs-22);
+	}
+
+	.buy-box__panel {
+		padding: var(--sp-16);
+	}
+
+	.mobile-buy-bar {
+		position: fixed;
+		inset-inline: 0;
+		bottom: 0;
+		z-index: calc(var(--z-mega-menu) - 10);
+		display: flex;
+		align-items: center;
+		gap: var(--sp-10);
+		padding: 11px var(--sp-16) calc(11px + env(safe-area-inset-bottom, 0px));
+		background: var(--c-paper);
+		border-top: var(--border-default) solid var(--c-line);
+		transform: translateY(100%);
+		visibility: hidden;
+		transition: transform var(--transition-hover), visibility var(--transition-hover);
+	}
+
+	.mobile-buy-bar.is-visible {
+		transform: none;
+		visibility: visible;
+	}
+
+	body.single-product {
+		padding-bottom: 72px;
 	}
 }
 

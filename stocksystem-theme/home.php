@@ -16,7 +16,7 @@ get_header();
 $categories = get_categories( array( 'hide_empty' => true ) );
 ?>
 
-<header class="archive-header">
+<header class="archive-header archive-header--blog">
 	<div class="container">
 		<h1 class="archive-header__title"><?php esc_html_e( 'راهنمای خرید و نگهداری', 'stocksystem' ); ?></h1>
 		<p class="blog-index__desc"><?php esc_html_e( 'آنچه در کارگاه می‌بینیم، نوشته می‌شود: عیب‌های تکرارشونده، مقایسهٔ واقعی مدل‌ها و نکاتی که هزینهٔ تعمیر را کم می‌کند.', 'stocksystem' ); ?></p>

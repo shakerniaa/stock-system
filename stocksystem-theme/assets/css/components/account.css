@@ -614,7 +614,61 @@ table.shop_table td {
 @media (max-width: 767px) {
 	.account-page__grid,
 	.order-tracking-page__grid {
-		grid-template-columns: 1fr;
+		/* minmax(0, …) so the pill row scrolls instead of widening the page */
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.account-page {
+		padding-block: var(--sp-16) var(--sp-32);
+	}
+
+	.account-page__grid {
+		gap: var(--sp-16);
+	}
+
+	/* Phone: the sidebar becomes a scrollable row of pills instead of a
+	   screen-tall list pushing the content below the fold. */
+	.account-nav ul {
+		flex-direction: row;
+		gap: var(--sp-8);
+		padding: 0 0 var(--sp-4);
+		border: none;
+		overflow-x: auto;
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.account-nav ul::-webkit-scrollbar {
+		display: none;
+	}
+
+	.account-nav__item {
+		flex: 0 0 auto;
+	}
+
+	.account-nav__item a {
+		min-height: 40px;
+		padding: 0 var(--sp-14);
+		gap: var(--sp-8);
+		border: var(--border-default) solid var(--c-line);
+		border-radius: var(--radius-pill);
+		font-size: var(--fs-13);
+		white-space: nowrap;
+	}
+
+	.account-nav__item a svg {
+		width: 16px;
+		height: 16px;
+	}
+
+	.account-nav__item.is-active a {
+		border-color: var(--c-teal-500);
+	}
+
+	.account-nav__item--logout {
+		margin: 0;
+		padding: 0;
+		border: none;
 	}
 }
 
@@ -626,4 +680,176 @@ table.shop_table td {
 	.account-dashboard__order-row {
 		grid-template-columns: 1fr 1fr;
 	}
+}
+
+/* ---- Orders list (08 Account.dc.html order cards) ---- */
+.account-orders {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-18);
+}
+
+.account-orders__filters {
+	display: flex;
+	gap: var(--sp-8);
+	flex-wrap: wrap;
+}
+
+.account-orders__filter {
+	display: inline-flex;
+	align-items: center;
+	height: 38px;
+	padding-inline: var(--sp-16);
+	border-radius: var(--radius-pill);
+	background: var(--c-paper-alt);
+	border: var(--border-default) solid var(--c-line);
+	color: var(--c-text-2);
+	font-size: var(--fs-13-5);
+	font-weight: 500;
+}
+
+.account-orders__filter.is-current {
+	background: var(--c-ink-800);
+	border-color: var(--c-ink-800);
+	color: #fff;
+	font-weight: 600;
+}
+
+.account-orders__empty {
+	border: var(--border-default) dashed var(--c-line);
+	border-radius: var(--radius-card);
+	padding: var(--sp-40);
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-16);
+	align-items: center;
+	color: var(--c-text-2);
+}
+
+.account-order {
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-card);
+	overflow: hidden;
+}
+
+.account-order__head {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-32);
+	flex-wrap: wrap;
+	background: var(--c-paper-alt);
+	padding: var(--sp-16) var(--sp-22);
+	border-bottom: var(--border-default) solid var(--c-line);
+}
+
+.account-order__meta {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	font-size: var(--fs-12);
+	color: var(--c-text-3);
+}
+
+.account-order__meta strong {
+	font-size: var(--fs-14);
+	font-weight: 700;
+	color: var(--c-text);
+}
+
+.account-order__status {
+	margin-inline-start: auto;
+	border-radius: var(--radius-pill);
+	padding: 5px 12px;
+	font-size: var(--fs-12-5);
+	font-weight: 700;
+	background: var(--c-teal-050);
+	color: var(--c-teal-700);
+}
+
+.account-order__status.is-done {
+	background: var(--c-status-success-050);
+	color: var(--c-status-success);
+}
+
+.account-order__status.is-wait {
+	background: var(--c-amber-050);
+	color: var(--c-amber-700);
+}
+
+.account-order__status.is-bad {
+	background: var(--c-red-050);
+	color: var(--c-red-700);
+}
+
+.account-order__items {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-12);
+	padding: var(--sp-18) var(--sp-22);
+}
+
+.account-order__item {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-14);
+}
+
+.account-order__thumb {
+	width: 64px;
+	height: 52px;
+	border-radius: var(--radius-input);
+	background: var(--c-paper-alt);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	flex: 0 0 auto;
+}
+
+.account-order__thumb img {
+	max-width: 90%;
+	max-height: 90%;
+	object-fit: contain;
+	mix-blend-mode: multiply;
+}
+
+.account-order__item-info {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+
+.account-order__item-name {
+	font-size: var(--fs-15);
+	font-weight: 600;
+	color: var(--c-text);
+}
+
+.account-order__item-meta {
+	font-size: var(--fs-12-5);
+	color: var(--c-text-3);
+}
+
+.account-order .order-timeline {
+	margin: 0 var(--sp-22) var(--sp-18);
+}
+
+.account-order__actions {
+	display: flex;
+	gap: var(--sp-12);
+	padding: 0 var(--sp-22) var(--sp-20);
+}
+
+.account-orders__pager {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--sp-12);
+}
+
+/* The timeline component ships with its own bordered card; inside an
+   order card it should read as a light strip, not a box within a box. */
+.account-order .order-timeline {
+	border: none;
+	background: var(--c-paper-alt);
 }

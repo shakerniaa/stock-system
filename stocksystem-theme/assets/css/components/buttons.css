@@ -78,3 +78,50 @@
 	color: var(--c-ink-800);
 	opacity: .92;
 }
+
+/* Quantity stepper — shared by the product buy box and cart lines (it
+   lived in product-page.css, which the cart doesn't load, so cart
+   quantities rendered as three unstyled default buttons). */
+.quantity-stepper {
+	display: inline-flex;
+	align-items: center;
+	border: var(--border-interactive) solid var(--c-line);
+	background: var(--c-paper);
+	border-radius: var(--radius-input);
+	overflow: hidden;
+}
+
+.quantity-stepper__btn {
+	width: 44px;
+	height: 52px;
+	background: transparent;
+	border: none;
+	color: var(--c-text);
+	font-size: var(--fs-18);
+}
+
+.quantity-stepper input.qty {
+	width: 40px;
+	height: 52px;
+	border: none;
+	text-align: center;
+	font-size: var(--fs-16);
+	font-weight: 600;
+	color: var(--c-text);
+	background: transparent;
+	-moz-appearance: textfield;
+}
+
+.quantity-stepper input.qty::-webkit-inner-spin-button,
+.quantity-stepper input.qty::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+}
+
+.cart-line .quantity-stepper__btn,
+.cart-line .quantity-stepper input.qty {
+	height: 40px;
+}
+
+.cart-line .quantity-stepper__btn {
+	width: 36px;
+}

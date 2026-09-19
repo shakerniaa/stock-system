@@ -91,6 +91,13 @@ ul, ol {
 	}
 }
 
+/* Every mobile frame in the design uses a 16px gutter. */
+@media (max-width: 599px) {
+	.container {
+		padding-inline: var(--sp-16);
+	}
+}
+
 /* Shared breadcrumb row — blog index/single, repair, and other
    content pages. */
 .page-crumb {

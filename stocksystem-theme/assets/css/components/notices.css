@@ -1,0 +1,74 @@
+/**
+ * WooCommerce notices (added-to-cart, validation errors, info) — its own
+ * stylesheet is disabled, so without this they render as bare text lines.
+ * Inline banners with a coloured leading edge; transient confirmations
+ * still use the toast (toast.css).
+ */
+
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--sp-8) var(--sp-16);
+	margin: 0 0 var(--sp-20);
+	padding: var(--sp-14) var(--sp-16);
+	list-style: none;
+	border: var(--border-default) solid var(--c-line);
+	border-inline-start-width: 4px;
+	border-radius: var(--radius-card);
+	background: var(--c-paper-alt);
+	font-size: var(--fs-14);
+	line-height: 1.85;
+	color: var(--c-text);
+}
+
+.woocommerce-message {
+	border-color: var(--c-status-success);
+	background: var(--c-status-success-050);
+}
+
+.woocommerce-info {
+	border-color: var(--c-teal-500);
+	background: var(--c-teal-050);
+}
+
+.woocommerce-error {
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--sp-4);
+	border-color: var(--c-red-600);
+	background: var(--c-red-050);
+	color: var(--c-red-700);
+}
+
+.woocommerce-error li {
+	margin: 0;
+}
+
+/* "View cart" etc. — plain text link at the far end of the banner. */
+.woocommerce-message .button,
+.woocommerce-info .button {
+	order: 2;
+	margin-inline-start: auto;
+	font-weight: 600;
+	color: var(--c-teal-700);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.woocommerce-message a:not(.button),
+.woocommerce-info a:not(.button),
+.woocommerce-error a {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.woocommerce-NoticeGroup {
+	margin-bottom: var(--sp-16);
+}
+
+.woocommerce-NoticeGroup .woocommerce-error {
+	margin-bottom: 0;
+}

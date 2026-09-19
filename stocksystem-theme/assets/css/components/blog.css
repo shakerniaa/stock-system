@@ -49,6 +49,53 @@
 }
 
 /* ---- Index / archive ---- */
+/* 05 Blog: the index header sits on white (not the shop's grey band) with a
+   34px title and filled pill filters. */
+.archive-header--blog {
+	background: var(--c-paper);
+	border-bottom: 0;
+	padding-block: var(--sp-36) 0;
+}
+
+.archive-header--blog .archive-header__title {
+	font-size: var(--fs-34);
+	font-weight: 700;
+	margin-top: 0;
+}
+
+.archive-header--blog .blog-index__desc {
+	margin-block: var(--sp-10) var(--sp-24);
+}
+
+.archive-header--blog .archive-header__chips {
+	margin-top: 0;
+	gap: var(--sp-10);
+}
+
+.archive-header--blog .archive-header__chip {
+	height: auto;
+	padding: var(--sp-8) var(--sp-16);
+	border: 0;
+	background: var(--c-paper-alt);
+	color: var(--c-text-2);
+	font-weight: 500;
+}
+
+.archive-header--blog .archive-header__chip:hover {
+	background: var(--c-teal-050);
+	color: var(--c-teal-700);
+}
+
+.archive-header--blog .archive-header__chip.is-current {
+	background: var(--c-ink-800);
+	color: var(--c-on-dark);
+	font-weight: 600;
+}
+
+.archive-header--blog + .blog-index {
+	padding-block: var(--sp-26) var(--sp-56);
+}
+
 .blog-index__desc {
 	max-width: 660px;
 	font-size: var(--fs-16);
@@ -81,6 +128,121 @@
 @media (max-width: 767px) {
 	.blog-index__grid {
 		grid-template-columns: 1fr;
+	}
+}
+
+/* 05 Blog mobile frame: first post is a bordered "featured" card, the rest
+   collapse into compact rows (100x76 thumb, title, then meta). */
+@media (max-width: 599px) {
+	.archive-header--blog {
+		padding-block: var(--sp-20) 0;
+	}
+
+	.archive-header--blog .archive-header__title {
+		font-size: var(--fs-26);
+	}
+
+	.archive-header--blog .blog-index__desc {
+		font-size: var(--fs-14);
+		margin-block: var(--sp-8) var(--sp-16);
+	}
+
+	.archive-header--blog .archive-header__chips {
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		margin-inline: calc(var(--sp-16) * -1);
+		padding-inline: var(--sp-16);
+		scrollbar-width: none;
+	}
+
+	.archive-header--blog .archive-header__chips::-webkit-scrollbar {
+		display: none;
+	}
+
+	.archive-header--blog .archive-header__chip {
+		flex: 0 0 auto;
+		height: 36px;
+		padding-block: 0;
+		font-size: var(--fs-12-5);
+	}
+
+	.archive-header--blog + .blog-index {
+		padding-block: var(--sp-14) var(--sp-32);
+	}
+
+	.blog-index__grid {
+		gap: var(--sp-14);
+	}
+
+	.blog-index__grid > .blog-card:first-child {
+		gap: var(--sp-8);
+		border: var(--border-default) solid var(--c-line);
+		border-radius: var(--radius-panel);
+		overflow: hidden;
+	}
+
+	.blog-index__grid > .blog-card:first-child .blog-card__cover {
+		height: 170px;
+		border-radius: 0;
+	}
+
+	.blog-index__grid > .blog-card:first-child .blog-card__meta,
+	.blog-index__grid > .blog-card:first-child .blog-card__title,
+	.blog-index__grid > .blog-card:first-child .blog-card__excerpt {
+		margin-inline: var(--sp-14);
+	}
+
+	.blog-index__grid > .blog-card:first-child .blog-card__excerpt {
+		margin-bottom: var(--sp-14);
+		font-size: var(--fs-12-5);
+		line-height: 1.9;
+	}
+
+	.blog-index__grid > .blog-card:first-child .blog-card__title {
+		font-size: var(--fs-16);
+		font-weight: 800;
+		line-height: 1.55;
+	}
+
+	.blog-index__grid > .blog-card:not(:first-child) {
+		display: grid;
+		grid-template-columns: 100px minmax(0, 1fr);
+		grid-template-areas:
+			"cover title"
+			"cover meta";
+		grid-template-rows: auto 1fr;
+		align-items: start;
+		column-gap: var(--sp-12);
+		row-gap: var(--sp-5);
+		padding-bottom: var(--sp-14);
+		border-bottom: var(--border-default) solid var(--c-line-soft);
+	}
+
+	.blog-index__grid > .blog-card:not(:first-child):last-child {
+		border-bottom: 0;
+		padding-bottom: 0;
+	}
+
+	.blog-index__grid > .blog-card:not(:first-child) .blog-card__cover {
+		grid-area: cover;
+		width: 100px;
+		height: 76px;
+		border-radius: 10px;
+	}
+
+	.blog-index__grid > .blog-card:not(:first-child) .blog-card__title {
+		grid-area: title;
+		font-size: var(--fs-13-5);
+		font-weight: 700;
+	}
+
+	.blog-index__grid > .blog-card:not(:first-child) .blog-card__meta {
+		grid-area: meta;
+		font-size: var(--fs-11);
+	}
+
+	.blog-index__grid > .blog-card:not(:first-child) .blog-card__excerpt {
+		display: none;
 	}
 }
 

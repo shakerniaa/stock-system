@@ -23,8 +23,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 <a class="skip-link" href="#primary"><?php esc_html_e( 'رفتن به محتوای اصلی', 'stocksystem' ); ?></a>
 
 <header id="masthead" class="site-header">
-	<?php get_template_part( 'template-parts/header/topbar' ); ?>
-	<?php get_template_part( 'template-parts/header/masthead' ); ?>
-	<?php get_template_part( 'template-parts/header/primary-nav' ); ?>
-	<?php get_template_part( 'template-parts/header/mobile-header' ); ?>
+	<?php if ( function_exists( 'is_checkout' ) && is_checkout() ) : ?>
+		<?php get_template_part( 'template-parts/header/checkout-header' ); ?>
+	<?php else : ?>
+		<?php get_template_part( 'template-parts/header/topbar' ); ?>
+		<?php get_template_part( 'template-parts/header/masthead' ); ?>
+		<?php get_template_part( 'template-parts/header/primary-nav' ); ?>
+		<?php get_template_part( 'template-parts/header/mobile-header' ); ?>
+	<?php endif; ?>
 </header>

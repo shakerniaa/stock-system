@@ -18,8 +18,8 @@ $shop_url     = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
 ?>
 
 <div class="checkout-page">
+	<?php get_template_part( 'template-parts/checkout/step-indicator', null, array( 'current' => 1 ) ); ?>
 	<div class="container">
-		<?php get_template_part( 'template-parts/checkout/step-indicator', null, array( 'current' => 1 ) ); ?>
 
 		<h1 class="checkout-page__title">
 			<?php
@@ -87,6 +87,14 @@ $shop_url     = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
 				<a href="<?php echo esc_url( $checkout_url ); ?>" class="btn btn--primary btn--block"><?php esc_html_e( 'ادامه به اطلاعات و ارسال', 'stocksystem' ); ?></a>
 				<span class="checkout-summary__terms"><?php esc_html_e( 'با ادامهٔ خرید، قوانین و شرایط استوک سیستم را می‌پذیرید.', 'stocksystem' ); ?></span>
 			</aside>
+		</div>
+
+		<div class="mobile-summary-bar">
+			<span class="mobile-summary-bar__total">
+				<span class="mobile-summary-bar__label"><?php esc_html_e( 'قابل پرداخت', 'stocksystem' ); ?></span>
+				<span class="mobile-summary-bar__amount"><?php wc_cart_totals_order_total_html(); ?></span>
+			</span>
+			<a href="<?php echo esc_url( $checkout_url ); ?>" class="btn btn--primary mobile-summary-bar__cta"><?php esc_html_e( 'ادامه به اطلاعات و ارسال', 'stocksystem' ); ?></a>
 		</div>
 	</div>
 </div>

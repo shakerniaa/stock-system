@@ -6,7 +6,11 @@
 
 /* ---- Shared page shell ---- */
 .checkout-page {
-	padding-block: var(--sp-32) var(--sp-48);
+	padding-bottom: var(--sp-48);
+}
+
+.checkout-page > .container {
+	padding-top: var(--sp-32);
 }
 
 .checkout-page__title {
@@ -32,13 +36,18 @@
 }
 
 /* ---- Stepper ---- */
+/* Full-width light band under the header (12 Checkout Flow.dc.html). */
+.checkout-stepper-band {
+	background: var(--c-paper-alt);
+	border-bottom: var(--border-default) solid var(--c-line);
+}
+
 .checkout-stepper {
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
 	gap: var(--sp-10);
 	padding: var(--sp-20) 0;
-	border-bottom: var(--border-default) solid var(--c-line);
 }
 
 .checkout-stepper__stage {
@@ -46,7 +55,11 @@
 	align-items: center;
 	gap: var(--sp-10);
 	flex: 1;
-	min-width: 170px;
+	min-width: 0;
+}
+
+.checkout-stepper__stage:last-child {
+	flex: 0 0 auto;
 }
 
 .checkout-stepper__circle {
@@ -350,6 +363,100 @@
 	flex-direction: column;
 	gap: var(--sp-16);
 	margin-bottom: var(--sp-24);
+	background: var(--c-paper);
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-panel);
+	padding: var(--sp-24);
+}
+
+/* Shipping goes through the delivery step, so WooCommerce's shipping-address
+   block renders as an empty shell — hide it instead of showing a bare card. */
+.woocommerce-shipping-fields:not(:has(*)) {
+	display: none;
+}
+
+/* WooCommerce wraps the actual fields in *__field-wrapper; with its own
+   layout stylesheet disabled, nothing laid them out — every field stacked
+   full-width with no row gap, so each label sat as close to the previous
+   input as to its own. Two-up grid: first/last halves, wide rows span. */
+.woocommerce-billing-fields__field-wrapper,
+.woocommerce-shipping-fields__field-wrapper,
+.woocommerce-additional-fields__field-wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--sp-18) var(--sp-16);
+}
+
+.woocommerce-billing-fields__field-wrapper .form-row,
+.woocommerce-shipping-fields__field-wrapper .form-row,
+.woocommerce-additional-fields__field-wrapper .form-row {
+	margin: 0;
+	min-width: 0;
+}
+
+.woocommerce-billing-fields__field-wrapper .form-row-wide,
+.woocommerce-shipping-fields__field-wrapper .form-row-wide,
+.woocommerce-additional-fields__field-wrapper .form-row-wide {
+	grid-column: 1 / -1;
+}
+
+.form-row .required,
+.form-row abbr.required {
+	color: var(--c-red-600);
+	text-decoration: none;
+	border: 0;
+	margin-inline-start: 3px;
+}
+
+.form-row .optional {
+	color: var(--c-text-3);
+	font-weight: 400;
+}
+
+/* selectWoo (country/state/city) — match the 48px inputs. */
+.form-row .select2-container {
+	width: 100% !important;
+}
+
+.form-row .select2-container--default .select2-selection--single {
+	height: 48px;
+	border: var(--border-interactive) solid var(--c-line);
+	border-radius: var(--radius-input);
+	background: var(--c-paper);
+	display: flex;
+	align-items: center;
+}
+
+.form-row .select2-container--default .select2-selection--single .select2-selection__rendered {
+	line-height: 46px;
+	padding-inline: 14px 34px;
+	font-size: var(--fs-15);
+	color: var(--c-text);
+}
+
+.form-row .select2-container--default .select2-selection--single .select2-selection__arrow {
+	height: 46px;
+	inset-inline-start: auto;
+	inset-inline-end: 8px;
+}
+
+.form-row .select2-container--default.select2-container--focus .select2-selection--single,
+.form-row .select2-container--default.select2-container--open .select2-selection--single {
+	border-color: var(--c-teal-500);
+}
+
+.select2-dropdown {
+	border-color: var(--c-line);
+	border-radius: var(--radius-input);
+	font-family: var(--font-family-base);
+}
+
+@media (max-width: 599px) {
+	.woocommerce-billing-fields__field-wrapper,
+	.woocommerce-shipping-fields__field-wrapper,
+	.woocommerce-additional-fields__field-wrapper {
+		grid-template-columns: 1fr;
+	}
 }
 
 .woocommerce-billing-fields h3,
@@ -440,14 +547,8 @@
 	font-weight: 600;
 }
 
-/* ---- Order review (WooCommerce core markup, restyled) ---- */
-.woocommerce-checkout-review-order {
-	border: var(--border-default) solid var(--c-line);
-	border-radius: var(--radius-panel);
-	padding: var(--sp-22);
-	background: var(--c-paper-alt);
-}
-
+/* ---- Order review tables (account order details reuse WooCommerce's
+   shop_table markup; the checkout review itself is the summary card below) ---- */
 table.shop_table {
 	width: 100%;
 	border-collapse: collapse;
@@ -466,53 +567,6 @@ table.shop_table tfoot th,
 table.shop_table tfoot td {
 	font-weight: 700;
 	color: var(--c-text);
-}
-
-#shipping_method,
-ul.wc_payment_methods {
-	list-style: none;
-	padding: 0;
-	margin: 0 0 var(--sp-18);
-	display: flex;
-	flex-direction: column;
-	gap: var(--sp-10);
-}
-
-#shipping_method li,
-ul.wc_payment_methods li.wc_payment_method {
-	border: var(--border-interactive) solid var(--c-line);
-	border-radius: var(--radius-panel);
-	padding: var(--sp-16);
-	background: var(--c-paper);
-}
-
-ul.wc_payment_methods li.wc_payment_method label {
-	font-size: var(--fs-15);
-	font-weight: 700;
-	color: var(--c-text);
-}
-
-.payment_box {
-	margin-top: var(--sp-12);
-	font-size: var(--fs-14);
-	line-height: 1.85;
-	color: var(--c-text-2);
-}
-
-#place_order {
-	width: 100%;
-	height: 52px;
-	border-radius: var(--radius-button-lg);
-	background: var(--c-teal-500);
-	color: #fff;
-	border: none;
-	font-size: var(--fs-16);
-	font-weight: 700;
-	margin-top: var(--sp-12);
-}
-
-#place_order:hover {
-	background: var(--c-teal-600);
 }
 
 .woocommerce-terms-and-conditions-wrapper {
@@ -904,9 +958,6 @@ ul.wc_payment_methods li.wc_payment_method label {
 		flex-wrap: wrap;
 	}
 
-	.checkout-stepper__label {
-		display: none;
-	}
 }
 
 @media (max-width: 767px) {
@@ -924,5 +975,485 @@ ul.wc_payment_methods li.wc_payment_method label {
 		flex-direction: row;
 		align-items: center;
 		gap: var(--sp-12);
+	}
+}
+
+/* The aside and the preview inside it both carried the panel styling,
+   drawing a box inside a box — only the outer one is the card. */
+.checkout-summary > .checkout-summary-preview {
+	background: none;
+	border: none;
+	padding: 0;
+	border-radius: 0;
+}
+
+/* WooCommerce appends its required-asterisk to every option label of a
+   required radio field; on the invoice-type pills that reads as a stray ×. */
+.invoice-type-field label.radio .required {
+	display: none;
+}
+
+/* ---- Payment step: shipping + payment cards (main) and summary + CTA (aside) ----
+   Two WooCommerce fragments (checkout/payment.php, checkout/review-order.php)
+   are the grid's only children, so AJAX refreshes never disturb the layout. */
+#order_review.woocommerce-checkout-review-order {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 372px;
+	gap: var(--sp-32);
+	align-items: start;
+}
+
+#order_review > .woocommerce-checkout-payment {
+	grid-column: 1;
+	grid-row: 1;
+}
+
+#order_review > .woocommerce-checkout-review-order-table {
+	grid-column: 2;
+	grid-row: 1;
+	position: sticky;
+	top: var(--sp-24);
+}
+
+.checkout-payment {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-32);
+	min-width: 0;
+}
+
+.checkout-shipping,
+.checkout-methods {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-14);
+}
+
+.checkout-shipping .checkout-page__section-title,
+.checkout-methods .checkout-page__section-title {
+	margin-bottom: var(--sp-4);
+}
+
+.checkout-shipping__list,
+.wc_payment_methods {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-14);
+}
+
+/* Selectable option card — the design's radio cards (STEP 03). */
+.checkout-shipping__option,
+.wc_payment_method {
+	position: relative;
+	padding: var(--sp-20);
+	padding-inline-start: 54px;
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-panel);
+	background: var(--c-paper);
+	transition: border-color var(--transition-hover), background-color var(--transition-hover);
+}
+
+.checkout-shipping__option:hover,
+.wc_payment_method:hover {
+	border-color: var(--c-text-disabled);
+}
+
+.checkout-shipping__option:has(input:checked),
+.wc_payment_method:has(input:checked) {
+	padding: calc(var(--sp-20) - 1px);
+	padding-inline-start: 53px;
+	border: var(--border-selected) solid var(--c-teal-500);
+	background: var(--c-teal-025);
+}
+
+.checkout-shipping__option > input[type="radio"],
+.wc_payment_method > input[type="radio"] {
+	position: absolute;
+	inset-inline-start: var(--sp-20);
+	top: 22px;
+	margin: 0;
+	width: 20px;
+	height: 20px;
+	appearance: none;
+	-webkit-appearance: none;
+	border: 2px solid var(--c-text-disabled);
+	border-radius: 50%;
+	background: var(--c-paper);
+	cursor: pointer;
+}
+
+.checkout-shipping__option:has(input:checked) > input[type="radio"],
+.wc_payment_method:has(input:checked) > input[type="radio"] {
+	inset-inline-start: calc(var(--sp-20) - 1px);
+	top: 21px;
+	border: 6px solid var(--c-teal-500);
+}
+
+.checkout-shipping__option > input[type="radio"]:focus-visible,
+.wc_payment_method > input[type="radio"]:focus-visible {
+	outline: var(--focus-ring-width) solid var(--focus-ring-color);
+	outline-offset: var(--focus-ring-offset);
+}
+
+.checkout-shipping__option > label,
+.wc_payment_method > label {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sp-12);
+	flex-wrap: wrap;
+	margin: 0;
+	font-size: var(--fs-15);
+	font-weight: 700;
+	color: var(--c-text);
+	cursor: pointer;
+}
+
+/* Stretch the label over the whole card so the entire card selects. */
+.checkout-shipping__option > label::after,
+.wc_payment_method > label::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+}
+
+.checkout-shipping__price {
+	font-size: var(--fs-14);
+	font-weight: 600;
+	color: var(--c-teal-700);
+}
+
+.checkout-shipping__price.is-free {
+	color: var(--c-status-success);
+}
+
+.wc_payment_method .payment_box {
+	position: relative;
+	z-index: 1;
+	margin-top: var(--sp-10);
+	font-size: var(--fs-14);
+	line-height: 1.85;
+	color: var(--c-text-2);
+}
+
+.wc_payment_method .payment_box p {
+	margin: 0;
+}
+
+.wc_payment_method img {
+	max-height: 24px;
+	width: auto;
+}
+
+.checkout-methods__empty,
+.checkout-shipping__empty {
+	margin: 0;
+	padding: var(--sp-20);
+	border: var(--border-default) dashed var(--c-line);
+	border-radius: var(--radius-panel);
+	font-size: var(--fs-14);
+	line-height: 1.85;
+	color: var(--c-text-2);
+	list-style: none;
+}
+
+.checkout-review .place-order {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-12);
+}
+
+.checkout-review #place_order {
+	height: 52px;
+	border-radius: var(--radius-button-lg);
+	font-size: var(--fs-16);
+	font-weight: 700;
+}
+
+.checkout-review .woocommerce-terms-and-conditions-wrapper {
+	font-size: var(--fs-13);
+	line-height: 1.85;
+	color: var(--c-text-2);
+}
+
+.checkout-summary__secure {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--sp-10);
+	padding: var(--sp-14);
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-card);
+	background: var(--c-paper);
+	font-size: var(--fs-12);
+	line-height: 1.85;
+	color: var(--c-text-2);
+}
+
+.checkout-summary__secure svg {
+	flex: 0 0 auto;
+	margin-top: 2px;
+	color: var(--c-teal-700);
+}
+
+.checkout-back {
+	margin-top: var(--sp-24);
+}
+
+@media (max-width: 1023px) {
+	#order_review.woocommerce-checkout-review-order {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	/* One column: choices first, summary after (the DOM has them the other
+	   way round because WooCommerce hooks the review at priority 10). */
+	#order_review > .woocommerce-checkout-payment,
+	#order_review > .woocommerce-checkout-review-order-table {
+		grid-column: 1;
+		grid-row: auto;
+		position: static;
+	}
+
+	#order_review > .woocommerce-checkout-payment {
+		order: 1;
+	}
+
+	#order_review > .woocommerce-checkout-review-order-table {
+		order: 2;
+	}
+}
+
+@media (max-width: 767px) {
+	/* The fixed bar's button forwards to #place_order, so hide the in-card one. */
+	.checkout-review #place_order {
+		display: none;
+	}
+}
+
+/* ---- Phone: compact stepper, cart cards, fixed total + CTA bar ---- */
+.mobile-summary-bar {
+	display: none;
+}
+
+@media (max-width: 599px) {
+	/* 04 Cart Checkout mobile frame: 20px circles, 12px labels, hairline
+	   connectors. Four stages don't all fit with labels, so only the
+	   current one keeps its label. */
+	.checkout-stepper {
+		flex-wrap: nowrap;
+		gap: var(--sp-6);
+		padding: var(--sp-14) 0;
+	}
+
+	.checkout-stepper__stage {
+		gap: var(--sp-6);
+	}
+
+	.checkout-stepper__circle {
+		width: 20px;
+		height: 20px;
+		font-size: var(--fs-10-5, 10.5px);
+		border-width: 1px;
+	}
+
+	.checkout-stepper__label {
+		font-size: var(--fs-12);
+	}
+
+	.checkout-stepper__stage:not(.is-current) .checkout-stepper__label {
+		display: none;
+	}
+
+	.checkout-stepper__line {
+		height: 1px;
+		min-width: 10px;
+	}
+
+	.checkout-page > .container {
+		padding-top: var(--sp-16);
+	}
+
+	.checkout-page__title {
+		font-size: var(--fs-19);
+		margin-block: var(--sp-4) var(--sp-16);
+	}
+
+	.checkout-page__grid {
+		gap: var(--sp-16);
+	}
+
+	.cart-lines {
+		gap: var(--sp-12);
+	}
+
+	.cart-line {
+		display: grid;
+		grid-template-columns: 84px minmax(0, 1fr);
+		grid-template-areas:
+			"thumb info"
+			"thumb controls";
+		align-items: start;
+		gap: var(--sp-6) var(--sp-12);
+		padding: 13px;
+	}
+
+	.cart-line__thumb {
+		grid-area: thumb;
+		width: 84px;
+		height: 84px;
+	}
+
+	.cart-line__info {
+		grid-area: info;
+		gap: var(--sp-6);
+	}
+
+	.cart-line__name {
+		font-size: var(--fs-13-5);
+		font-weight: 700;
+		line-height: 1.6;
+	}
+
+	.cart-line__controls {
+		grid-area: controls;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--sp-10);
+	}
+
+	.cart-line__price {
+		font-size: var(--fs-14-5, 14.5px);
+		font-weight: 800;
+	}
+
+	.cart-line .quantity-stepper__btn,
+	.cart-line .quantity-stepper input.qty {
+		height: 34px;
+	}
+
+	.cart-line .quantity-stepper__btn {
+		width: 34px;
+	}
+
+	.cart-line .quantity-stepper input.qty {
+		width: 32px;
+		font-size: var(--fs-13-5);
+		font-weight: 700;
+	}
+
+	.cart-actions {
+		flex-wrap: wrap;
+	}
+
+	.checkout-summary {
+		padding: var(--sp-16);
+		border-radius: var(--radius-card);
+		max-width: none;
+	}
+
+	.woocommerce-billing-fields,
+	.woocommerce-shipping-fields,
+	.woocommerce-additional-fields {
+		padding: var(--sp-16);
+		margin-bottom: var(--sp-16);
+		border-radius: var(--radius-card);
+	}
+
+	.checkout-summary__total-amount {
+		font-size: var(--fs-18, 18px);
+	}
+
+	/* Thank-you banner: icon + title side by side, order number under them. */
+	.order-confirmation-banner {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		grid-template-areas:
+			"icon text"
+			"number number";
+		align-items: center;
+		gap: var(--sp-14) var(--sp-14);
+		padding: var(--sp-20);
+		margin-block: var(--sp-16);
+	}
+
+	.order-confirmation-banner__icon {
+		grid-area: icon;
+		width: 48px;
+		height: 48px;
+	}
+
+	.order-confirmation-banner__text {
+		grid-area: text;
+	}
+
+	.order-confirmation-banner__title {
+		font-size: var(--fs-20);
+		line-height: 1.5;
+	}
+
+	.order-confirmation-banner__desc {
+		grid-column: 1 / -1;
+		font-size: var(--fs-13-5);
+	}
+
+	.order-confirmation-banner__number {
+		grid-area: number;
+		flex-direction: row;
+		align-items: baseline;
+		justify-content: space-between;
+		padding-top: var(--sp-12);
+		border-top: var(--border-default) solid var(--overlay-on-dark-14);
+	}
+}
+
+@media (max-width: 767px) {
+	/* The design's phone pattern: total + primary CTA pinned to the bottom
+	   of the viewport for the whole cart/checkout scroll. It's a sibling of
+	   the page grid so sticky positioning spans the entire page body. */
+	.mobile-summary-bar {
+		position: sticky;
+		bottom: 0;
+		z-index: calc(var(--z-mega-menu) - 10);
+		display: flex;
+		align-items: center;
+		gap: var(--sp-12);
+		margin: var(--sp-16) calc(var(--sp-16) * -1) 0;
+		padding: 12px var(--sp-16) calc(12px + env(safe-area-inset-bottom, 0px));
+		background: var(--c-paper);
+		border-top: var(--border-default) solid var(--c-line);
+	}
+
+	.mobile-summary-bar__total {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		flex: 0 0 auto;
+	}
+
+	.mobile-summary-bar__label {
+		font-size: var(--fs-11);
+		color: var(--c-text-3);
+	}
+
+	.mobile-summary-bar__amount {
+		font-size: var(--fs-16);
+		font-weight: 800;
+		color: var(--c-text);
+	}
+
+	.mobile-summary-bar__cta {
+		flex: 1;
+		height: 52px;
+		font-size: var(--fs-15);
+		font-weight: 700;
+	}
+
+	/* The bar carries the CTA on phones; drop the duplicate in the card. */
+	.checkout-summary > .btn--primary,
+	.checkout-summary > .checkout-summary__terms {
+		display: none;
 	}
 }

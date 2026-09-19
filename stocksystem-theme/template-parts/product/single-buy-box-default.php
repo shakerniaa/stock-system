@@ -37,3 +37,10 @@ $product = ! empty( $args['product'] ) ? $args['product'] : $GLOBALS['product'];
 <a class="btn btn--outline btn--block buy-box__consult" href="tel:<?php echo esc_attr( stocksystem_business( 'phone' ) ); ?>">
 	<?php esc_html_e( 'استعلام تلفنی و مشاورهٔ خرید', 'stocksystem' ); ?>
 </a>
+
+<div class="mobile-buy-bar" data-mobile-buy-bar>
+	<a class="mobile-buy-bar__call" href="tel:<?php echo esc_attr( stocksystem_business( 'phone' ) ); ?>" aria-label="<?php esc_attr_e( 'تماس برای مشاوره', 'stocksystem' ); ?>">
+		<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 5.5h4l2 4.5-2.5 1.5a10 10 0 0 0 4.5 4.5l1.5-2.5 4.5 2v4a1.5 1.5 0 0 1-1.7 1.5C10.8 19.8 4.2 13.2 3 6.2A1.5 1.5 0 0 1 4.5 5.5z"></path></svg>
+	</a>
+	<button type="button" class="btn btn--primary mobile-buy-bar__cta"><?php esc_html_e( 'افزودن به سبد', 'stocksystem' ); ?></button>
+</div>

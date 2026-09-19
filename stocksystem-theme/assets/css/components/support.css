@@ -234,3 +234,36 @@
 .faq-page__sidebar .btn {
 	align-self: flex-start;
 }
+
+/* Generic WordPress page content (page.php) */
+.legal-page__prose {
+	font-size: var(--fs-15);
+	line-height: 2.05;
+	color: var(--c-text-2);
+}
+
+.legal-page__prose > * {
+	margin: 0;
+}
+
+.legal-page__prose h2 {
+	font-size: var(--fs-22);
+	font-weight: 700;
+	color: var(--c-text);
+	margin-top: var(--sp-12);
+}
+
+.legal-page__prose h3 {
+	font-size: var(--fs-17);
+	font-weight: 700;
+	color: var(--c-text);
+}
+
+.legal-page__prose ul,
+.legal-page__prose ol {
+	padding-inline-start: var(--sp-22);
+}
+
+.legal-page__prose a {
+	color: var(--c-teal-600);
+}

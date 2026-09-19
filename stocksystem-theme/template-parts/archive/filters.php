@@ -33,15 +33,30 @@ $exclude           = ! empty( $args['exclude'] ) ? (array) $args['exclude'] : ar
 		if ( in_array( $param, $exclude, true ) || ! taxonomy_exists( $facet['taxonomy'] ) ) {
 			continue;
 		}
-		$terms = get_terms( array( 'taxonomy' => $facet['taxonomy'], 'hide_empty' => true ) );
+		$terms = get_terms( array( 'taxonomy' => $facet['taxonomy'], 'hide_empty' => false ) );
 		if ( is_wp_error( $terms ) || empty( $terms ) ) {
 			continue;
 		}
 		$checked_values = isset( $_GET[ $param ] ) ? array_map( 'sanitize_title', (array) wp_unslash( $_GET[ $param ] ) ) : array();
+
+		// Counts are products in this archive's scope, not the taxonomy's
+		// stored term count (stale/zero for brands). A checked value stays
+		// listed even at zero so it can be unchecked.
+		$facet_terms = array();
+		foreach ( $terms as $term ) {
+			$term_count = stocksystem_facet_term_count( $term );
+			if ( $term_count > 0 || in_array( $term->slug, $checked_values, true ) ) {
+				$facet_terms[] = array( $term, $term_count );
+			}
+		}
+		if ( empty( $facet_terms ) ) {
+			continue;
+		}
 		?>
 		<fieldset class="archive-filters__group">
 			<legend class="archive-filters__legend"><?php echo esc_html( $facet['label'] ); ?></legend>
-			<?php foreach ( $terms as $term ) : ?>
+			<?php foreach ( $facet_terms as $facet_term ) : ?>
+				<?php list( $term, $term_count ) = $facet_term; ?>
 				<label class="archive-filters__checkbox">
 					<input
 						type="checkbox"
@@ -53,7 +68,7 @@ $exclude           = ! empty( $args['exclude'] ) ? (array) $args['exclude'] : ar
 						<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"></path></svg>
 					</span>
 					<span class="archive-filters__checkbox-label"><?php echo esc_html( $term->name ); ?></span>
-					<span class="archive-filters__checkbox-count"><?php echo esc_html( stocksystem_to_persian_digits( $term->count ) ); ?></span>
+					<span class="archive-filters__checkbox-count"><?php echo esc_html( stocksystem_to_persian_digits( $term_count ) ); ?></span>
 				</label>
 			<?php endforeach; ?>
 		</fieldset>

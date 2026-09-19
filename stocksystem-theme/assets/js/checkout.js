@@ -56,6 +56,40 @@
 			} );
 		}
 
+		// Phone-only fixed bar: total + the current step's primary action.
+		var bar = document.querySelector( '[data-checkout-bar]' );
+		var barCta = bar && bar.querySelector( '[data-checkout-bar-cta]' );
+		var barTotal = bar && bar.querySelector( '[data-checkout-bar-total]' );
+
+		function syncBar() {
+			if ( ! bar ) {
+				return;
+			}
+			var onPayment = ! stepPayment.hidden;
+			barCta.textContent = onPayment ? barCta.getAttribute( 'data-label-pay' ) : barCta.getAttribute( 'data-label-continue' );
+
+			// Once WooCommerce has priced shipping, prefer its total.
+			var reviewTotal = onPayment && document.querySelector( '#order_review .checkout-summary__total-amount' );
+			if ( reviewTotal && reviewTotal.innerHTML.trim() ) {
+				barTotal.innerHTML = reviewTotal.innerHTML;
+			}
+		}
+
+		if ( bar ) {
+			barCta.addEventListener( 'click', function () {
+				var placeOrder = document.getElementById( 'place_order' );
+				if ( ! stepPayment.hidden && placeOrder ) {
+					placeOrder.click();
+				} else {
+					continueBtn.click();
+				}
+			} );
+
+			if ( $ ) {
+				$( document.body ).on( 'updated_checkout', syncBar );
+			}
+		}
+
 		continueBtn.addEventListener( 'click', function () {
 			if ( ! form.reportValidity() ) {
 				return;
@@ -64,6 +98,7 @@
 			stepInfo.hidden = true;
 			stepPayment.hidden = false;
 			setStepperStage( 3 );
+			syncBar();
 			stepPayment.scrollIntoView( { behavior: 'smooth', block: 'start' } );
 
 			// Refresh shipping/totals now that the address is filled in.
@@ -77,6 +112,7 @@
 				stepPayment.hidden = true;
 				stepInfo.hidden = false;
 				setStepperStage( 2 );
+				syncBar();
 				stepInfo.scrollIntoView( { behavior: 'smooth', block: 'start' } );
 			} );
 		}

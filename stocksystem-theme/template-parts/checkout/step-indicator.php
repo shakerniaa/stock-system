@@ -23,6 +23,8 @@ $stages = array(
 	4 => __( 'پیگیری سفارش', 'stocksystem' ),
 );
 ?>
+<div class="checkout-stepper-band">
+<div class="container">
 <div class="checkout-stepper">
 	<?php foreach ( $stages as $number => $label ) : ?>
 		<span class="checkout-stepper__stage<?php echo $number < $current ? ' is-done' : ( $number === $current ? ' is-current' : '' ); ?>">
@@ -37,4 +39,6 @@ $stages = array(
 			<?php if ( $number < count( $stages ) ) : ?><span class="checkout-stepper__line" aria-hidden="true"></span><?php endif; ?>
 		</span>
 	<?php endforeach; ?>
+</div>
+</div>
 </div>

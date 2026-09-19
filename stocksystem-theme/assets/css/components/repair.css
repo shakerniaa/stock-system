@@ -103,6 +103,17 @@
 	font-weight: 700;
 }
 
+/* The last stage (delivery) is still ahead of the customer — outlined. */
+.repair-steps__item:last-child .repair-steps__dot {
+	background: var(--c-paper);
+	border: 2px solid var(--c-text-disabled);
+	color: var(--c-text-3);
+}
+
+.repair-steps__item:last-child .repair-steps__label {
+	color: var(--c-text-3);
+}
+
 .repair-steps__line {
 	width: 2px;
 	height: 26px;
@@ -149,6 +160,7 @@
 .repair-table__row span {
 	padding: var(--sp-16) var(--sp-18);
 	font-size: var(--fs-14-5);
+	line-height: 1.5;
 	color: var(--c-text);
 	display: flex;
 	align-items: center;
@@ -165,6 +177,11 @@
 
 .repair-table__price {
 	font-weight: 700;
+}
+
+.repair-table__price.is-quote {
+	font-weight: 600;
+	color: var(--c-text-2);
 }
 
 @media (max-width: 767px) {

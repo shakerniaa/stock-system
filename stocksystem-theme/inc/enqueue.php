@@ -15,6 +15,7 @@ function stocksystem_enqueue_assets() {
 	wp_enqueue_style( 'stocksystem-base', STOCKSYSTEM_URI . '/assets/css/base.css', array( 'stocksystem-tokens', 'stocksystem-fonts' ), STOCKSYSTEM_VERSION );
 	wp_enqueue_style( 'stocksystem-buttons', STOCKSYSTEM_URI . '/assets/css/components/buttons.css', array( 'stocksystem-base' ), STOCKSYSTEM_VERSION );
 	wp_enqueue_style( 'stocksystem-toast', STOCKSYSTEM_URI . '/assets/css/components/toast.css', array( 'stocksystem-base' ), STOCKSYSTEM_VERSION );
+	wp_enqueue_style( 'stocksystem-notices', STOCKSYSTEM_URI . '/assets/css/components/notices.css', array( 'stocksystem-base' ), STOCKSYSTEM_VERSION );
 	wp_enqueue_style( 'stocksystem-header', STOCKSYSTEM_URI . '/assets/css/components/header.css', array( 'stocksystem-buttons' ), STOCKSYSTEM_VERSION );
 	wp_enqueue_style( 'stocksystem-footer', STOCKSYSTEM_URI . '/assets/css/components/footer.css', array( 'stocksystem-buttons' ), STOCKSYSTEM_VERSION );
 	wp_enqueue_style( 'stocksystem-product-card', STOCKSYSTEM_URI . '/assets/css/components/product-card.css', array( 'stocksystem-buttons' ), STOCKSYSTEM_VERSION );
@@ -72,7 +73,7 @@ function stocksystem_enqueue_assets() {
 		wp_enqueue_style( 'stocksystem-grading', STOCKSYSTEM_URI . '/assets/css/components/grading.css', array( 'stocksystem-product-page' ), STOCKSYSTEM_VERSION );
 	}
 
-	if ( is_page_template( array( 'page-templates/terms.php', 'page-templates/privacy.php', 'page-templates/faq.php' ) ) ) {
+	if ( is_page_template( array( 'page-templates/terms.php', 'page-templates/privacy.php', 'page-templates/faq.php' ) ) || ( is_page() && ! is_page_template() ) ) {
 		wp_enqueue_style( 'stocksystem-support', STOCKSYSTEM_URI . '/assets/css/components/support.css', array( 'stocksystem-buttons' ), STOCKSYSTEM_VERSION );
 	}
 
@@ -88,7 +89,10 @@ function stocksystem_enqueue_assets() {
 		|| is_page_template( 'page-templates/order-tracking.php' );
 
 	if ( $is_account_area ) {
-		wp_enqueue_style( 'stocksystem-account', STOCKSYSTEM_URI . '/assets/css/components/account.css', array( 'stocksystem-product-card' ), STOCKSYSTEM_VERSION );
+		// checkout.css carries the .order-timeline the order cards reuse.
+		wp_enqueue_style( 'stocksystem-checkout', STOCKSYSTEM_URI . '/assets/css/components/checkout.css', array( 'stocksystem-product-card' ), STOCKSYSTEM_VERSION );
+		wp_enqueue_style( 'stocksystem-account', STOCKSYSTEM_URI . '/assets/css/components/account.css', array( 'stocksystem-product-card', 'stocksystem-checkout' ), STOCKSYSTEM_VERSION );
+		wp_enqueue_script( 'stocksystem-account-nav', STOCKSYSTEM_URI . '/assets/js/account-nav.js', array(), STOCKSYSTEM_VERSION, true );
 		if ( function_exists( 'is_account_page' ) && is_account_page() && ! is_user_logged_in() ) {
 			wp_enqueue_script( 'stocksystem-otp-login', STOCKSYSTEM_URI . '/assets/js/otp-login.js', array( 'stocksystem-wishlist' ), STOCKSYSTEM_VERSION, true );
 		}

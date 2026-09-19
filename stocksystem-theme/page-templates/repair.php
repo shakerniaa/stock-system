@@ -67,7 +67,7 @@ $submit_status = isset( $_GET['repair_request'] ) ? sanitize_key( wp_unslash( $_
 					</span>
 					<span><?php echo esc_html( $service['turnaround'] ); ?></span>
 					<span><?php echo $service['warranty'] ? esc_html( $service['warranty'] ) : '—'; ?></span>
-					<span class="repair-table__price"><?php echo $service['price_from'] ? esc_html( stocksystem_format_number( $service['price_from'] ) ) : esc_html__( 'پس از بررسی', 'stocksystem' ); ?></span>
+					<span class="repair-table__price<?php echo $service['price_from'] ? '' : ' is-quote'; ?>"><?php echo $service['price_from'] ? esc_html( stocksystem_format_number( $service['price_from'] ) ) : esc_html__( 'پس از بررسی', 'stocksystem' ); ?></span>
 				</div>
 			<?php endforeach; ?>
 		</div>

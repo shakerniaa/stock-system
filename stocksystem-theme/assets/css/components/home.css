@@ -374,3 +374,62 @@
 		width: 100%;
 	}
 }
+
+/* Phone rhythm from the 01 Home.dc.html mobile frame: 17px section titles on
+   one row with the link, 3-up category tiles, 16px gutters, tight sections. */
+@media (max-width: 599px) {
+	.home-categories,
+	.home-featured,
+	.home-blog {
+		padding-block: var(--sp-20);
+	}
+
+	.home-trust {
+		padding-block: var(--sp-28);
+	}
+
+	.home-categories__header,
+	.home-featured__header,
+	.home-blog__header {
+		align-items: center;
+		margin-bottom: var(--sp-12);
+		gap: var(--sp-10);
+	}
+
+	.home-categories__header h2,
+	.home-featured__header h2,
+	.home-blog__header h2 {
+		font-size: 17px;
+		font-weight: 800;
+	}
+
+	.home-categories__header a,
+	.home-featured__header a,
+	.home-blog__header a {
+		font-size: var(--fs-12-5);
+	}
+
+	.home-featured__rule {
+		display: none;
+	}
+
+	.home-categories__grid {
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--sp-10);
+	}
+
+	.home-categories__tile {
+		padding: var(--sp-14) var(--sp-8);
+		min-height: 92px;
+		justify-content: center;
+		gap: var(--sp-8);
+	}
+
+	.home-categories__name {
+		font-size: var(--fs-12);
+	}
+
+	.home-categories__count {
+		display: none;
+	}
+}

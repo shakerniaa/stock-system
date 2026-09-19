@@ -72,6 +72,28 @@ remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_r
 // side (tablet+) instead of stacked, which is what surfaced it.
 remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_product_data_tabs', 10 );
 
+// The coupon field lives in the cart's order summary (design), so drop
+// WooCommerce's default "have a coupon? click here" banner above checkout.
+remove_action( 'woocommerce_before_checkout_form', 'woocommerce_checkout_coupon_form', 10 );
+
+// The design labels the card button «افزودن به سبد» (WooCommerce's fa_IR
+// string adds «خرید», which wraps to two lines in the 2-up mobile cards).
+add_filter(
+	'woocommerce_product_add_to_cart_text',
+	function ( $text, $product ) {
+		if ( $product && $product->is_type( 'simple' ) && $product->is_purchasable() && $product->is_in_stock() ) {
+			return __( 'افزودن به سبد', 'stocksystem' );
+		}
+		return $text;
+	},
+	10,
+	2
+);
+
+// The theme has no sidebar.php; WooCommerce's default sidebar hook would
+// call get_sidebar() and log a "theme without sidebar.php" deprecation.
+remove_action( 'woocommerce_sidebar', 'woocommerce_get_sidebar', 10 );
+
 // Swap WooCommerce's own wrappers for ours so archive/single templates sit
 // inside the same .container frame as the rest of the theme.
 remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10 );
@@ -136,6 +158,29 @@ add_filter(
 	},
 	20
 );
+
+// WooCommerce stores its default checkout/registration privacy sentences in
+// English when the option was first written before the fa_IR pack loaded;
+// swap in Persian only while the store still holds that untouched default.
+add_filter(
+	'woocommerce_get_privacy_policy_text',
+	function ( $text, $type ) {
+		if ( 0 !== strpos( wp_strip_all_tags( (string) $text ), 'Your personal data will be used' ) ) {
+			return $text;
+		}
+
+		if ( 'registration' === $type ) {
+			return __( 'اطلاعات شخصی شما برای پشتیبانی از تجربهٔ شما در این سایت، مدیریت دسترسی به حساب کاربری و سایر مقاصد ذکرشده در [privacy_policy] استفاده می‌شود.', 'stocksystem' );
+		}
+
+		return __( 'اطلاعات شخصی شما برای پردازش سفارش، بهبود تجربهٔ شما در این سایت و سایر مقاصد ذکرشده در [privacy_policy] استفاده می‌شود.', 'stocksystem' );
+	},
+	10,
+	2
+);
+
+// «۴ عدد در انبار» — WooCommerce prints the raw integer.
+add_filter( 'woocommerce_format_stock_quantity', 'stocksystem_to_persian_digits' );
 
 /**
  * Order tracking is a standalone guest-accessible page (page-templates/
