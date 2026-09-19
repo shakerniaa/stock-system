@@ -42,8 +42,13 @@ function stocksystem_configurator_attribute_options( WC_Product_Variable $produc
 	}
 
 	$options = array();
-	$attribute_object = $product->get_attribute_object( $attribute_name );
-	$is_taxonomy = $attribute_object && $attribute_object->is_taxonomy();
+	// WC_Product has no get_attribute_object() — look it up from the
+	// product's own attributes array (keyed the same way
+	// get_variation_attributes() keys $attribute_name: the raw
+	// attribute name, e.g. "pa_ram" for a taxonomy attribute).
+	$product_attributes = $product->get_attributes();
+	$attribute_object   = isset( $product_attributes[ $attribute_name ] ) ? $product_attributes[ $attribute_name ] : null;
+	$is_taxonomy        = $attribute_object && $attribute_object->is_taxonomy();
 
 	foreach ( $variations as $variation ) {
 		$value = isset( $variation['attributes'][ $key ] ) ? $variation['attributes'][ $key ] : '';

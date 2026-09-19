@@ -61,7 +61,13 @@ function stocksystem_save_addons_meta( $post_id ) {
 	$raw     = wp_unslash( $_POST['_addons'] );
 	$decoded = json_decode( $raw, true );
 
-	update_post_meta( $post_id, '_addons', is_array( $decoded ) ? wp_json_encode( $decoded ) : '' );
+	// JSON_UNESCAPED_UNICODE so Persian labels store as real UTF-8
+	// text, not \uXXXX escapes — keeps raw postmeta human-readable and
+	// avoids relying on every consumer decoding those escapes back
+	// correctly (an admin's Persian addon label going in with default
+	// json_encode escaping is exactly the kind of thing worth not
+	// having to debug from a hex dump later).
+	update_post_meta( $post_id, '_addons', is_array( $decoded ) ? wp_json_encode( $decoded, JSON_UNESCAPED_UNICODE ) : '' );
 }
 add_action( 'woocommerce_process_product_meta', 'stocksystem_save_addons_meta' );
 
@@ -94,7 +100,11 @@ function stocksystem_add_addons_to_cart_item_data( $cart_item_data, $product_id 
 		return $cart_item_data;
 	}
 
-	$available = wp_list_pluck( stocksystem_get_product_addons( $product_id ), null, 'id' );
+	// array_column, not wp_list_pluck: wp_list_pluck() can't take a null
+	// $field to mean "the whole item" — it plucks $item[''] instead,
+	// logs "Undefined array key" and returns nulls, so no chosen add-on
+	// ever matched and the surcharge silently never applied.
+	$available = array_column( stocksystem_get_product_addons( $product_id ), null, 'id' );
 	$chosen    = array();
 
 	foreach ( wp_unslash( $_POST['stocksystem_addons'] ) as $addon_id ) {

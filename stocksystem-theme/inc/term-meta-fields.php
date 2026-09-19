@@ -49,8 +49,11 @@ function stocksystem_save_product_cat_faq_field( $term_id ) {
 
 	// Validate as JSON before storing so a malformed edit can't wreck the
 	// front-end render — store empty rather than garbage.
+	// JSON_UNESCAPED_UNICODE keeps the stored Persian Q&A readable as
+	// real text rather than \uXXXX escapes (see the identical note in
+	// inc/product-addons.php's save function).
 	$decoded = json_decode( $raw, true );
-	update_term_meta( $term_id, 'faq_json', is_array( $decoded ) ? wp_json_encode( $decoded ) : '' );
+	update_term_meta( $term_id, 'faq_json', is_array( $decoded ) ? wp_json_encode( $decoded, JSON_UNESCAPED_UNICODE ) : '' );
 }
 add_action( 'edited_product_cat', 'stocksystem_save_product_cat_faq_field' );
 add_action( 'created_product_cat', 'stocksystem_save_product_cat_faq_field' );

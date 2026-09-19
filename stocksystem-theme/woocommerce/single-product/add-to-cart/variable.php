@@ -76,8 +76,16 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 
 						<!-- Hidden native select — required by wc-add-to-cart-variation.js
 						     for server-authoritative price/stock lookup; the tiles above
-						     drive it via assets/js/product-configurator.js. -->
-						<span class="configurator__native-select screen-reader-text">
+						     drive it via assets/js/product-configurator.js. The "variations"
+						     class is load-bearing, not decorative: WooCommerce's own
+						     add-to-cart-variation.js finds attribute selects with
+						     `$form.find('.variations select')` — without it, wc_variation_form()
+						     initializes on the form but binds to zero fields, so selecting
+						     tiles updates the hidden <select>s (confirmed via
+						     product-configurator.js) but WooCommerce never notices, no
+						     found_variation event ever fires, and the price/stock/add-to-cart
+						     area stays permanently empty. -->
+						<span class="configurator__native-select variations screen-reader-text">
 							<?php
 							wc_dropdown_variation_attribute_options(
 								array(
