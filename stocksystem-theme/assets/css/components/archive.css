@@ -99,10 +99,35 @@
 /* ---- Layout: 9/3 sidebar + main ---- */
 .archive-layout__row {
 	display: grid;
-	grid-template-columns: 3fr 9fr;
+	grid-template-columns: 1fr;
 	gap: var(--sp-24);
 	align-items: start;
 	padding-bottom: var(--sp-44);
+}
+
+/* Desktop: 9/3 split with products first (README + 02 Category.dc.html
+   `9fr 3fr`) — in RTL that puts the filter sidebar on the physical left.
+   DOM order stays sidebar-first (the mobile drawer needs it), so the
+   columns are placed explicitly. Product grid is 3-up here, not 4: the
+   sidebar takes a quarter of the width. */
+@media (min-width: 1024px) {
+	.archive-layout__row {
+		grid-template-columns: 9fr 3fr;
+	}
+
+	.archive-layout__main {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	.archive-layout__sidebar {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	.archive-layout__main .product-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
 }
 
 .archive-layout__sidebar-header {
@@ -681,10 +706,6 @@
 
 /* ---- Responsive ---- */
 @media (max-width: 1023px) {
-	.archive-layout__row {
-		grid-template-columns: 1fr;
-	}
-
 	.archive-layout__sidebar {
 		position: fixed;
 		inset-inline: 0;

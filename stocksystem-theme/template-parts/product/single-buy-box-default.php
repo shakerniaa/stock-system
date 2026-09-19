@@ -33,3 +33,7 @@ $product = ! empty( $args['product'] ) ? $args['product'] : $GLOBALS['product'];
 <?php endif; ?>
 
 <?php woocommerce_template_single_add_to_cart(); ?>
+
+<a class="btn btn--outline btn--block buy-box__consult" href="tel:<?php echo esc_attr( stocksystem_business( 'phone' ) ); ?>">
+	<?php esc_html_e( 'استعلام تلفنی و مشاورهٔ خرید', 'stocksystem' ); ?>
+</a>

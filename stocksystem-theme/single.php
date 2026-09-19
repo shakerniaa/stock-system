@@ -47,7 +47,7 @@ while ( have_posts() ) :
 			<h1 class="blog-single__title"><?php the_title(); ?></h1>
 
 			<div class="blog-single__meta">
-				<span><?php echo esc_html( stocksystem_to_persian_digits( get_the_date() ) ); ?></span>
+				<span><?php echo esc_html( stocksystem_jdate( 'j F Y', get_post_time( 'U', true ) ) ); ?></span>
 				<span>
 					<?php
 					printf(

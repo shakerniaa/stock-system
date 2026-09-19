@@ -17,7 +17,14 @@ $primary_cat = ! empty( $categories ) ? $categories[0]->url : ( function_exists(
 
 $hero_images = array();
 if ( function_exists( 'wc_get_products' ) ) {
-	$hero_products = wc_get_products( array( 'limit' => 3, 'orderby' => 'date', 'order' => 'DESC', 'status' => 'publish' ) );
+	// The hero shows devices, so draw from the primary (first) category —
+	// laptops — rather than whatever product was added last.
+	$hero_args = array( 'limit' => 3, 'orderby' => 'date', 'order' => 'DESC', 'status' => 'publish' );
+	$hero_term = ! empty( $categories ) ? get_term_by( 'name', $categories[0]->name, 'product_cat' ) : null;
+	if ( $hero_term ) {
+		$hero_args['category'] = array( $hero_term->slug );
+	}
+	$hero_products = wc_get_products( $hero_args );
 	foreach ( $hero_products as $hero_product ) {
 		if ( $hero_product->get_image_id() ) {
 			$hero_images[] = array(
@@ -36,6 +43,11 @@ if ( empty( $hero_images ) ) {
 }
 ?>
 <section class="home-hero">
+	<span class="home-hero__decor" aria-hidden="true">
+		<span class="home-hero__decor-band"></span>
+		<span class="home-hero__decor-ring"></span>
+		<span class="home-hero__decor-ring"></span>
+	</span>
 	<div class="container home-hero__grid">
 		<div class="home-hero__copy">
 			<span class="home-hero__eyebrow">

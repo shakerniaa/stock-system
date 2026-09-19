@@ -6,6 +6,8 @@
  *
  * $args:
  *   post (WP_Post|int, required)
+ *   compact (bool, optional) — homepage teaser style per 01 Home.dc.html:
+ *   category · minutes + title only (no date, no excerpt).
  *
  * @package StockSystem
  */
@@ -20,6 +22,7 @@ if ( ! $post ) {
 	return;
 }
 
+$compact    = ! empty( $args['compact'] );
 $categories = get_the_category( $post );
 $category   = ! empty( $categories ) ? $categories[0] : null;
 ?>
@@ -38,8 +41,12 @@ $category   = ! empty( $categories ) ? $categories[0] : null;
 			esc_html( stocksystem_to_persian_digits( stocksystem_reading_time( $post ) ) )
 		);
 		?>
-		· <?php echo esc_html( stocksystem_to_persian_digits( get_the_date( '', $post ) ) ); ?>
+		<?php if ( ! $compact ) : ?>
+			· <?php echo esc_html( stocksystem_jdate( 'j F', get_post_time( 'U', true, $post ) ) ); ?>
+		<?php endif; ?>
 	</span>
 	<span class="blog-card__title"><?php echo esc_html( get_the_title( $post ) ); ?></span>
-	<span class="blog-card__excerpt"><?php echo esc_html( wp_trim_words( get_the_excerpt( $post ), 18 ) ); ?></span>
+	<?php if ( ! $compact ) : ?>
+		<span class="blog-card__excerpt"><?php echo esc_html( wp_trim_words( get_the_excerpt( $post ), 18 ) ); ?></span>
+	<?php endif; ?>
 </a>

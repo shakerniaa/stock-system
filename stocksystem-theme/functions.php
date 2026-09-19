@@ -9,7 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'STOCKSYSTEM_VERSION', '0.1.0' );
+// In WP_DEBUG the asset version changes every request, so a CSS/JS edit is
+// never hidden behind a browser cache keyed on an unchanged ?ver=0.1.0
+// (that stale-cache trap made a finished CSS change look like it hadn't
+// applied). Production keeps the fixed theme version for real caching.
+define( 'STOCKSYSTEM_VERSION', ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ? '0.1.0.' . time() : '0.1.0' );
 define( 'STOCKSYSTEM_DIR', get_template_directory() );
 define( 'STOCKSYSTEM_URI', get_template_directory_uri() );
 

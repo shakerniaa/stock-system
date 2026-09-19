@@ -27,8 +27,13 @@ if ( post_password_required() ) {
 $variant = stocksystem_product_card_variant( $product );
 $badges  = stocksystem_product_badges( $product, $variant );
 ?>
+<?php
+// Outside the grid, like WooCommerce's own template: it prints the (usually
+// empty) notices wrapper, which as a grid child would occupy the first cell,
+// pushing the gallery into the second column and the buy box to a new row.
+do_action( 'woocommerce_before_single_product' );
+?>
 <div id="product-<?php the_ID(); ?>" <?php wc_product_class( 'single-product-layout', $product ); ?>>
-	<?php do_action( 'woocommerce_before_single_product' ); ?>
 
 	<div class="single-product-layout__gallery-col">
 		<?php woocommerce_show_product_images(); ?>

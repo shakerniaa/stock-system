@@ -53,7 +53,7 @@ $bestsellers = function_exists( 'wc_get_products' ) ? wc_get_products(
 			<?php foreach ( $categories as $category ) : ?>
 				<a class="shop-hub__category-tile" href="<?php echo esc_url( $category->url ); ?>">
 					<span class="shop-hub__category-icon" aria-hidden="true">
-						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="11" rx="1.5"></rect><path d="M2 19h20"></path></svg>
+						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><?php echo stocksystem_category_icon( $category->name ); // phpcs:ignore WordPress.Security.EscapeOutput -- static SVG paths ?></svg>
 					</span>
 					<span class="shop-hub__category-name"><?php echo esc_html( $category->name ); ?></span>
 					<span class="shop-hub__category-count"><?php echo esc_html( stocksystem_to_persian_digits( $category->count ) ); ?> <?php esc_html_e( 'کالا', 'stocksystem' ); ?></span>

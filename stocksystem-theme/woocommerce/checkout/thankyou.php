@@ -100,7 +100,7 @@ $shop_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink(
 					</div>
 					<div class="order-confirmation-stats__item">
 						<span><?php esc_html_e( 'تاریخ ثبت', 'stocksystem' ); ?></span>
-						<strong><?php echo esc_html( stocksystem_to_persian_digits( $order->get_date_created()->date_i18n( 'j F' ) ) ); ?></strong>
+						<strong><?php echo esc_html( stocksystem_jdate( 'j F', $order->get_date_created()->getTimestamp() ) ); ?></strong>
 					</div>
 				</div>
 

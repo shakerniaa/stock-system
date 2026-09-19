@@ -30,11 +30,22 @@ function stocksystem_nav_categories() {
 		return $fallback;
 	}
 
+	// WooCommerce always creates an "Uncategorized" default bucket; it
+	// isn't a real shop category and shouldn't appear in the nav, mega
+	// menu, homepage tiles or footer.
+	$exclude = array();
+	$default = get_term( (int) get_option( 'default_product_cat' ), 'product_cat' );
+	if ( $default && ! is_wp_error( $default ) && 'uncategorized' === $default->slug ) {
+		$exclude[] = $default->term_id;
+	}
+
 	$terms = get_terms(
 		array(
 			'taxonomy'   => 'product_cat',
 			'parent'     => 0,
 			'hide_empty' => false,
+			'exclude'    => $exclude,
+			'menu_order' => 'ASC', // WooCommerce's own manual category order (Products > Categories drag-sort).
 		)
 	);
 
@@ -52,6 +63,33 @@ function stocksystem_nav_categories() {
 		},
 		$terms
 	);
+}
+
+/**
+ * Inner SVG paths (24x24 viewBox, stroke icons) for a product category,
+ * matched by keyword on its name — 01 Home.dc.html gives each category
+ * tile its own icon (laptop, all-in-one, tower, headset, wrench, …),
+ * not one shared glyph. Falls back to a generic box.
+ */
+function stocksystem_category_icon( $name ) {
+	$icons = array(
+		'آل‌این‌وان' => '<rect x="2.5" y="4" width="19" height="12.5" rx="2"></rect><path d="M8 20h8M12 16.5V20"></path>',
+		'مینی'       => '<rect x="6" y="3" width="12" height="18" rx="2"></rect><path d="M9.5 7h5M9.5 11h5"></path>',
+		'کیس'        => '<rect x="6" y="3" width="12" height="18" rx="2"></rect><path d="M9.5 7h5M9.5 11h5"></path>',
+		'مانیتور'    => '<rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path>',
+		'قطعات'      => '<rect x="6.5" y="6.5" width="11" height="11" rx="2"></rect><path d="M9.5 2.5v4M14.5 2.5v4M9.5 17.5v4M14.5 17.5v4M2.5 9.5h4M2.5 14.5h4M17.5 9.5h4M17.5 14.5h4"></path>',
+		'لوازم'      => '<rect x="2.5" y="12" width="5" height="8" rx="1.5"></rect><rect x="16.5" y="12" width="5" height="8" rx="1.5"></rect><path d="M4 12a8 8 0 0 1 16 0"></path>',
+		'تعمیر'      => '<path d="M4 20l9-9"></path><path d="M14.5 9.5a3.5 3.5 0 0 0 4.8-4.6l-2.3 2.3-2.2-.6-.6-2.2 2.3-2.3a3.5 3.5 0 0 0-4.6 4.8"></path>',
+		'لپ‌تاپ'     => '<rect x="4" y="4.5" width="16" height="11" rx="2"></rect><path d="M2 19h20"></path>',
+	);
+
+	foreach ( $icons as $keyword => $paths ) {
+		if ( false !== mb_strpos( $name, $keyword ) ) {
+			return $paths;
+		}
+	}
+
+	return '<path d="M4 8l8-4 8 4v8l-8 4-8-4z"></path><path d="M4 8l8 4 8-4M12 12v8"></path>';
 }
 
 /**

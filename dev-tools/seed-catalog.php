@@ -54,6 +54,8 @@ function ss_term( $name, $taxonomy, $parent = 0 ) {
 $categories = array();
 foreach ( array( 'لپ‌تاپ استوک', 'آل‌این‌وان', 'کیس و مینی‌پی‌سی', 'مانیتور', 'قطعات و ارتقا', 'لوازم جانبی' ) as $name ) {
 	$categories[ $name ] = ss_term( $name, 'product_cat' );
+	// Manual category order (WooCommerce term meta "order") = design order.
+	update_term_meta( $categories[ $name ], 'order', count( $categories ) - 1 );
 }
 
 // ---- Brands (matches stocksystem_nav_brands() fallback) ----
@@ -71,7 +73,24 @@ foreach ( array( 'A', 'B', 'C' ) as $slug ) {
 	}
 }
 
-$img_dir = dirname( __DIR__ ) . '/stocksystem-dev-kit/assets/products/';
+// Real photos from the design kit first, then generated placeholder art
+// (php dev-tools/make-placeholder-images.php) for everything else.
+$img_dir = array(
+	dirname( __DIR__ ) . '/stocksystem-dev-kit/assets/products/',
+	__DIR__ . '/placeholder-images/',
+);
+
+function ss_attach_first_image( $product_id, $file, $img_dirs, $alt ) {
+	foreach ( (array) $img_dirs as $dir ) {
+		if ( file_exists( $dir . $file ) ) {
+			$attach_id = ss_seed_image( $dir . $file, $product_id, $alt );
+			if ( $attach_id ) {
+				set_post_thumbnail( $product_id, $attach_id );
+			}
+			return;
+		}
+	}
+}
 
 function ss_existing_product_id( $name ) {
 	$found = get_posts( array( 'post_type' => 'product', 'title' => $name, 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
@@ -81,6 +100,12 @@ function ss_existing_product_id( $name ) {
 function ss_make_simple_product( $args, $categories, $brands, $grades, $img_dir ) {
 	$existing = ss_existing_product_id( $args['name'] );
 	if ( $existing ) {
+		if ( ! empty( $args['image'] ) && ! has_post_thumbnail( $existing ) ) {
+			ss_attach_first_image( $existing, $args['image'], $img_dir, $args['name'] );
+		}
+		if ( ! empty( $args['sku'] ) && ! get_post_meta( $existing, '_sku', true ) ) {
+			update_post_meta( $existing, '_sku', $args['sku'] );
+		}
 		return $existing;
 	}
 
@@ -91,6 +116,9 @@ function ss_make_simple_product( $args, $categories, $brands, $grades, $img_dir 
 	$product->set_regular_price( $args['regular_price'] );
 	if ( ! empty( $args['sale_price'] ) ) {
 		$product->set_sale_price( $args['sale_price'] );
+	}
+	if ( ! empty( $args['sku'] ) ) {
+		$product->set_sku( $args['sku'] );
 	}
 	$product->set_manage_stock( true );
 	$product->set_stock_quantity( $args['stock_qty'] );
@@ -120,10 +148,7 @@ function ss_make_simple_product( $args, $categories, $brands, $grades, $img_dir 
 	}
 
 	if ( ! empty( $args['image'] ) ) {
-		$attach_id = ss_seed_image( $img_dir . $args['image'], $product_id, $args['name'] );
-		if ( $attach_id ) {
-			set_post_thumbnail( $product_id, $attach_id );
-		}
+		ss_attach_first_image( $product_id, $args['image'], $img_dir, $args['name'] );
 	}
 
 	if ( ! empty( $args['test_report'] ) ) {
@@ -139,6 +164,7 @@ $created = array();
 
 $created[] = ss_make_simple_product( array(
 	'name'              => 'HP EliteBook 840 G8',
+	'sku'               => 'SS-HP840G8-16-512',
 	'regular_price'     => 32900000,
 	'stock_qty'         => 5,
 	'categories'        => array( 'لپ‌تاپ استوک' ),
@@ -152,6 +178,7 @@ $created[] = ss_make_simple_product( array(
 
 $created[] = ss_make_simple_product( array(
 	'name'              => 'Dell Inspiron 3520',
+	'sku'               => 'SS-DL3520-8-256',
 	'regular_price'     => 24500000,
 	'sale_price'        => 19800000,
 	'stock_qty'         => 8,
@@ -166,6 +193,7 @@ $created[] = ss_make_simple_product( array(
 
 $created[] = ss_make_simple_product( array(
 	'name'              => 'HP Pavilion 15',
+	'sku'               => 'SS-HP15-12-512',
 	'regular_price'     => 27800000,
 	'stock_qty'         => 2,
 	'low_stock_amount'  => 3,
@@ -179,6 +207,7 @@ $created[] = ss_make_simple_product( array(
 
 $created[] = ss_make_simple_product( array(
 	'name'              => 'Microsoft Surface Laptop 4',
+	'sku'               => 'SS-MS-SL4-8-256',
 	'regular_price'     => 41500000,
 	'stock_qty'         => 0,
 	'categories'        => array( 'لپ‌تاپ استوک' ),
@@ -190,42 +219,50 @@ $created[] = ss_make_simple_product( array(
 
 $created[] = ss_make_simple_product( array(
 	'name'              => 'Lenovo ThinkCentre M720q Mini PC',
+	'sku'               => 'SS-LN-M720Q-8-256',
 	'regular_price'     => 15900000,
 	'stock_qty'         => 6,
 	'categories'        => array( 'کیس و مینی‌پی‌سی' ),
 	'brand'             => 'Lenovo',
 	'grade'             => 'B',
 	'tags'              => array( 'featured' ),
+	'image'             => 'mini-pc.png',
 	'short_description' => 'Core i5 نسل هشتم، ۸ گیگابایت رم، ۲۵۶ گیگابایت SSD — مناسب دفتر کار و کیوسک.',
 	'test_report'       => array( 'battery_health' => '', 'runtime_hours' => 2100, 'body_condition' => 'B', 'dead_pixels' => '', 'test_date' => '۱۴۰۵/۰۶/۰۱' ),
 ), $categories, $brands, $grades, $img_dir );
 
 $created[] = ss_make_simple_product( array(
 	'name'              => 'Asus ProArt 27" Monitor',
+	'sku'               => 'SS-AS-PA27',
 	'regular_price'     => 12400000,
 	'stock_qty'         => 4,
 	'categories'        => array( 'مانیتور' ),
 	'brand'             => 'Asus',
 	'grade'             => 'A',
+	'image'             => 'monitor.png',
 	'short_description' => 'مانیتور ۲۷ اینچ QHD، پنل IPS، مناسب طراحی و ادیت.',
 ), $categories, $brands, $grades, $img_dir );
 
 $created[] = ss_make_simple_product( array(
 	'name'              => 'کیت ارتقای رم ۸ گیگابایت DDR4',
+	'sku'               => 'SS-RAM-8-DDR4',
 	'regular_price'     => 1450000,
 	'stock_qty'         => 20,
 	'categories'        => array( 'قطعات و ارتقا' ),
 	'tags'              => array( 'free-shipping' ),
+	'image'             => 'ram-module.png',
 	'short_description' => 'رم لپ‌تاپ DDR4 2666MHz، تست‌شده و سازگار با اکثر لپ‌تاپ‌های استوک.',
 ), $categories, $brands, $grades, $img_dir );
 
 $created[] = ss_make_simple_product( array(
 	'name'              => 'ماوس بی‌سیم لاجیتک M185',
+	'sku'               => 'SS-LG-M185',
 	'regular_price'     => 890000,
 	'sale_price'        => 690000,
 	'stock_qty'         => 30,
 	'categories'        => array( 'لوازم جانبی' ),
 	'tags'              => array( 'clearance' ),
+	'image'             => 'mouse.png',
 	'short_description' => 'ماوس بی‌سیم با باتری تا ۱۲ ماه — رنگ مشکی.',
 ), $categories, $brands, $grades, $img_dir );
 
@@ -234,6 +271,7 @@ if ( ! ss_existing_product_id( 'Lenovo ThinkPad T14 (قابل‌تنظیم)' ) )
 $var_product = new WC_Product_Variable();
 $var_product->set_name( 'Lenovo ThinkPad T14 (قابل‌تنظیم)' );
 $var_product->set_status( 'publish' );
+$var_product->set_date_created( '2026-09-01 10:00:00' ); // older than the photographed laptops so the homepage hero (newest laptops) uses real photos.
 $var_product->set_catalog_visibility( 'visible' );
 $var_product->set_short_description( 'Core i7 نسل یازدهم — رم و فضای ذخیره‌سازی را متناسب با نیاز خودتان انتخاب کنید.' );
 
@@ -329,6 +367,73 @@ $var_product->save();
 
 $created[] = $var_product_id;
 }
+
+// Variable product image (also covers re-runs where it already existed).
+$var_id = ss_existing_product_id( 'Lenovo ThinkPad T14 (قابل‌تنظیم)' );
+if ( $var_id && ! has_post_thumbnail( $var_id ) ) {
+	ss_attach_first_image( $var_id, 'laptop.png', $img_dir, 'Lenovo ThinkPad T14' );
+}
+
+// ---- Blog: real guide posts with covers (the homepage teaser and /blog/
+// otherwise show empty grey boxes). Idempotent by title. ----
+function ss_make_post( $title, $category, $content, $cover, $img_dirs ) {
+	$found = get_posts( array( 'post_type' => 'post', 'title' => $title, 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
+	if ( $found ) {
+		$post_id = (int) $found[0];
+	} else {
+		$cat_id  = ss_term( $category, 'category' );
+		$post_id = wp_insert_post( array(
+			'post_title'    => $title,
+			'post_status'   => 'publish',
+			'post_type'     => 'post',
+			'post_author'   => 1,
+			'post_content'  => $content,
+			'post_category' => array( $cat_id ),
+		) );
+	}
+	if ( $post_id && ! has_post_thumbnail( $post_id ) ) {
+		ss_attach_first_image( $post_id, $cover, $img_dirs, $title );
+	}
+	return $post_id;
+}
+
+// The default "Hello world" post isn't real content.
+foreach ( get_posts( array( 'post_type' => 'post', 'title' => 'سلام دنیا!', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) ) as $hello ) {
+	wp_delete_post( $hello, true );
+}
+wp_update_user( array( 'ID' => 1, 'display_name' => 'تیم فنی استوک سیستم' ) );
+
+$promo_id = ss_existing_product_id( 'HP EliteBook 840 G8' );
+$promo    = $promo_id ? '[stocksystem_product_promo id="' . $promo_id . '"]' : '';
+
+ss_make_post(
+	'لپ‌تاپ استوک بخریم یا نو؟ مقایسهٔ واقعی قیمت و عمر مفید',
+	'راهنمای خرید',
+	"<p>وقتی بودجه ثابت است، پرسش درست این نیست که «نو بهتر است یا استوک»، بلکه این است که با این مبلغ کدام سطح از سخت‌افزار به دست می‌آید. یک لپ‌تاپ سازمانی ردهٔ بالا که سه سال کار کرده، در بسیاری موارد از یک لپ‌تاپ خانگی نوی هم‌قیمت، بدنهٔ محکم‌تر و صفحه‌کلید بهتری دارد.</p><h2>سه سناریو با عدد</h2><p>برای کار اداری و مرور وب، نسل هشتم با ۱۶ گیگابایت رم کافی است. برای برنامه‌نویسی و ماشین مجازی، نسل یازدهم با ۱۶ تا ۳۲ گیگابایت. برای طراحی و رندر، کارت گرافیک مجزا لازم است و همین‌جاست که اختلاف قیمت نو و استوک بیشترین معنا را پیدا می‌کند.</p>{$promo}<h2>چه چیزی را باید بررسی کرد</h2><p>سلامت باتری، ساعت کارکرد دیسک و وضعیت بدنه سه عددی هستند که در برگهٔ تست هر دستگاه ما ثبت می‌شود؛ پس لازم نیست به حافظهٔ فروشنده اعتماد کنید.</p>",
+	'cover-buying-guide.png',
+	$img_dir
+);
+ss_make_post(
+	'نشانه‌های خرابی SSD و کاری که باید فوراً انجام دهید',
+	'عیب‌یابی',
+	"<p>حافظهٔ SSD معمولاً بی‌سروصدا خراب نمی‌شود؛ پیش از مرگ کامل، علامت‌های هشدار می‌دهد. شناخت این علامت‌ها می‌تواند اطلاعات شما را نجات دهد.</p><h2>پنج علامت هشدار</h2><p>کندشدن ناگهانی، فریز شدن هنگام ذخیره، فایل‌های خراب، ریست‌های تصادفی و ناپدید شدن درایو از بایوس، پرتکرارترین نشانه‌هایی هستند که در کارگاه می‌بینیم.</p><h2>اولین کار</h2><p>فوراً از اطلاعات مهم نسخهٔ پشتیبان بگیرید و دستگاه را کمتر روشن نگه دارید؛ هر بار روشن‌شدن ممکن است شانس بازیابی را کم کند.</p>",
+	'cover-troubleshooting.png',
+	$img_dir
+);
+ss_make_post(
+	'EliteBook در برابر Latitude: کدام برای کار اداری بهتر است؟',
+	'مقایسه',
+	"<p>این دو سری، رقیب اصلی در بازار لپ‌تاپ سازمانی استوک‌اند. هر دو بدنهٔ مقاوم و صفحه‌کلید خوبی دارند، ولی در جزئیات تفاوت‌هایی هست که برای خریدار مهم است.</p><h2>بدنه و صفحه‌کلید</h2><p>EliteBook بدنهٔ آلومینیومی سبک‌تری دارد؛ Latitude معمولاً کمی ضخیم‌تر و مقاوم‌تر در برابر ضربه است.</p><h2>باتری و هزینهٔ قطعات</h2><p>در هر دو سری قطعات یدکی فراوان است و هزینهٔ تعویض باتری تفاوت چندانی ندارد.</p>",
+	'cover-comparison.png',
+	$img_dir
+);
+ss_make_post(
+	'چطور سلامت باتری لپ‌تاپ استوک را قبل از خرید چک کنیم؟',
+	'عیب‌یابی',
+	"<p>باتری، اولین چیزی است که در یک لپ‌تاپ کارکرده افت می‌کند. خوشبختانه ویندوز ابزار داخلی دقیقی دارد که در چند ثانیه گزارش کاملی از ظرفیت واقعی باتری می‌سازد.</p><h2>خواندن گزارش باتری</h2><p>در Command Prompt فرمان powercfg /batteryreport را اجرا کنید و عدد Design Capacity را با Full Charge Capacity مقایسه کنید.</p><h2>چرخهٔ شارژ چقدر مهم است؟</h2><p>اگر ظرفیت فعلی زیر ۸۰٪ ظرفیت اولیه باشد، قیمت دستگاه باید حداقل به اندازهٔ یک باتری نو اصلاح شود.</p>",
+	'cover-battery.png',
+	$img_dir
+);
 
 echo "Created product IDs: " . implode( ', ', $created ) . "\n";
 echo "Categories: " . implode( ', ', array_keys( $categories ) ) . "\n";

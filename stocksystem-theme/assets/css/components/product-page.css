@@ -666,3 +666,9 @@
 		grid-template-columns: 1fr;
 	}
 }
+
+/* Phone consult CTA under add-to-cart (03 Product.dc.html). */
+.buy-box__consult {
+	margin-top: var(--sp-10);
+	height: 48px;
+}

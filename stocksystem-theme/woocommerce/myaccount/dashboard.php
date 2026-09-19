@@ -66,7 +66,7 @@ $recent_orders = wc_get_orders(
 			<?php foreach ( $recent_orders as $order ) : ?>
 				<a class="account-dashboard__order-row" href="<?php echo esc_url( $order->get_view_order_url() ); ?>">
 					<span class="ltr">#<?php echo esc_html( $order->get_order_number() ); ?></span>
-					<span><?php echo esc_html( stocksystem_to_persian_digits( $order->get_date_created()->date_i18n( 'j F' ) ) ); ?></span>
+					<span><?php echo esc_html( stocksystem_jdate( 'j F', $order->get_date_created()->getTimestamp() ) ); ?></span>
 					<span><?php echo esc_html( wc_get_order_status_name( $order->get_status() ) ); ?></span>
 					<span><?php echo wp_kses_post( $order->get_formatted_order_total() ); ?></span>
 				</a>

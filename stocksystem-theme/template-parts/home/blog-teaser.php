@@ -29,7 +29,7 @@ if ( empty( $posts ) ) {
 
 		<div class="home-blog__grid">
 			<?php foreach ( $posts as $post ) : ?>
-				<?php get_template_part( 'template-parts/blog/card', null, array( 'post' => $post ) ); ?>
+				<?php get_template_part( 'template-parts/blog/card', null, array( 'post' => $post, 'compact' => true ) ); ?>
 			<?php endforeach; ?>
 		</div>
 	</div>

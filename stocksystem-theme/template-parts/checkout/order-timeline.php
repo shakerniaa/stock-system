@@ -37,7 +37,7 @@ $steps = stocksystem_order_timeline_steps( $order );
 				<span class="order-timeline__date">
 					<?php
 					if ( $step['date'] instanceof WC_DateTime ) {
-						echo esc_html( stocksystem_to_persian_digits( $step['date']->date_i18n( 'j F · H:i' ) ) );
+						echo esc_html( stocksystem_jdate( 'j F · H:i', $step['date']->getTimestamp() ) );
 					} elseif ( $step['done'] ) {
 						esc_html_e( 'انجام‌شده', 'stocksystem' );
 					} else {

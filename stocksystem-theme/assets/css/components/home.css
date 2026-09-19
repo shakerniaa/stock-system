@@ -100,10 +100,57 @@
 	padding: var(--sp-20) var(--sp-24);
 }
 
+/* Design sizing (01 Home.dc.html): centre image largest, outer two
+   smaller and vertically centred; the row is allowed to bleed slightly
+   past the panel edges rather than shrink to fit. */
 .home-hero__media img {
+	flex: 0 0 auto;
 	width: 32%;
 	max-height: 100%;
 	object-fit: contain;
+}
+
+.home-hero__media img:nth-child(1),
+.home-hero__media img:nth-child(3) {
+	align-self: center;
+}
+
+.home-hero__media img:nth-child(1) {
+	width: 34%;
+}
+
+.home-hero__media img:nth-child(2) {
+	width: 46%;
+}
+
+/* Decorative diagonal bands + two outlined rings behind the hero copy. */
+.home-hero__decor {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	overflow: hidden;
+}
+
+.home-hero__decor-band {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(115deg, transparent 52%, rgba(14, 186, 175, .16) 52%, rgba(14, 186, 175, .16) 66%, transparent 66%, transparent 72%, rgba(10, 143, 135, .22) 72%, transparent 90%);
+}
+
+.home-hero__decor-ring {
+	position: absolute;
+	top: -120px;
+	inset-inline-start: -140px;
+	width: 340px;
+	height: 340px;
+	border: var(--border-default) solid rgba(14, 186, 175, .28);
+	border-radius: 50%;
+}
+
+.home-hero__decor-ring + .home-hero__decor-ring {
+	top: -104px;
+	inset-inline-start: -124px;
+	border-color: rgba(14, 186, 175, .15);
 }
 
 /* ---- Categories ---- */
@@ -212,6 +259,25 @@
 .home-trust {
 	background: var(--c-ink-800);
 	padding-block: var(--sp-44);
+	position: relative;
+	overflow: hidden;
+}
+
+/* Outlined ring bleeding off the bottom corner (01 Home.dc.html). */
+.home-trust::before {
+	content: '';
+	position: absolute;
+	bottom: -150px;
+	inset-inline-end: -120px;
+	width: 300px;
+	height: 300px;
+	border: var(--border-default) solid rgba(14, 186, 175, .22);
+	border-radius: 50%;
+	pointer-events: none;
+}
+
+.home-trust__grid {
+	position: relative;
 }
 
 .home-trust__grid {

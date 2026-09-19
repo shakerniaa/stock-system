@@ -63,7 +63,7 @@ $hours      = stocksystem_business( 'store_hours' );
 
 	<div class="container site-footer__bottom">
 		<span class="site-footer__copyright">
-			&copy; <?php echo esc_html( stocksystem_to_persian_digits( date_i18n( 'Y' ) ) ); ?>
+			&copy; <?php echo esc_html( stocksystem_jdate( 'Y' ) ); ?>
 			<?php bloginfo( 'name' ); ?> — <?php esc_html_e( 'تمام حقوق محفوظ است.', 'stocksystem' ); ?>
 		</span>
 	</div>
