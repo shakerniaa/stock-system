@@ -22,6 +22,7 @@ require STOCKSYSTEM_DIR . '/inc/enqueue.php';
 require STOCKSYSTEM_DIR . '/inc/customizer-settings.php';
 require STOCKSYSTEM_DIR . '/inc/home-settings.php';
 require STOCKSYSTEM_DIR . '/inc/site-texts.php';
+require STOCKSYSTEM_DIR . '/inc/nav-settings.php';
 require STOCKSYSTEM_DIR . '/inc/menus.php';
 require STOCKSYSTEM_DIR . '/inc/js-strings.php';
 require STOCKSYSTEM_DIR . '/inc/persian-numerals.php';

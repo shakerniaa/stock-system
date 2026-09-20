@@ -60,7 +60,7 @@ add_filter( 'gettext_with_context', 'stocksystem_text_filter_context', 10, 4 );
 function stocksystem_texts_excluded( $relative ) {
 	return 0 === strpos( $relative, 'dev-tools/' )
 		|| 0 === strpos( $relative, 'node_modules/' )
-		|| in_array( $relative, array( 'inc/home-settings.php', 'inc/site-texts.php' ), true );
+		|| in_array( $relative, array( 'inc/home-settings.php', 'inc/site-texts.php', 'inc/nav-settings.php' ), true );
 }
 
 /** Persian group title for a template file. */

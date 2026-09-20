@@ -45,16 +45,33 @@ $global_brands = array_map(
 
 		<div class="mega-menu__panes">
 			<?php
+			// Each pane = automatic data (WooCommerce) unless Appearance → «منو و فوتر»
+			// replaced or hid a column: stocksystem_mega_pane_args() merges the two.
+			$ranges = stocksystem_price_ranges();
+
+			$price_links = function ( $base_url ) use ( $ranges ) {
+				$links = array();
+				foreach ( $ranges as $range ) {
+					$links[] = array(
+						'label' => $range['label'],
+						'url'   => add_query_arg( array( 'min_price' => $range['min'], 'max_price' => $range['max'] ), $base_url ),
+					);
+				}
+				return $links;
+			};
+
 			get_template_part(
 				'template-parts/header/mega-menu-pane',
 				null,
-				array(
-					'key'      => 'all',
-					'brands'   => $global_brands,
-					'all_url'  => $shop_url,
-					'base_url' => $shop_url,
-					'featured' => stocksystem_nav_featured_product(),
-					'hidden'   => false,
+				stocksystem_mega_pane_args(
+					'all',
+					array(
+						'brands'   => $global_brands,
+						'prices'   => $price_links( $shop_url ),
+						'featured' => stocksystem_nav_featured_product(),
+						'all_url'  => $shop_url,
+						'hidden'   => false,
+					)
 				)
 			);
 
@@ -73,13 +90,15 @@ $global_brands = array_map(
 				get_template_part(
 					'template-parts/header/mega-menu-pane',
 					null,
-					array(
-						'key'      => stocksystem_mega_key( $category, $i ),
-						'brands'   => $brands,
-						'all_url'  => $category->url,
-						'base_url' => $category->url,
-						'featured' => ! empty( $cat_data['featured'] ) ? wc_get_product( $cat_data['featured'] ) : null,
-						'hidden'   => true,
+					stocksystem_mega_pane_args(
+						stocksystem_mega_key( $category, $i ),
+						array(
+							'brands'   => $brands,
+							'prices'   => $price_links( $category->url ),
+							'featured' => ! empty( $cat_data['featured'] ) ? wc_get_product( $cat_data['featured'] ) : null,
+							'all_url'  => $category->url,
+							'hidden'   => true,
+						)
 					)
 				);
 			}

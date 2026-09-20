@@ -32,7 +32,10 @@ if ( empty( $hero_images ) && function_exists( 'wc_get_products' ) ) {
 	// The hero shows devices, so draw from the primary (first) category —
 	// laptops — rather than whatever product was added last.
 	$hero_args = array( 'limit' => 3, 'orderby' => 'date', 'order' => 'DESC', 'status' => 'publish' );
-	$hero_term = ! empty( $categories ) ? get_term_by( 'name', $categories[0]->name, 'product_cat' ) : null;
+	$hero_term = ( ! empty( $categories ) && ! empty( $categories[0]->id ) ) ? get_term( $categories[0]->id, 'product_cat' ) : null;
+	if ( is_wp_error( $hero_term ) ) {
+		$hero_term = null;
+	}
 	if ( $hero_term ) {
 		$hero_args['category'] = array( $hero_term->slug );
 	}

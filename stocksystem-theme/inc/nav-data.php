@@ -53,17 +53,20 @@ function stocksystem_nav_categories() {
 		return $fallback;
 	}
 
-	return array_map(
-		function ( $term ) {
-			return (object) array(
-				'id'    => $term->term_id,
-				'slug'  => $term->slug,
-				'name'  => $term->name,
-				'count' => $term->count,
-				'url'   => get_term_link( $term ),
-			);
-		},
-		$terms
+	// Show / hide / rename / reorder from Appearance → «منو و فوتر».
+	return stocksystem_nav_apply_category_settings(
+		array_map(
+			function ( $term ) {
+				return (object) array(
+					'id'    => $term->term_id,
+					'slug'  => $term->slug,
+					'name'  => $term->name,
+					'count' => $term->count,
+					'url'   => get_term_link( $term ),
+				);
+			},
+			$terms
+		)
 	);
 }
 
@@ -228,13 +231,12 @@ function stocksystem_nav_brands() {
 }
 
 /**
- * Price-range facets for the mega menu. Bucket boundaries are a filterable
- * UI facet, not a business number like warranty/rate — safe to ship as a
- * default, but exposed via filter so it stays editable without a code
- * change.
+ * Price-range facets for the mega menu and the shop page. Boundaries are a UI
+ * facet (not a business number): edit them in Appearance → «منو و فوتر»;
+ * still filterable with `stocksystem_price_ranges`.
  */
-function stocksystem_price_ranges() {
-	$ranges = array(
+function stocksystem_price_ranges_default() {
+	return array(
 		array(
 			'label' => __( 'تا ۱۵ میلیون', 'stocksystem' ),
 			'min'   => 0,
@@ -256,6 +258,22 @@ function stocksystem_price_ranges() {
 			'max'   => null,
 		),
 	);
+}
+
+function stocksystem_price_ranges() {
+	$ranges = stocksystem_price_ranges_default();
+	$custom = stocksystem_nav_settings()['prices'];
+
+	if ( ! empty( $custom ) ) { // Edited in Appearance → «منو و فوتر».
+		$ranges = array();
+		foreach ( $custom as $row ) {
+			$ranges[] = array(
+				'label' => $row['label'],
+				'min'   => (int) $row['min'],
+				'max'   => ( '' === $row['max'] || null === $row['max'] ) ? null : (int) $row['max'],
+			);
+		}
+	}
 
 	return apply_filters( 'stocksystem_price_ranges', $ranges );
 }

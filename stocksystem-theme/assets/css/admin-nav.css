@@ -1,0 +1,81 @@
+/* Appearance → «منو و فوتر» (inc/nav-settings.php) — builds on admin-home.css */
+.ss-cats {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+}
+
+.ss-cats th,
+.ss-cats td {
+	padding: 8px 10px;
+	text-align: start;
+	border-bottom: 1px solid #f0f0f1;
+	vertical-align: middle;
+}
+
+.ss-cats input[type="text"] {
+	width: 100%;
+}
+
+.ss-pane {
+	margin-top: 10px;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+}
+
+.ss-pane > summary {
+	padding: 12px 16px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.ss-pane__body {
+	padding: 4px 16px 16px;
+	border-top: 1px solid #f0f0f1;
+}
+
+.ss-pane__block {
+	margin-top: 16px;
+}
+
+.ss-pane__block h4 {
+	margin: 0 0 8px;
+}
+
+.ss-mode-panel[hidden] {
+	display: none;
+}
+
+.ss-grid--tight {
+	margin-top: 10px;
+}
+
+.ss-rep {
+	margin-top: 8px;
+}
+
+.ss-rep__row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 6px;
+}
+
+.ss-rep__row input {
+	flex: 1 1 0;
+	min-width: 0;
+}
+
+.ss-rep__row .ss-rep__url {
+	text-align: left;
+}
+
+.ss-rep__tools {
+	display: inline-flex;
+	gap: 8px;
+	flex: 0 0 auto;
+}
+
+.ss-rep__add {
+	margin-top: 4px;
+}

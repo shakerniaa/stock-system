@@ -135,3 +135,70 @@
 		grid-template-columns: 1fr;
 	}
 }
+
+/* ---- Social links, trust badges, newsletter feedback (editable in Appearance → «منو و فوتر») ---- */
+.site-footer__socials {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--sp-10);
+	margin-top: var(--sp-4);
+}
+
+.site-footer__socials a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border: var(--border-default) solid var(--overlay-on-dark-20);
+	border-radius: var(--radius-input);
+	color: var(--c-on-dark-2);
+	transition: border-color var(--transition-hover), color var(--transition-hover);
+}
+
+.site-footer__socials a:hover {
+	border-color: var(--c-teal-300);
+	color: var(--c-teal-300);
+}
+
+.site-footer__bottom {
+	flex-wrap: wrap;
+	gap: var(--sp-16);
+}
+
+.site-footer__badges {
+	display: inline-flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: var(--sp-12);
+}
+
+.site-footer__badges img {
+	max-height: 64px;
+	width: auto;
+	background: #fff;
+	border-radius: var(--radius-input);
+	padding: 4px;
+}
+
+.site-footer__hp {
+	position: absolute;
+	inset-inline-start: -9999px;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+}
+
+.site-footer__newsletter-msg {
+	margin: var(--sp-8) 0 0;
+	font-size: var(--fs-13);
+	line-height: 1.7;
+}
+
+.site-footer__newsletter-msg.is-ok {
+	color: var(--c-teal-300);
+}
+
+.site-footer__newsletter-msg.is-error {
+	color: #F2A183;
+}
