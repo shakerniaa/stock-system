@@ -107,7 +107,7 @@
 }
 
 .form-row.woocommerce-invalid::after {
-	content: 'مقدار واردشده معتبر نیست؛ آن را بررسی کنید.';
+	content: var(--msg-invalid, 'مقدار واردشده معتبر نیست؛ آن را بررسی کنید.');
 	display: block;
 	margin-top: var(--sp-6);
 	padding-inline-start: 22px;
@@ -118,19 +118,19 @@
 }
 
 .form-row.woocommerce-invalid-required-field::after {
-	content: 'این فیلد الزامی است.';
+	content: var(--msg-required, 'این فیلد الزامی است.');
 }
 
 .form-row.woocommerce-invalid-email::after {
-	content: 'ایمیل معتبر نیست؛ نمونه: name@example.com';
+	content: var(--msg-email, 'ایمیل معتبر نیست؛ نمونه: name@example.com');
 }
 
 .form-row.woocommerce-invalid-phone::after {
-	content: 'شمارهٔ موبایل باید ۱۱ رقم و با ۰۹ شروع شود.';
+	content: var(--msg-phone, 'شمارهٔ موبایل باید ۱۱ رقم و با ۰۹ شروع شود.');
 }
 
 .form-row.woocommerce-invalid-postcode::after {
-	content: 'کد پستی باید ۱۰ رقم باشد.';
+	content: var(--msg-postcode, 'کد پستی باید ۱۰ رقم باشد.');
 }
 
 .form-row.validate-required.woocommerce-validated input.input-text {
@@ -151,7 +151,7 @@
 }
 
 .woocommerce-NoticeGroup-checkout .woocommerce-error::before {
-	content: 'ثبت سفارش انجام نشد — موارد زیر نیاز به اصلاح دارند';
+	content: var(--msg-checkout-error, 'ثبت سفارش انجام نشد — موارد زیر نیاز به اصلاح دارند');
 	font-size: var(--fs-14);
 	font-weight: 700;
 	color: #8E3714;

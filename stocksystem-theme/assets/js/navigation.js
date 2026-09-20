@@ -214,7 +214,7 @@
 						window.jQuery( document.body ).trigger( 'wc_fragment_refresh' );
 					}
 					if ( window.stocksystemToast ) {
-						window.stocksystemToast.show( name ? '«' + name + '» از سبد حذف شد' : 'از سبد حذف شد', 'info' );
+						window.stocksystemToast.show( name ? window.stocksystemT( 'cart_item_removed', '«%s» از سبد حذف شد' ).replace( '%s', name ) : window.stocksystemT( 'cart_removed', 'از سبد حذف شد' ), 'info' );
 					}
 					// Fragments swap in via cart-fragments; keep the drawer open and give it focus back.
 					if ( autoCloseTimer ) {
@@ -227,7 +227,7 @@
 						row.classList.remove( 'is-removing' );
 					}
 					if ( window.stocksystemToast ) {
-						window.stocksystemToast.show( 'حذف انجام نشد؛ دوباره تلاش کنید.', 'error' );
+						window.stocksystemToast.show( window.stocksystemT( 'cart_remove_failed', 'حذف انجام نشد؛ دوباره تلاش کنید.' ), 'error' );
 					}
 				} );
 		} );
@@ -239,7 +239,7 @@
 				var btn = $button && $button[ 0 ];
 				if ( btn && ! btn.hasAttribute( 'data-label' ) ) {
 					btn.setAttribute( 'data-label', btn.textContent.trim() );
-					btn.textContent = 'به سبد اضافه شد';
+					btn.textContent = window.stocksystemT( 'added_to_cart', 'به سبد اضافه شد' );
 					window.setTimeout( function () {
 						btn.textContent = btn.getAttribute( 'data-label' );
 						btn.removeAttribute( 'data-label' );

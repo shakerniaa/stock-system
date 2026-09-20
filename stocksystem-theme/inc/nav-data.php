@@ -236,22 +236,22 @@ function stocksystem_nav_brands() {
 function stocksystem_price_ranges() {
 	$ranges = array(
 		array(
-			'label' => 'تا ۱۵ میلیون',
+			'label' => __( 'تا ۱۵ میلیون', 'stocksystem' ),
 			'min'   => 0,
 			'max'   => 15000000,
 		),
 		array(
-			'label' => '۱۵ تا ۲۵ میلیون',
+			'label' => __( '۱۵ تا ۲۵ میلیون', 'stocksystem' ),
 			'min'   => 15000000,
 			'max'   => 25000000,
 		),
 		array(
-			'label' => '۲۵ تا ۴۰ میلیون',
+			'label' => __( '۲۵ تا ۴۰ میلیون', 'stocksystem' ),
 			'min'   => 25000000,
 			'max'   => 40000000,
 		),
 		array(
-			'label' => 'بالای ۴۰ میلیون',
+			'label' => __( 'بالای ۴۰ میلیون', 'stocksystem' ),
 			'min'   => 40000000,
 			'max'   => null,
 		),

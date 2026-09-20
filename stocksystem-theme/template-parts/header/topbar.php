@@ -27,8 +27,19 @@ $threshold = stocksystem_business( 'free_shipping_threshold' );
 			<?php endif; ?>
 		</span>
 		<span class="site-topbar__links">
-			<a href="<?php echo esc_url( stocksystem_order_tracking_url() ); ?>"><?php esc_html_e( 'پیگیری سفارش', 'stocksystem' ); ?></a>
-			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'تماس با ما', 'stocksystem' ); ?></a>
+			<?php
+			// Editable in Appearance → Menus (location «نوار بالای سایت»).
+			$topbar_links = stocksystem_menu_links(
+				'topbar_links',
+				array(
+					array( 'title' => __( 'پیگیری سفارش', 'stocksystem' ), 'url' => stocksystem_order_tracking_url() ),
+					array( 'title' => __( 'تماس با ما', 'stocksystem' ), 'url' => home_url( '/contact/' ) ),
+				)
+			);
+			foreach ( $topbar_links as $topbar_link ) :
+				?>
+				<a href="<?php echo esc_url( $topbar_link['url'] ); ?>"><?php echo esc_html( $topbar_link['title'] ); ?></a>
+			<?php endforeach; ?>
 		</span>
 	</div>
 </div>

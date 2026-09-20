@@ -114,7 +114,7 @@
 				missing.scrollIntoView( { behavior: 'smooth', block: 'center' } );
 				missing.focus();
 				if ( window.stocksystemToast ) {
-					window.stocksystemToast.show( 'مشخصات و نشانی گیرندهٔ سفارش را کامل کنید.', 'error' );
+					window.stocksystemToast.show( window.stocksystemT( 'recipient_incomplete', 'مشخصات و نشانی گیرندهٔ سفارش را کامل کنید.' ), 'error' );
 				}
 				return true;
 			}

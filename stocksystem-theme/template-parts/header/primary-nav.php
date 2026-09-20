@@ -38,8 +38,19 @@ $shop_url    = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalin
 					><?php echo esc_html( $category->name ); ?></a>
 				</li>
 			<?php endforeach; ?>
-			<li><a href="<?php echo esc_url( home_url( '/repair/' ) ); ?>"<?php echo is_page( 'repair' ) ? ' aria-current="page"' : ''; ?>><?php esc_html_e( 'تعمیرات تخصصی', 'stocksystem' ); ?></a></li>
-			<li><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>"<?php echo ( is_home() || is_singular( 'post' ) || is_category() ) ? ' aria-current="page"' : ''; ?>><?php esc_html_e( 'بلاگ', 'stocksystem' ); ?></a></li>
+			<?php
+			// Editable in Appearance → Menus (location «نوار اصلی»); these are the defaults.
+			$extra_links = stocksystem_menu_links(
+				'header_extra',
+				array(
+					array( 'title' => __( 'تعمیرات تخصصی', 'stocksystem' ), 'url' => home_url( '/repair/' ), 'current' => is_page( 'repair' ) ),
+					array( 'title' => __( 'بلاگ', 'stocksystem' ), 'url' => home_url( '/blog/' ), 'current' => ( is_home() || is_singular( 'post' ) || is_category() ) ),
+				)
+			);
+			foreach ( $extra_links as $extra_link ) :
+				?>
+				<li><a href="<?php echo esc_url( $extra_link['url'] ); ?>"<?php echo ! empty( $extra_link['current'] ) ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $extra_link['title'] ); ?></a></li>
+			<?php endforeach; ?>
 		</ul>
 	</div>
 

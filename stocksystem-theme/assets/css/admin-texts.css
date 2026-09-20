@@ -1,0 +1,114 @@
+/* Appearance → «متن‌های سایت» (inc/site-texts.php) */
+.ss-texts {
+	max-width: 1000px;
+}
+
+.ss-texts__bar {
+	position: sticky;
+	top: 32px;
+	z-index: 5;
+	display: flex;
+	align-items: center;
+	gap: 18px;
+	flex-wrap: wrap;
+	margin: 16px 0;
+	padding: 12px 14px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+}
+
+.ss-texts__bar input[type="search"] {
+	flex: 1 1 260px;
+	max-width: 420px;
+}
+
+.ss-texts__count {
+	margin-inline-start: auto;
+	color: #646970;
+	font-size: 13px;
+}
+
+.ss-group {
+	margin-bottom: 10px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+}
+
+.ss-group > summary {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 14px 18px;
+	font-size: 15px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.ss-group__n {
+	padding: 1px 9px;
+	border-radius: 999px;
+	background: #f0f0f1;
+	color: #50575e;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.ss-group__rows {
+	border-top: 1px solid #f0f0f1;
+}
+
+.ss-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+	gap: 16px;
+	align-items: start;
+	padding: 12px 18px;
+	border-bottom: 1px solid #f6f7f7;
+}
+
+.ss-row:last-child {
+	border-bottom: 0;
+}
+
+.ss-row__orig {
+	color: #50575e;
+	font-size: 13px;
+	line-height: 1.9;
+	padding-top: 4px;
+}
+
+.ss-row textarea {
+	width: 100%;
+	min-height: 38px;
+	resize: vertical;
+	line-height: 1.8;
+}
+
+.ss-row.is-changed {
+	background: #f0f9f8;
+}
+
+.ss-row.is-changed textarea {
+	border-color: #0a8f87;
+}
+
+.ss-row[hidden] {
+	display: none;
+}
+
+.ss-texts__reset {
+	margin-top: 26px;
+}
+
+@media (max-width: 782px) {
+	.ss-row {
+		grid-template-columns: 1fr;
+		gap: 6px;
+	}
+
+	.ss-texts__bar {
+		top: 46px;
+	}
+}

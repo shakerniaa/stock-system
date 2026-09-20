@@ -158,7 +158,7 @@ add_action( 'after_switch_theme', 'stocksystem_set_default_currency_options' );
 add_filter(
 	'woocommerce_currency_symbol',
 	function ( $symbol, $currency ) {
-		return 'IRR' === $currency ? 'تومان' : $symbol;
+		return 'IRR' === $currency ? __( 'تومان', 'stocksystem' ) : $symbol;
 	},
 	10,
 	2

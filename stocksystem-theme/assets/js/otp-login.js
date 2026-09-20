@@ -39,7 +39,11 @@
 		} );
 	}
 
-	var NETWORK_ERROR = 'ارتباط با سرور برقرار نشد. اینترنت خود را بررسی کنید و دوباره تلاش کنید.';
+	function T( key, fallback ) {
+		return window.stocksystemT ? window.stocksystemT( key, fallback ) : fallback;
+	}
+
+	var NETWORK_ERROR = T( 'network_error', 'ارتباط با سرور برقرار نشد. اینترنت خود را بررسی کنید و دوباره تلاش کنید.' );
 
 	document.addEventListener( 'DOMContentLoaded', function () {
 		var form = document.getElementById( 'otp-form' );
@@ -109,11 +113,11 @@
 				if ( left <= 0 ) {
 					window.clearInterval( countdown );
 					resendBtn.disabled = false;
-					resendBtn.textContent = 'ارسال مجدد کد';
+					resendBtn.textContent = T( 'otp_resend', 'ارسال مجدد کد' );
 					return;
 				}
 				resendBtn.disabled = true;
-				resendBtn.textContent = 'ارسال مجدد کد (' + formatClock( left ) + ')';
+				resendBtn.textContent = T( 'otp_resend_wait', 'ارسال مجدد کد (%s)' ).replace( '%s', formatClock( left ) );
 				left--;
 			}
 
@@ -125,12 +129,12 @@
 			stepPhone.hidden = true;
 			stepCode.hidden = false;
 			sentTo.innerHTML = '';
-			sentTo.appendChild( document.createTextNode( 'کد ۴ رقمی به شمارهٔ ' ) );
+			sentTo.appendChild( document.createTextNode( T( 'otp_sent_before', 'کد ۴ رقمی به شمارهٔ' ) + ' ' ) );
 			var num = document.createElement( 'strong' );
 			num.className = 'ltr';
 			num.textContent = toPersian( phone );
 			sentTo.appendChild( num );
-			sentTo.appendChild( document.createTextNode( ' پیامک شد.' ) );
+			sentTo.appendChild( document.createTextNode( ' ' + T( 'otp_sent_after', 'پیامک شد.' ) ) );
 			if ( data.debug_code ) {
 				var dbg = document.createElement( 'span' );
 				dbg.className = 'otp-form__debug';
@@ -154,7 +158,7 @@
 			}
 
 			if ( ! /^09\d{9}$/.test( value ) ) {
-				setError( phoneInput, phoneError, 'شمارهٔ موبایل معتبر نیست. آن را به شکل ۰۹۱۲۳۴۵۶۷۸۹ (۱۱ رقم) وارد کنید.' );
+				setError( phoneInput, phoneError, T( 'otp_phone_invalid', 'شمارهٔ موبایل معتبر نیست. آن را به شکل ۰۹۱۲۳۴۵۶۷۸۹ (۱۱ رقم) وارد کنید.' ) );
 				phoneInput.focus();
 				return;
 			}
@@ -165,11 +169,11 @@
 
 			var button = isResend ? resendBtn : requestBtn;
 			var idle = button.textContent;
-			setBusy( button, true, idle, 'در حال ارسال…' );
+			setBusy( button, true, idle, T( 'otp_sending', 'در حال ارسال…' ) );
 
 			post( 'stocksystem_request_otp', { nonce: nonce, phone: phone } )
 				.then( function ( json ) {
-					setBusy( button, false, isResend ? 'ارسال مجدد کد' : 'دریافت کد ورود', '' );
+					setBusy( button, false, isResend ? T( 'otp_resend', 'ارسال مجدد کد' ) : T( 'otp_get_code', 'دریافت کد ورود' ), '' );
 
 					if ( ! json.success ) {
 						var d = json.data || {};
@@ -192,11 +196,11 @@
 
 					showCodeStep( json.data );
 					if ( isResend ) {
-						setInfo( 'کد جدید ارسال شد. فقط کد آخر معتبر است.' );
+						setInfo( T( 'otp_new_code', 'کد جدید ارسال شد. فقط کد آخر معتبر است.' ) );
 					}
 				} )
 				.catch( function () {
-					setBusy( button, false, isResend ? 'ارسال مجدد کد' : 'دریافت کد ورود', '' );
+					setBusy( button, false, isResend ? T( 'otp_resend', 'ارسال مجدد کد' ) : T( 'otp_get_code', 'دریافت کد ورود' ), '' );
 					if ( isResend ) {
 						resendBtn.disabled = false;
 						setError( codeInput, codeError, NETWORK_ERROR );
@@ -213,24 +217,24 @@
 
 			var code = toLatin( codeInput.value ).replace( /\D/g, '' );
 			if ( code.length < 4 ) {
-				setError( codeInput, codeError, 'کد ۴ رقمی را کامل وارد کنید.' );
+				setError( codeInput, codeError, T( 'otp_code_incomplete', 'کد ۴ رقمی را کامل وارد کنید.' ) );
 				codeInput.focus();
 				return;
 			}
 
 			setError( codeInput, codeError, '' );
 			setInfo( '' );
-			setBusy( verifyBtn, true, 'ورود', 'در حال بررسی…' );
+			setBusy( verifyBtn, true, T( 'otp_login', 'ورود' ), T( 'otp_verifying', 'در حال بررسی…' ) );
 
 			post( 'stocksystem_verify_otp', { nonce: nonce, phone: phone, code: code } )
 				.then( function ( json ) {
 					if ( json.success ) {
-						verifyBtn.textContent = 'ورود انجام شد…';
+						verifyBtn.textContent = T( 'otp_done', 'ورود انجام شد…' );
 						window.location.href = json.data.redirect;
 						return;
 					}
 
-					setBusy( verifyBtn, false, 'ورود', '' );
+					setBusy( verifyBtn, false, T( 'otp_login', 'ورود' ), '' );
 					var d = json.data || {};
 					setError( codeInput, codeError, d.message || NETWORK_ERROR );
 
@@ -249,7 +253,7 @@
 					}
 				} )
 				.catch( function () {
-					setBusy( verifyBtn, false, 'ورود', '' );
+					setBusy( verifyBtn, false, T( 'otp_login', 'ورود' ), '' );
 					setError( codeInput, codeError, NETWORK_ERROR );
 				} );
 		}
@@ -309,7 +313,7 @@
 			passwordToggle.addEventListener( 'click', function () {
 				var isHidden = passwordForm.hidden;
 				passwordForm.hidden = ! isHidden;
-				passwordToggle.textContent = isHidden ? 'انصراف از ورود با رمز' : 'ورود با رمز عبور';
+				passwordToggle.textContent = isHidden ? T( 'otp_cancel_password', 'انصراف از ورود با رمز' ) : T( 'otp_use_password', 'ورود با رمز عبور' );
 				if ( isHidden ) {
 					var user = document.getElementById( 'username' );
 					if ( user ) {

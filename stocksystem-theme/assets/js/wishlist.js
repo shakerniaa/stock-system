@@ -47,7 +47,8 @@
 				if ( count ) {
 					count.textContent = String( left ).replace( /[0-9]/g, function ( d ) {
 						return '۰۱۲۳۴۵۶۷۸۹'.charAt( Number( d ) );
-					} ) + ' کالا ذخیره شده';
+					} );
+					count.textContent = window.stocksystemT( 'wishlist_count', '%s کالا ذخیره شده' ).replace( '%s', count.textContent );
 				}
 				if ( ! left ) {
 					table.hidden = true;
@@ -56,12 +57,12 @@
 						empty.hidden = false;
 					}
 				}
-				toast( 'از علاقه‌مندی‌ها حذف شد', 'info' );
+				toast( window.stocksystemT( 'wishlist_removed', 'از علاقه‌مندی‌ها حذف شد' ), 'info' );
 			} )
 			.catch( function () {
 				remove.disabled = false;
 				row.classList.remove( 'is-removing' );
-				toast( 'حذف انجام نشد، دوباره تلاش کنید.', 'error' );
+				toast( window.stocksystemT( 'wishlist_remove_failed', 'حذف انجام نشد، دوباره تلاش کنید.' ), 'error' );
 			} );
 	} );
 
@@ -110,15 +111,15 @@
 						svg.setAttribute( 'fill', json.data.in_wishlist ? 'currentColor' : 'none' );
 					}
 					toast(
-						json.data.in_wishlist ? 'به علاقه‌مندی‌ها اضافه شد' : 'از علاقه‌مندی‌ها حذف شد',
+						json.data.in_wishlist ? window.stocksystemT( 'wishlist_added', 'به علاقه‌مندی‌ها اضافه شد' ) : window.stocksystemT( 'wishlist_removed', 'از علاقه‌مندی‌ها حذف شد' ),
 						'success'
 					);
 				} else {
-					toast( 'مشکلی پیش آمد، دوباره تلاش کنید', 'error' );
+					toast( window.stocksystemT( 'generic_error', 'مشکلی پیش آمد، دوباره تلاش کنید' ), 'error' );
 				}
 			} )
 			.catch( function () {
-				toast( 'اتصال برقرار نشد. اتصال اینترنت را بررسی کنید.', 'error' );
+				toast( window.stocksystemT( 'offline_error', 'اتصال برقرار نشد. اتصال اینترنت را بررسی کنید.' ), 'error' );
 			} )
 			.finally( function () {
 				button.classList.remove( 'is-loading' );

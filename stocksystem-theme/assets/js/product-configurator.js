@@ -110,7 +110,7 @@
 			}
 
 			var grandTotal = variation.display_price + surcharge;
-			var text = 'قیمت با افزودنی‌های انتخابی: ' + formatToman( grandTotal ) + ' تومان';
+			var text = window.stocksystemT( 'addons_total', 'قیمت با افزودنی‌های انتخابی: %s تومان' ).replace( '%s', formatToman( grandTotal ) );
 
 			if ( $existing.length ) {
 				$existing.text( text );

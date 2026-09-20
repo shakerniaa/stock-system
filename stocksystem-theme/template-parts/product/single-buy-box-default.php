@@ -23,8 +23,8 @@ $product = ! empty( $args['product'] ) ? $args['product'] : $GLOBALS['product'];
 			$percent = stocksystem_product_discount_percent( $product );
 			if ( $percent > 0 ) {
 				printf(
-					'<span class="buy-box__discount-pill">٪%s تخفیف</span>',
-					esc_html( stocksystem_to_persian_digits( $percent ) )
+					'<span class="buy-box__discount-pill">%s</span>',
+					esc_html( sprintf( /* translators: %s: discount percent */ __( '٪%s تخفیف', 'stocksystem' ), stocksystem_to_persian_digits( $percent ) ) )
 				);
 			}
 		}

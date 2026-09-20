@@ -43,11 +43,22 @@ $hours      = stocksystem_business( 'store_hours' );
 
 		<div class="site-footer__nav-col">
 			<span class="site-footer__nav-title"><?php esc_html_e( 'خدمات و راهنما', 'stocksystem' ); ?></span>
-			<a href="<?php echo esc_url( home_url( '/repair/' ) ); ?>"><?php esc_html_e( 'تعمیرات تخصصی', 'stocksystem' ); ?></a>
-			<a href="<?php echo esc_url( home_url( '/stock-condition/' ) ); ?>"><?php esc_html_e( 'وضعیت کالای استوک', 'stocksystem' ); ?></a>
-			<a href="<?php echo esc_url( home_url( '/terms/' ) ); ?>"><?php esc_html_e( 'شرایط گارانتی و مرجوعی', 'stocksystem' ); ?></a>
-			<a href="<?php echo esc_url( stocksystem_order_tracking_url() ); ?>"><?php esc_html_e( 'پیگیری سفارش', 'stocksystem' ); ?></a>
-			<a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>"><?php esc_html_e( 'بلاگ', 'stocksystem' ); ?></a>
+			<?php
+			// Editable in Appearance → Menus (location «فوتر — ستون خدمات و راهنما»).
+			$service_links = stocksystem_menu_links(
+				'footer_services',
+				array(
+					array( 'title' => __( 'تعمیرات تخصصی', 'stocksystem' ), 'url' => home_url( '/repair/' ) ),
+					array( 'title' => __( 'وضعیت کالای استوک', 'stocksystem' ), 'url' => home_url( '/stock-condition/' ) ),
+					array( 'title' => __( 'شرایط گارانتی و مرجوعی', 'stocksystem' ), 'url' => home_url( '/terms/' ) ),
+					array( 'title' => __( 'پیگیری سفارش', 'stocksystem' ), 'url' => stocksystem_order_tracking_url() ),
+					array( 'title' => __( 'بلاگ', 'stocksystem' ), 'url' => home_url( '/blog/' ) ),
+				)
+			);
+			foreach ( $service_links as $service_link ) :
+				?>
+				<a href="<?php echo esc_url( $service_link['url'] ); ?>"><?php echo esc_html( $service_link['title'] ); ?></a>
+			<?php endforeach; ?>
 		</div>
 
 		<div class="site-footer__newsletter">
