@@ -12,11 +12,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+$hero        = stocksystem_home( 'hero' ); // Appearance → «صفحهٔ اصلی».
 $categories  = stocksystem_nav_categories();
-$primary_cat = ! empty( $categories ) ? $categories[0]->url : ( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ) );
+$primary_cat = stocksystem_home_link( $hero['cta1_url'], ! empty( $categories ) ? $categories[0]->url : ( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ) ) );
+$secondary   = stocksystem_home_link( $hero['cta2_url'], home_url( '/stock-condition/' ) );
 
+// Images chosen in the admin win; otherwise draw from the latest products.
 $hero_images = array();
-if ( function_exists( 'wc_get_products' ) ) {
+foreach ( $hero['images'] as $hero_image_id ) {
+	if ( $hero_image_id && wp_attachment_is_image( $hero_image_id ) ) {
+		$hero_images[] = array(
+			'src' => wp_get_attachment_image_url( $hero_image_id, 'medium' ),
+			'alt' => trim( (string) get_post_meta( $hero_image_id, '_wp_attachment_image_alt', true ) ),
+		);
+	}
+}
+
+if ( empty( $hero_images ) && function_exists( 'wc_get_products' ) ) {
 	// The hero shows devices, so draw from the primary (first) category —
 	// laptops — rather than whatever product was added last.
 	$hero_args = array( 'limit' => 3, 'orderby' => 'date', 'order' => 'DESC', 'status' => 'publish' );
@@ -52,25 +64,24 @@ if ( empty( $hero_images ) ) {
 		<div class="home-hero__copy">
 			<span class="home-hero__eyebrow">
 				<?php
-				printf(
-					/* translators: %s: warranty text from Customizer */
-					esc_html__( 'استوک اروپایی · تست‌شده · %s', 'stocksystem' ),
-					esc_html( stocksystem_business( 'warranty_text' ) )
-				);
+				// Empty in the admin = «استوک اروپایی · تست‌شده · <warranty text from Customizer>».
+				echo esc_html( '' !== $hero['eyebrow'] ? $hero['eyebrow'] : 'استوک اروپایی · تست‌شده · ' . stocksystem_business( 'warranty_text' ) );
 				?>
 			</span>
-			<h1 class="home-hero__title"><?php esc_html_e( 'لپ‌تاپ و کامپیوتر حرفه‌ای، با قیمتی که منطقی است', 'stocksystem' ); ?></h1>
-			<p class="home-hero__desc"><?php esc_html_e( 'هر دستگاه پیش از فروش تست سخت‌افزاری کامل می‌شود و برگهٔ وضعیت دارد: سلامت باتری، ساعت کارکرد و وضعیت بدنه — بدون ابهام.', 'stocksystem' ); ?></p>
+			<h1 class="home-hero__title"><?php echo esc_html( $hero['title'] ); ?></h1>
+			<p class="home-hero__desc"><?php echo esc_html( $hero['desc'] ); ?></p>
 			<div class="home-hero__ctas">
-				<a class="btn btn--primary" href="<?php echo esc_url( $primary_cat ); ?>"><?php esc_html_e( 'مشاهدهٔ لپ‌تاپ‌ها', 'stocksystem' ); ?></a>
-				<a class="btn btn--outline-on-dark" href="<?php echo esc_url( home_url( '/stock-condition/' ) ); ?>"><?php esc_html_e( 'وضعیت کالای استوک چیست؟', 'stocksystem' ); ?></a>
+				<a class="btn btn--primary" href="<?php echo esc_url( $primary_cat ); ?>"><?php echo esc_html( $hero['cta1_label'] ); ?></a>
+				<a class="btn btn--outline-on-dark" href="<?php echo esc_url( $secondary ); ?>"><?php echo esc_html( $hero['cta2_label'] ); ?></a>
 			</div>
 			<div class="home-hero__pillars">
 				<span class="home-hero__pillar-bar" aria-hidden="true"></span>
 				<span class="home-hero__pillar-list">
-					<span><?php esc_html_e( 'اعتماد', 'stocksystem' ); ?></span>
-					<span><?php esc_html_e( 'کیفیت', 'stocksystem' ); ?></span>
-					<span><?php esc_html_e( 'تکنولوژی', 'stocksystem' ); ?></span>
+					<?php foreach ( $hero['pillars'] as $pillar ) : ?>
+						<?php if ( '' !== $pillar ) : ?>
+							<span><?php echo esc_html( $pillar ); ?></span>
+						<?php endif; ?>
+					<?php endforeach; ?>
 				</span>
 			</div>
 		</div>

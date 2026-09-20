@@ -286,6 +286,15 @@
 	gap: var(--sp-28);
 }
 
+/* The band can hold 1–4 points (switched on/off in the admin): share the row equally. */
+@media (min-width: 1024px) {
+	.home-trust__grid {
+		grid-template-columns: none;
+		grid-auto-flow: column;
+		grid-auto-columns: minmax(0, 1fr);
+	}
+}
+
 .home-trust__item {
 	display: flex;
 	gap: var(--sp-14);

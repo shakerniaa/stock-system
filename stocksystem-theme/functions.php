@@ -20,6 +20,7 @@ define( 'STOCKSYSTEM_URI', get_template_directory_uri() );
 require STOCKSYSTEM_DIR . '/inc/setup.php';
 require STOCKSYSTEM_DIR . '/inc/enqueue.php';
 require STOCKSYSTEM_DIR . '/inc/customizer-settings.php';
+require STOCKSYSTEM_DIR . '/inc/home-settings.php';
 require STOCKSYSTEM_DIR . '/inc/persian-numerals.php';
 require STOCKSYSTEM_DIR . '/inc/taxonomies.php';
 require STOCKSYSTEM_DIR . '/inc/term-meta-fields.php';

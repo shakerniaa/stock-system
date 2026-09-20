@@ -1,0 +1,181 @@
+/* Appearance → «صفحهٔ اصلی» (inc/home-settings.php) */
+.ss-home {
+	max-width: 980px;
+}
+
+.ss-card {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	padding: 18px 22px 22px;
+	margin-top: 18px;
+}
+
+.ss-card h3 {
+	margin: 22px 0 4px;
+}
+
+.ss-card__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	flex-wrap: wrap;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.ss-card__head h2 {
+	margin: 0;
+	font-size: 16px;
+}
+
+.ss-card__controls {
+	display: flex;
+	align-items: center;
+	gap: 18px;
+	font-size: 13px;
+}
+
+.ss-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 14px 20px;
+	margin-top: 12px;
+}
+
+.ss-field--wide {
+	grid-column: 1 / -1;
+}
+
+.ss-field label {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.ss-field__label {
+	font-weight: 600;
+	font-size: 13px;
+}
+
+.ss-field input[type="text"],
+.ss-field input[type="url"],
+.ss-field textarea,
+.ss-field select,
+.ss-trust__item select {
+	width: 100%;
+	max-width: none;
+}
+
+.ss-field input[type="url"] {
+	text-align: left;
+}
+
+.ss-field__help {
+	display: block;
+	margin-top: 4px;
+	color: #646970;
+	font-size: 12.5px;
+}
+
+.ss-checks {
+	margin: 18px 0 0;
+	padding: 12px 14px;
+	border: 1px solid #f0f0f1;
+	border-radius: 6px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 22px;
+}
+
+.ss-checks legend {
+	padding: 0 6px;
+	font-weight: 600;
+}
+
+.ss-checks .description {
+	flex-basis: 100%;
+	margin: 0;
+}
+
+.ss-media-row {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 14px;
+	margin-top: 10px;
+}
+
+.ss-media {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+	padding: 12px;
+	border: 1px dashed #c3c4c7;
+	border-radius: 8px;
+}
+
+.ss-media__preview {
+	width: 100%;
+	height: 110px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #f6f7f7;
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+.ss-media__preview img {
+	max-width: 100%;
+	max-height: 100%;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+}
+
+.ss-media__preview:empty::before {
+	content: 'خودکار';
+	color: #8c8f94;
+	font-size: 12.5px;
+}
+
+.ss-trust {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 14px;
+	margin-top: 12px;
+}
+
+.ss-trust__item {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 14px;
+	border: 1px solid #f0f0f1;
+	border-radius: 8px;
+}
+
+.ss-trust__enable {
+	font-weight: 700;
+}
+
+.ss-trust__item > label:not(.ss-trust__enable) {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.ss-reset {
+	margin-top: 26px;
+}
+
+@media (max-width: 782px) {
+	.ss-grid,
+	.ss-trust,
+	.ss-media-row {
+		grid-template-columns: 1fr;
+	}
+}

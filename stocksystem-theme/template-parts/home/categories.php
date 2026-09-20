@@ -12,14 +12,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+$cfg        = stocksystem_home( 'categories' ); // Appearance → «صفحهٔ اصلی».
 $categories = stocksystem_nav_categories();
-$shop_url   = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' );
+if ( ! empty( $cfg['ids'] ) ) {
+	$wanted     = array_map( 'intval', $cfg['ids'] );
+	$categories = array_filter(
+		$categories,
+		function ( $category ) use ( $wanted ) {
+			return ! empty( $category->id ) && in_array( (int) $category->id, $wanted, true );
+		}
+	);
+}
+$shop_url = stocksystem_home_link( $cfg['link_url'], function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ) );
 ?>
 <section class="home-categories">
 	<div class="container">
 		<div class="home-categories__header">
-			<h2><?php esc_html_e( 'دسته‌بندی خدمات و محصولات', 'stocksystem' ); ?></h2>
-			<a href="<?php echo esc_url( $shop_url ); ?>"><?php esc_html_e( 'مشاهدهٔ همه ←', 'stocksystem' ); ?></a>
+			<h2><?php echo esc_html( $cfg['heading'] ); ?></h2>
+			<a href="<?php echo esc_url( $shop_url ); ?>"><?php echo esc_html( $cfg['link_label'] ); ?></a>
 		</div>
 
 		<div class="home-categories__grid">
