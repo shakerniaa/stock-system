@@ -214,7 +214,7 @@
 						window.jQuery( document.body ).trigger( 'wc_fragment_refresh' );
 					}
 					if ( window.stocksystemToast ) {
-						window.stocksystemToast.show( name ? '«' + name + '» از سبد حذف شد' : 'از سبد حذف شد', 'success' );
+						window.stocksystemToast.show( name ? '«' + name + '» از سبد حذف شد' : 'از سبد حذف شد', 'info' );
 					}
 					// Fragments swap in via cart-fragments; keep the drawer open and give it focus back.
 					if ( autoCloseTimer ) {

@@ -56,7 +56,7 @@
 						empty.hidden = false;
 					}
 				}
-				toast( 'از علاقه‌مندی‌ها حذف شد', 'success' );
+				toast( 'از علاقه‌مندی‌ها حذف شد', 'info' );
 			} )
 			.catch( function () {
 				remove.disabled = false;

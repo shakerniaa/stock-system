@@ -375,16 +375,7 @@
 	display: none;
 }
 
-.form-row.woocommerce-invalid input.input-text,
-.form-row.woocommerce-invalid select,
-.form-row.woocommerce-invalid .select2-selection {
-	border-color: var(--c-red-600);
-	background: #FFFBFB;
-}
-
-.form-row.woocommerce-invalid > label {
-	color: var(--c-red-700);
-}
+/* Invalid / validated field states live in notices.css (shared with the account forms). */
 
 /* «گیرندهٔ سفارش شخص دیگری است» — a checkbox row that reveals the recipient's
    address form. WooCommerce's JS shows/hides .shipping_address itself. */

@@ -18,17 +18,32 @@
 	padding-inline: var(--sp-16);
 }
 
+/* Desktop: bottom corner (the design's «گوشهٔ پایین-راست»), not centred. */
+@media (min-width: 768px) {
+	#toast-container {
+		left: auto;
+		right: var(--sp-24);
+		transform: none;
+		width: auto;
+		align-items: flex-end;
+		padding-inline: 0;
+	}
+}
+
 .toast {
 	display: inline-flex;
 	align-items: center;
 	gap: var(--sp-10);
 	max-width: 420px;
-	background: var(--c-ink-800);
+	background: var(--c-ink-600);
 	color: var(--c-on-dark);
+	border: var(--border-default) solid var(--overlay-on-dark-20);
 	border-radius: var(--radius-button);
-	padding: var(--sp-12) var(--sp-18);
+	padding: var(--sp-12) var(--sp-16);
 	font-size: var(--fs-14);
+	line-height: 1.7;
 	box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
+	pointer-events: auto;
 	opacity: 0;
 	transform: translateY(12px);
 	transition: opacity var(--transition-hover), transform var(--transition-hover);
@@ -39,12 +54,59 @@
 	transform: translateY(0);
 }
 
+.toast__icon {
+	display: inline-flex;
+	flex: 0 0 auto;
+}
+
+.toast__action {
+	margin-inline-start: var(--sp-8);
+	padding: 0;
+	border: 0;
+	background: none;
+	font: inherit;
+	font-size: var(--fs-13);
+	font-weight: 600;
+	color: var(--c-teal-300);
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.toast__action:hover {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
 .toast--success {
-	border-inline-start: 3px solid var(--c-status-success);
+	border-inline-start: 3px solid var(--c-teal-500);
+}
+
+.toast--success .toast__icon {
+	color: var(--c-teal-500);
 }
 
 .toast--error {
-	border-inline-start: 3px solid var(--c-red-600);
+	border-inline-start: 3px solid #E5663A;
+}
+
+.toast--error .toast__icon {
+	color: #E5663A;
+}
+
+.toast--warning {
+	border-inline-start: 3px solid var(--c-orange-500);
+}
+
+.toast--warning .toast__icon {
+	color: var(--c-orange-500);
+}
+
+.toast--info {
+	border-inline-start: 3px solid var(--c-on-dark-3);
+}
+
+.toast--info .toast__icon {
+	color: var(--c-on-dark-2);
 }
 
 /* ---- Skeleton loading placeholder ---- */

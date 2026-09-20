@@ -74,3 +74,85 @@
 .woocommerce-NoticeGroup .woocommerce-error {
 	margin-bottom: 0;
 }
+
+/* ---- Field validation (11 Desktop States §03) ----
+   Validated on leaving the field (WooCommerce toggles the classes on blur /
+   change). An error is never colour-only: heavier border + icon in the field
+   + a sentence underneath that says how to fix it. A required field that the
+   customer filled in correctly gets the teal border and a check. */
+:root {
+	--icon-field-error: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23B4471A' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5v5M12 16.2v.3'/%3E%3C/svg%3E");
+	--icon-field-ok: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23077A73' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");
+}
+
+.form-row.woocommerce-invalid .select2-selection {
+	border-color: var(--c-error-field);
+}
+
+.form-row.woocommerce-invalid select {
+	border-color: var(--c-error-field);
+}
+
+.form-row.woocommerce-invalid input.input-text {
+	border-color: var(--c-error-field);
+	background-image: var(--icon-field-error);
+	background-repeat: no-repeat;
+	background-position: left 14px center;
+	background-size: 18px;
+	padding-inline-end: 44px;
+}
+
+.form-row.woocommerce-invalid > label {
+	color: var(--c-text);
+}
+
+.form-row.woocommerce-invalid::after {
+	content: 'مقدار واردشده معتبر نیست؛ آن را بررسی کنید.';
+	display: block;
+	margin-top: var(--sp-6);
+	padding-inline-start: 22px;
+	background: var(--icon-field-error) no-repeat right center / 16px;
+	font-size: var(--fs-12-5);
+	line-height: 1.7;
+	color: var(--c-error-text);
+}
+
+.form-row.woocommerce-invalid-required-field::after {
+	content: 'این فیلد الزامی است.';
+}
+
+.form-row.woocommerce-invalid-email::after {
+	content: 'ایمیل معتبر نیست؛ نمونه: name@example.com';
+}
+
+.form-row.woocommerce-invalid-phone::after {
+	content: 'شمارهٔ موبایل باید ۱۱ رقم و با ۰۹ شروع شود.';
+}
+
+.form-row.woocommerce-invalid-postcode::after {
+	content: 'کد پستی باید ۱۰ رقم باشد.';
+}
+
+.form-row.validate-required.woocommerce-validated input.input-text {
+	border-color: var(--c-teal-600);
+	background-image: var(--icon-field-ok);
+	background-repeat: no-repeat;
+	background-position: left 14px center;
+	background-size: 18px;
+	padding-inline-end: 44px;
+}
+
+/* Summary at the top of a failed checkout: says what happened, then lists the fields. */
+.woocommerce-NoticeGroup-checkout .woocommerce-error {
+	border: var(--border-default) solid #F0B694;
+	border-inline-start-width: 4px;
+	background: #FDECE6;
+	color: #8E3714;
+}
+
+.woocommerce-NoticeGroup-checkout .woocommerce-error::before {
+	content: 'ثبت سفارش انجام نشد — موارد زیر نیاز به اصلاح دارند';
+	font-size: var(--fs-14);
+	font-weight: 700;
+	color: #8E3714;
+}

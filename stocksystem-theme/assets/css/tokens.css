@@ -34,6 +34,8 @@
 	--c-orange-050: #FDEEE0; /* orange surface tint */
 
 	/* ---- Color: red (errors / clearance) ---- */
+	--c-error-field: #C8481A; /* invalid-field border + icon (11 Desktop States §03) */
+	--c-error-text: #B4471A; /* its message: 5.6:1 on white */
 	--c-red-600: #C62828; /* sale price, clearance badge */
 	--c-red-700: #9B2222; /* out-of-stock / error text */
 	--c-red-050: #FBE9E9; /* error surface */
