@@ -13,13 +13,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$is_product_search = isset( $_GET['post_type'] ) && 'product' === $_GET['post_type'];
+$is_product_search = 'product' === get_query_var( 'post_type' ); // see the pre_get_posts default in inc/woocommerce.php
 ?>
 
 <div class="archive-header">
 	<div class="container">
 		<?php woocommerce_breadcrumb(); ?>
-		<h1 class="archive-header__title">
+		<h1 class="archive-header__title archive-header__title--search">
 			<?php
 			printf(
 				/* translators: %s: search query */

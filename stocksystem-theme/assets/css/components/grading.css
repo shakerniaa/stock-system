@@ -11,7 +11,7 @@
 
 .grading-hero h1 {
 	margin: 0 0 var(--sp-16);
-	font-size: clamp(28px, 3.4vw, var(--fs-38));
+	font-size: clamp(28px, 3.4vw, var(--fs-40));
 	font-weight: 700;
 	color: var(--c-text);
 	line-height: 1.28;
@@ -62,7 +62,7 @@
 }
 
 .grading-card__letter {
-	font-size: var(--fs-38);
+	font-size: var(--fs-44);
 	font-weight: 800;
 	color: var(--c-text);
 	line-height: 1;
@@ -158,4 +158,10 @@
 
 .grading-faq-sample .btn {
 	margin: var(--sp-16) var(--sp-20) var(--sp-20);
+}
+
+@media (max-width: 767px) {
+	.grading-card__letter {
+		font-size: var(--fs-34);
+	}
 }

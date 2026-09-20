@@ -271,3 +271,19 @@ add_filter(
 	10,
 	2
 );
+
+// Site search means product search. The header forms send post_type=product,
+// but the 404 page's search form, browser search shortcuts and old links send
+// a bare ?s=… — which would otherwise list posts, pages and products as
+// unstyled title lines.
+add_action(
+	'pre_get_posts',
+	function ( $query ) {
+		if ( is_admin() || ! $query->is_main_query() || ! $query->is_search() ) {
+			return;
+		}
+		if ( ! $query->get( 'post_type' ) ) {
+			$query->set( 'post_type', 'product' );
+		}
+	}
+);

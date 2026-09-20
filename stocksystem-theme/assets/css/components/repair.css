@@ -30,7 +30,7 @@
 
 .repair-hero__copy h1 {
 	margin: 0;
-	font-size: clamp(26px, 3.2vw, var(--fs-32));
+	font-size: clamp(25px, 3.4vw, var(--fs-36));
 	font-weight: 700;
 	color: var(--c-text);
 	line-height: 1.3;

@@ -75,7 +75,8 @@ $submit_status = isset( $_GET['repair_request'] ) ? sanitize_key( wp_unslash( $_
 </section>
 
 <section class="repair-form-section" id="repair-request">
-	<div class="container repair-form-section__grid">
+	<div class="container">
+	<div class="repair-form-section__grid">
 		<div class="repair-form-section__copy">
 			<h2><?php esc_html_e( 'درخواست تعمیر ثبت کنید', 'stocksystem' ); ?></h2>
 			<p><?php esc_html_e( 'ظرف چند ساعت کاری تماس می‌گیریم.', 'stocksystem' ); ?></p>
@@ -134,6 +135,7 @@ $submit_status = isset( $_GET['repair_request'] ) ? sanitize_key( wp_unslash( $_
 				</span>
 			</form>
 		</div>
+	</div>
 	</div>
 </section>
 

@@ -124,9 +124,15 @@
 }
 
 .about-stats__value {
-	font-size: var(--fs-22);
+	font-size: var(--fs-28);
 	font-weight: 700;
 	color: var(--c-on-dark);
+}
+
+/* the warranty stat is a phrase, not a number — it can't take the 28px numeral size */
+.about-stats__value--text {
+	font-size: var(--fs-22);
+	line-height: 1.5;
 }
 
 .about-stats__label {
@@ -161,7 +167,7 @@
 
 .about-contact__info h2 {
 	margin: 0;
-	font-size: var(--fs-26);
+	font-size: var(--fs-28);
 	font-weight: 700;
 	color: var(--c-text);
 }

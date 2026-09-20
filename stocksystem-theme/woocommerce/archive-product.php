@@ -40,7 +40,7 @@ $bestsellers = function_exists( 'wc_get_products' ) ? wc_get_products(
 <div class="archive-header">
 	<div class="container">
 		<?php woocommerce_breadcrumb(); ?>
-		<h1 class="archive-header__title"><?php esc_html_e( 'فروشگاه استوک سیستم', 'stocksystem' ); ?></h1>
+		<h1 class="archive-header__title archive-header__title--hub"><?php esc_html_e( 'فروشگاه استوک سیستم', 'stocksystem' ); ?></h1>
 		<p class="archive-header__count">
 			<?php
 			printf(

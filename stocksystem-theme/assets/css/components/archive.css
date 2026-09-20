@@ -12,10 +12,23 @@
 }
 
 .archive-header__title {
-	font-size: var(--fs-page-title);
-	font-weight: 800;
+	/* 02 Category: 34/700 */
+	font-size: clamp(24px, 2.7vw, var(--fs-34));
+	font-weight: 700;
 	color: var(--c-text);
 	margin-top: var(--sp-8);
+}
+
+/* 16 Shop Pages hub: 30/800 · 13 Search Results: 24/800 */
+.archive-header__title--hub {
+	font-size: clamp(24px, 2.4vw, var(--fs-30));
+	font-weight: 800;
+}
+
+.archive-header__title--search {
+	font-size: clamp(20px, 1.9vw, var(--fs-24));
+	font-weight: 800;
+	line-height: 1.5;
 }
 
 .archive-header__count {

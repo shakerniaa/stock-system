@@ -74,7 +74,7 @@ $in_stock_count = function_exists( 'wc_get_products' )
 			<span class="about-stats__label"><?php esc_html_e( 'تست پیش از فروش', 'stocksystem' ); ?></span>
 		</span>
 		<span class="about-stats__item">
-			<span class="about-stats__value"><?php echo esc_html( stocksystem_business( 'warranty_text' ) ); ?></span>
+			<span class="about-stats__value about-stats__value--text"><?php echo esc_html( stocksystem_business( 'warranty_text' ) ); ?></span>
 			<span class="about-stats__label"><?php esc_html_e( 'روی هر دستگاه', 'stocksystem' ); ?></span>
 		</span>
 	</div>
