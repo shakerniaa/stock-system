@@ -19,7 +19,7 @@ $is_logged_in = is_user_logged_in();
 	<div class="container site-masthead__inner">
 		<a class="site-masthead__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
 			<img
-				src="<?php echo esc_url( STOCKSYSTEM_URI . '/assets/images/logo-lockup-dark.png' ); ?>"
+				src="<?php echo esc_url( stocksystem_logo_url() ); ?>"
 				alt="<?php bloginfo( 'name' ); ?>"
 				width="150"
 				height="42"

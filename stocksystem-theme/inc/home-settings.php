@@ -161,6 +161,15 @@ function stocksystem_home_section_order() {
 			$sections[ $slug ] = (int) $cfg['order'];
 		}
 	}
+
+	// Optional extra sections (استوک سیستم ← بخش‌های تازهٔ صفحهٔ اصلی) share the same ordering.
+	$extra = stocksystem_opt( 'homex' );
+	foreach ( array( 'banner' => 'banner', 'testi' => 'testimonials', 'brands' => 'brands', 'count' => 'counters' ) as $prefix => $slug ) {
+		if ( ! empty( $extra[ $prefix . '_on' ] ) ) {
+			$sections[ $slug ] = (int) $extra[ $prefix . '_order' ];
+		}
+	}
+
 	asort( $sections );
 
 	return array_keys( $sections );

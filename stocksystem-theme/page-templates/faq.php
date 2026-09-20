@@ -12,14 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
+$faq_cfg    = stocksystem_opt( 'faq' ); // «استوک سیستم ← سوالات متداول».
 $categories = stocksystem_faq_categories();
 $items      = stocksystem_general_faq_items();
 ?>
 
 <section class="faq-hero">
 	<div class="container">
-		<h1><?php esc_html_e( 'چه سوالی دارید؟', 'stocksystem' ); ?></h1>
-		<p><?php esc_html_e( 'پرتکرارترین سوال‌های خریداران استوک سیستم.', 'stocksystem' ); ?></p>
+		<h1><?php echo esc_html( $faq_cfg['title'] ); ?></h1>
+		<p><?php echo esc_html( $faq_cfg['desc'] ); ?></p>
 		<?php // Revealed by faq-filter.js — without JS there is nothing to search with. ?>
 		<label class="faq-search" hidden>
 			<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
@@ -54,8 +55,8 @@ $items      = stocksystem_general_faq_items();
 		</div>
 
 		<aside class="faq-page__sidebar">
-			<span class="faq-page__sidebar-title"><?php esc_html_e( 'جواب سوالتان را نگرفتید؟', 'stocksystem' ); ?></span>
-			<p><?php esc_html_e( 'کارشناس فنی ما پاسخگوست. برای سوال فنی، مدل دستگاه را آماده داشته باشید.', 'stocksystem' ); ?></p>
+			<span class="faq-page__sidebar-title"><?php echo esc_html( $faq_cfg['side_title'] ); ?></span>
+			<p><?php echo esc_html( $faq_cfg['side_text'] ); ?></p>
 			<a class="btn btn--phone" href="tel:<?php echo esc_attr( stocksystem_business( 'phone' ) ); ?>"><?php echo esc_html( stocksystem_business( 'phone' ) ); ?></a>
 		</aside>
 	</div>

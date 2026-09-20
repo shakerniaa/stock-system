@@ -222,3 +222,29 @@
 	line-height: 1.8;
 	padding: var(--sp-20);
 }
+
+/* Photo / map supplied in «استوک سیستم ← درباره ما و تماس» */
+.about-hero__media--photo {
+	background: none;
+	overflow: hidden;
+}
+
+.about-hero__media--photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.about-contact__map--embed {
+	display: block;
+	padding: 0;
+	overflow: hidden;
+	background: none;
+}
+
+.about-contact__map--embed iframe {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}

@@ -22,6 +22,10 @@ $stocksystem_home_parts = array(
 	'featured'   => 'template-parts/home/featured',
 	'trust'      => 'template-parts/home/trust-band',
 	'blog'       => 'template-parts/home/blog-teaser',
+	'banner'     => 'template-parts/home/banner',
+	'testimonials' => 'template-parts/home/testimonials',
+	'brands'     => 'template-parts/home/brands-logos',
+	'counters'   => 'template-parts/home/counters',
 );
 
 foreach ( stocksystem_home_section_order() as $stocksystem_home_slug ) {

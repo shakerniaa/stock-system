@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * installments section is deliberately not numbered in here per
  * decision #6 — nothing to explain about a feature that doesn't exist.
  */
-function stocksystem_terms_sections() {
+function stocksystem_terms_sections_default() {
 	$sections = array(
 		array(
 			'id'    => 'definition',
@@ -61,6 +61,35 @@ function stocksystem_terms_sections() {
 		),
 	);
 
+	return $sections;
+}
+
+/** Default terms sections as editable rows (title + body text) — warranty/shipping bodies filled in from the store settings. */
+function stocksystem_terms_rows_default() {
+	$rows = array();
+
+	foreach ( stocksystem_terms_sections_default() as $section ) {
+		if ( 'warranty' === $section['id'] ) {
+			$body = sprintf( /* translators: %s: warranty text */ __( 'تمام دستگاه‌ها مشمول %s هستند. ضربه، نفوذ مایعات و باز شدن دستگاه توسط فرد غیرمجاز، گارانتی را باطل می‌کند.', 'stocksystem' ), stocksystem_business( 'warranty_text' ) );
+		} elseif ( 'shipping' === $section['id'] ) {
+			$body = sprintf( /* translators: %s: store address */ __( 'تحویل حضوری در فروشگاه استوک سیستم رایگان است (%s). ارسال به سراسر کشور با پست یا تیپاکس انجام می‌شود؛ هزینه و بازهٔ ارسال بر اساس مقصد، هنگام تسویه‌حساب محاسبه و نمایش داده می‌شود.', 'stocksystem' ), stocksystem_business( 'address' ) );
+		} else {
+			$body = $section['body'];
+		}
+		$rows[] = array( 'title' => $section['title'], 'body' => $body );
+	}
+
+	return $rows;
+}
+
+/** Terms sections for the page: id, title, body (text/HTML). Edited in «استوک سیستم ← قوانین». */
+function stocksystem_terms_sections() {
+	$sections = array();
+
+	foreach ( stocksystem_opt( 'terms', 'sections' ) as $i => $row ) {
+		$sections[] = array( 'id' => 'section-' . ( $i + 1 ), 'title' => $row['title'], 'body' => $row['body'] );
+	}
+
 	return apply_filters( 'stocksystem_terms_sections', $sections );
 }
 
@@ -70,7 +99,7 @@ function stocksystem_terms_sections() {
  * 'repair' only — no 'payment installments' category, matching the
  * terms page's silence on installments.
  */
-function stocksystem_general_faq_items() {
+function stocksystem_general_faq_items_default() {
 	$items = array(
 		array(
 			'category' => 'quality',
@@ -114,13 +143,18 @@ function stocksystem_general_faq_items() {
 		),
 	);
 
-	return apply_filters( 'stocksystem_general_faq_items', $items );
+	return $items;
+}
+
+/** FAQ items: the rows saved in «استوک سیستم ← سوالات متداول», else the defaults. */
+function stocksystem_general_faq_items() {
+	return apply_filters( 'stocksystem_general_faq_items', stocksystem_opt( 'faq', 'items' ) );
 }
 
 /**
  * Category chip labels, in the order the filter row shows them.
  */
-function stocksystem_faq_categories() {
+function stocksystem_faq_categories_default() {
 	return array(
 		'quality'  => __( 'کیفیت و درجه‌بندی', 'stocksystem' ),
 		'warranty' => __( 'گارانتی', 'stocksystem' ),
@@ -128,4 +162,17 @@ function stocksystem_faq_categories() {
 		'returns'  => __( 'مرجوعی', 'stocksystem' ),
 		'repair'   => __( 'تعمیرات', 'stocksystem' ),
 	);
+}
+
+/** Category filter chips: key => label, from «استوک سیستم ← سوالات متداول». */
+function stocksystem_faq_categories() {
+	$out = array();
+
+	foreach ( stocksystem_opt( 'faq', 'categories' ) as $row ) {
+		if ( '' !== $row['key'] && '' !== $row['label'] ) {
+			$out[ $row['key'] ] = $row['label'];
+		}
+	}
+
+	return $out;
 }

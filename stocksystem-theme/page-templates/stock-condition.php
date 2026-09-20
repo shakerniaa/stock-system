@@ -14,24 +14,15 @@ get_header();
 
 $grades = stocksystem_grading_terms_for_display();
 
-$faq_items = array(
-	array(
-		'question' => __( 'تفاوت استوک و رفربیشد چیست؟', 'stocksystem' ),
-		'answer'   => '<p>' . esc_html__( 'رفربیشد یعنی دستگاه پیش از فروش قطعات فرسوده‌اش (مثل باتری) تعویض شده. استوک بدون این تعویض و با سلامت واقعی‌اش اعلام و فروخته می‌شود — شفاف‌تر و معمولاً ارزان‌تر.', 'stocksystem' ) . '</p>',
-	),
-	array(
-		'question' => __( 'گارانتی شامل چه چیزهایی است؟', 'stocksystem' ),
-		'answer'   => '<p>' . esc_html( stocksystem_business( 'warranty_text' ) ) . esc_html__( ' — ایرادات فنی که در برگهٔ تست ذکر نشده باشد. جزئیات کامل در صفحهٔ شرایط گارانتی و مرجوعی.', 'stocksystem' ) . '</p>',
-	),
-	array(
-		'question' => __( 'اگر باتری زودتر خراب شود چه می‌شود؟', 'stocksystem' ),
-		'answer'   => '<p>' . esc_html__( 'در بازهٔ گارانتی، افت غیرعادی باتری نسبت به عدد ثبت‌شده در برگهٔ تست مشمول گارانتی است.', 'stocksystem' ) . '</p>',
-	),
-	array(
-		'question' => __( 'امکان تست حضوری پیش از خرید هست؟', 'stocksystem' ),
-		'answer'   => '<p>' . esc_html__( 'بله، برای خرید حضوری در فروشگاه نیشابور می‌توانید پیش از خرید دستگاه را روشن و تست کنید.', 'stocksystem' ) . '</p>',
-	),
-);
+$grading = stocksystem_opt( 'grading' ); // «استوک سیستم ← درجه‌بندی استوک».
+
+$faq_items = array();
+foreach ( $grading['faq'] as $faq_row ) {
+	$faq_items[] = array(
+		'question' => $faq_row['question'],
+		'answer'   => '<p>' . esc_html( $faq_row['answer'] ) . '</p>',
+	);
+}
 ?>
 
 <div class="container page-crumb">
@@ -42,8 +33,8 @@ $faq_items = array(
 
 <section class="grading-hero">
 	<div class="container">
-		<h1><?php esc_html_e( 'استاندارد درجه‌بندی استوک سیستم', 'stocksystem' ); ?></h1>
-		<p><?php esc_html_e( '«استوک» کلمه‌ای کلی است و همین کلی‌بودن باعث بی‌اعتمادی می‌شود. ما هر دستگاه را با سه شاخص عددی و یک درجهٔ ظاهری می‌فروشیم. تعریف دقیق هر درجه اینجاست.', 'stocksystem' ); ?></p>
+		<h1><?php echo esc_html( $grading['title'] ); ?></h1>
+		<p><?php echo esc_html( $grading['desc'] ); ?></p>
 	</div>
 </section>
 
@@ -66,20 +57,14 @@ $faq_items = array(
 
 <section class="grading-metrics">
 	<div class="container">
-		<h2><?php esc_html_e( 'سه شاخصی که همیشه اعلام می‌کنیم', 'stocksystem' ); ?></h2>
+		<h2><?php echo esc_html( $grading['metrics_title'] ); ?></h2>
 		<div class="grading-metrics__grid">
-			<span class="grading-metric">
-				<span class="grading-metric__title"><?php esc_html_e( 'سلامت باتری', 'stocksystem' ); ?></span>
-				<span class="grading-metric__desc"><?php esc_html_e( 'درصد ظرفیت باقی‌ماندهٔ باتری نسبت به روز اول. زیر ۸۰٪ با قیمت متفاوت و امکان تعویض با هزینهٔ اعلام‌شده.', 'stocksystem' ); ?></span>
-			</span>
-			<span class="grading-metric">
-				<span class="grading-metric__title"><?php esc_html_e( 'ساعت کارکرد', 'stocksystem' ); ?></span>
-				<span class="grading-metric__desc"><?php esc_html_e( 'ساعت کارکرد واقعی دستگاه از شاخص SMART — عددی که قابل جعل نیست و سن واقعی دستگاه را نشان می‌دهد.', 'stocksystem' ); ?></span>
-			</span>
-			<span class="grading-metric">
-				<span class="grading-metric__title"><?php esc_html_e( 'وضعیت بدنه', 'stocksystem' ); ?></span>
-				<span class="grading-metric__desc"><?php esc_html_e( 'درجهٔ ظاهری A تا C بر اساس معیار بالا، ثبت‌شده با عکس واقعی همان دستگاه، نه عکس کاتالوگ.', 'stocksystem' ); ?></span>
-			</span>
+			<?php foreach ( $grading['metrics'] as $metric ) : ?>
+				<span class="grading-metric">
+					<span class="grading-metric__title"><?php echo esc_html( $metric['title'] ); ?></span>
+					<span class="grading-metric__desc"><?php echo esc_html( $metric['desc'] ); ?></span>
+				</span>
+			<?php endforeach; ?>
 		</div>
 	</div>
 </section>
@@ -92,7 +77,7 @@ $faq_items = array(
 				'template-parts/global/faq-accordion',
 				null,
 				array(
-					'title'     => __( 'پرسش‌های متداول', 'stocksystem' ),
+					'title'     => $grading['faq_title'],
 					'items'     => $faq_items,
 					'id_prefix' => 'grading-faq',
 				)
@@ -103,27 +88,27 @@ $faq_items = array(
 		<div class="test-report test-report--sample">
 			<div class="test-report__header">
 				<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M7 9h6M7 13h8"></path></svg>
-				<span class="test-report__title"><?php esc_html_e( 'نمونهٔ برگهٔ تست', 'stocksystem' ); ?></span>
+				<span class="test-report__title"><?php echo esc_html( $grading['sample_title'] ); ?></span>
 			</div>
 			<div class="test-report__grid">
 				<div class="test-report__stat">
 					<span class="test-report__stat-label"><?php esc_html_e( 'سلامت باتری', 'stocksystem' ); ?></span>
-					<span class="test-report__stat-value test-report__stat-value--good"><?php echo esc_html( stocksystem_to_persian_digits( 92 ) ); ?>٪</span>
+					<span class="test-report__stat-value test-report__stat-value--good"><?php echo esc_html( stocksystem_to_persian_digits( $grading['sample_battery'] ) ); ?>٪</span>
 				</div>
 				<div class="test-report__stat">
 					<span class="test-report__stat-label"><?php esc_html_e( 'ساعت کارکرد', 'stocksystem' ); ?></span>
-					<span class="test-report__stat-value"><?php echo esc_html( stocksystem_format_number( 1240 ) ); ?></span>
+					<span class="test-report__stat-value"><?php echo esc_html( stocksystem_format_number( $grading['sample_hours'] ) ); ?></span>
 				</div>
 				<div class="test-report__stat">
 					<span class="test-report__stat-label"><?php esc_html_e( 'وضعیت بدنه', 'stocksystem' ); ?></span>
-					<span class="test-report__stat-value">A</span>
+					<span class="test-report__stat-value"><?php echo esc_html( $grading['sample_body'] ); ?></span>
 				</div>
 				<div class="test-report__stat">
 					<span class="test-report__stat-label"><?php esc_html_e( 'پیکسل سوخته', 'stocksystem' ); ?></span>
-					<span class="test-report__stat-value test-report__stat-value--good"><?php esc_html_e( 'ندارد', 'stocksystem' ); ?></span>
+					<span class="test-report__stat-value test-report__stat-value--good"><?php echo esc_html( $grading['sample_pixels'] ); ?></span>
 				</div>
 			</div>
-			<p class="grading-faq-sample__note"><?php esc_html_e( 'این برگه در صفحهٔ هر دستگاه، در سبد خرید و داخل بستهٔ ارسالی تکرار می‌شود.', 'stocksystem' ); ?></p>
+			<p class="grading-faq-sample__note"><?php echo esc_html( $grading['sample_note'] ); ?></p>
 			<a class="btn btn--primary" href="<?php echo esc_url( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ) ); ?>"><?php esc_html_e( 'مشاهدهٔ موجودی', 'stocksystem' ); ?></a>
 		</div>
 	</div>

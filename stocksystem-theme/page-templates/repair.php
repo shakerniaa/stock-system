@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
+$repair        = stocksystem_opt( 'repair' ); // «استوک سیستم ← تعمیرات تخصصی».
 $services      = stocksystem_repair_services();
 $steps         = stocksystem_repair_steps();
 $submit_status = isset( $_GET['repair_request'] ) ? sanitize_key( wp_unslash( $_GET['repair_request'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -26,13 +27,15 @@ $submit_status = isset( $_GET['repair_request'] ) ? sanitize_key( wp_unslash( $_
 <section class="repair-hero">
 	<div class="container repair-hero__grid">
 		<div class="repair-hero__copy">
-			<h1><?php esc_html_e( 'تعمیر در کارگاه، با تشخیص پیش از هزینه', 'stocksystem' ); ?></h1>
-			<p><?php esc_html_e( 'عیب‌یابی اولیه رایگان است. پس از تشخیص، هزینه و زمان دقیق اعلام می‌شود و کار فقط با تأیید شما آغاز می‌شود.', 'stocksystem' ); ?></p>
-			<span class="repair-hero__badges">
-				<span class="repair-badge"><?php esc_html_e( 'عیب‌یابی رایگان', 'stocksystem' ); ?></span>
-				<span class="repair-badge"><?php esc_html_e( 'گارانتی کتبی تعمیر', 'stocksystem' ); ?></span>
-				<span class="repair-badge"><?php esc_html_e( 'قطعات اصلی', 'stocksystem' ); ?></span>
-			</span>
+			<h1><?php echo esc_html( $repair['title'] ); ?></h1>
+			<p><?php echo esc_html( $repair['desc'] ); ?></p>
+			<?php if ( ! empty( $repair['badges'] ) ) : ?>
+				<span class="repair-hero__badges">
+					<?php foreach ( $repair['badges'] as $badge ) : ?>
+						<span class="repair-badge"><?php echo esc_html( $badge['text'] ); ?></span>
+					<?php endforeach; ?>
+				</span>
+			<?php endif; ?>
 		</div>
 
 		<div class="repair-steps">
@@ -78,14 +81,14 @@ $submit_status = isset( $_GET['repair_request'] ) ? sanitize_key( wp_unslash( $_
 	<div class="container">
 	<div class="repair-form-section__grid">
 		<div class="repair-form-section__copy">
-			<h2><?php esc_html_e( 'درخواست تعمیر ثبت کنید', 'stocksystem' ); ?></h2>
-			<p><?php esc_html_e( 'ظرف چند ساعت کاری تماس می‌گیریم.', 'stocksystem' ); ?></p>
+			<h2><?php echo esc_html( $repair['form_title'] ); ?></h2>
+			<p><?php echo esc_html( $repair['form_desc'] ); ?></p>
 			<span class="repair-form-section__values">
 				<span class="repair-form-section__values-bar" aria-hidden="true"></span>
 				<span class="repair-form-section__values-list">
-					<span><?php esc_html_e( 'عیب‌یابی رایگان', 'stocksystem' ); ?></span>
-					<span><?php esc_html_e( 'هزینه پیش از کار', 'stocksystem' ); ?></span>
-					<span><?php esc_html_e( 'گارانتی کتبی', 'stocksystem' ); ?></span>
+					<?php foreach ( $repair['form_values'] as $form_value ) : ?>
+						<span><?php echo esc_html( $form_value['text'] ); ?></span>
+					<?php endforeach; ?>
 				</span>
 			</span>
 		</div>

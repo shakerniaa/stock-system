@@ -45,7 +45,7 @@ function stocksystem_notify_subscriber_added( $product_id, $phone ) {
 		update_post_meta( $product_id, '_notify_subscribers', $subscribers );
 	}
 
-	$admin_email = get_option( 'admin_email' );
+	$admin_email = stocksystem_notify_email( 'notify' );
 	wp_mail(
 		$admin_email,
 		sprintf(
@@ -88,7 +88,7 @@ function stocksystem_handle_quote_request_submission() {
 
 	if ( $product_id && $org_name && $phone ) {
 		wp_mail(
-			get_option( 'admin_email' ),
+			stocksystem_notify_email( 'request' ),
 			sprintf(
 				/* translators: %s: product name */
 				__( 'درخواست استعلام قیمت: %s', 'stocksystem' ),

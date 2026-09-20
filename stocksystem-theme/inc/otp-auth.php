@@ -47,14 +47,23 @@ function stocksystem_is_valid_phone( $phone ) {
  * is chosen — everything else in this file is provider-agnostic.
  */
 function stocksystem_send_otp_sms( $phone, $code ) {
+	// Text is edited in «استوک سیستم ← ایمیل و پیامک»; until a real SMS gateway is wired in
+	// (hook `stocksystem_otp_send`), it is e-mailed to the store.
+	$message = stocksystem_otp_message( $phone, $code );
+
+	if ( has_action( 'stocksystem_otp_send' ) ) {
+		do_action( 'stocksystem_otp_send', $phone, $message, $code );
+		return;
+	}
+
 	wp_mail(
-		get_option( 'admin_email' ),
+		stocksystem_notify_email( 'otp' ),
 		__( 'کد ورود پیامکی', 'stocksystem' ),
 		sprintf(
-			/* translators: 1: phone number, 2: OTP code */
-			__( 'کد ورود برای %1$s: %2$s (به مدت ۵ دقیقه معتبر است)', 'stocksystem' ),
+			/* translators: 1: phone number, 2: message */
+			__( 'پیامک به %1$s: %2$s', 'stocksystem' ),
 			$phone,
-			$code
+			$message
 		)
 	);
 }

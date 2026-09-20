@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <a class="skip-link" href="#primary"><?php esc_html_e( 'رفتن به محتوای اصلی', 'stocksystem' ); ?></a>
 
+<?php do_action( 'stocksystem_before_header' ); // Announcement bar (استوک سیستم ← بنر اعلان). ?>
 <header id="masthead" class="site-header">
 	<?php if ( function_exists( 'is_checkout' ) && is_checkout() ) : ?>
 		<?php get_template_part( 'template-parts/header/checkout-header' ); ?>

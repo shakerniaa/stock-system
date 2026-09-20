@@ -1,0 +1,138 @@
+/* Admin edit pages (inc/admin-kit.php) — builds on admin-home.css classes */
+.ss-kit .ss-check {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 600;
+}
+
+.ss-kit textarea,
+.ss-kit input[type="text"],
+.ss-kit input[type="datetime-local"],
+.ss-kit select {
+	width: 100%;
+	max-width: none;
+}
+
+.ss-kit .ss-code {
+	font-family: ui-monospace, Menlo, monospace;
+	font-size: 12.5px;
+	direction: ltr;
+	text-align: left;
+}
+
+.ss-kit .ss-url,
+.ss-kit input[dir="ltr"] {
+	text-align: left;
+}
+
+.ss-kit .wp-picker-container input[type="text"].wp-color-picker {
+	width: 90px;
+}
+
+.ss-rep__row--card {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	padding: 12px 14px;
+	margin-bottom: 8px;
+	background: #f9fafa;
+	border: 1px solid #e6e8ea;
+	border-radius: 8px;
+}
+
+.ss-rep__cells {
+	flex: 1;
+	min-width: 0;
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 10px 14px;
+}
+
+.ss-rep__cell {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.ss-rep__cell.is-wide,
+.ss-rep__cell--textarea,
+.ss-rep__cell--html {
+	grid-column: 1 / -1;
+}
+
+.ss-rep__row--card .ss-rep__tools {
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 6px;
+}
+
+.ss-kit .ss-media {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	padding: 8px;
+}
+
+.ss-kit .ss-media__preview {
+	width: 96px;
+	height: 64px;
+	flex: 0 0 auto;
+}
+
+.ss-hub__group {
+	margin: 26px 0 8px;
+	font-size: 15px;
+}
+
+.ss-hub__grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.ss-hub__card {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 14px 16px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	text-decoration: none;
+	color: inherit;
+}
+
+.ss-hub__card:hover {
+	border-color: #0a8f87;
+	box-shadow: 0 2px 8px rgba(10, 143, 135, .15);
+}
+
+.ss-hub__card strong {
+	font-size: 14px;
+	color: #1d2327;
+}
+
+.ss-hub__card span {
+	font-size: 12.5px;
+	line-height: 1.8;
+	color: #646970;
+}
+
+@media (max-width: 960px) {
+	.ss-hub__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 782px) {
+	.ss-hub__grid,
+	.ss-rep__cells {
+		grid-template-columns: 1fr;
+	}
+
+	.ss-rep__row--card {
+		flex-direction: column;
+	}
+}
