@@ -199,6 +199,19 @@
 		padding-inline: var(--sp-18);
 		padding-block: 2px;
 	}
+
+	/* The header row is hidden here, so each value carries its own label. */
+	.repair-table__row span[data-label]::before {
+		content: attr(data-label);
+		flex: 0 0 84px;
+		font-size: var(--fs-12-5);
+		font-weight: 400;
+		color: var(--c-text-3);
+	}
+
+	.repair-table__service {
+		font-weight: 700;
+	}
 }
 
 /* ---- Request form ---- */
@@ -357,4 +370,20 @@
 .repair-form__notice--error {
 	background: var(--c-red-050);
 	color: var(--c-red-700);
+}
+
+@media (max-width: 599px) {
+	.repair-form__actions {
+		flex-direction: column;
+		align-items: stretch;
+		gap: var(--sp-12);
+	}
+
+	.repair-form__actions .btn {
+		width: 100%;
+	}
+
+	.repair-form__phone-hint {
+		text-align: center;
+	}
 }

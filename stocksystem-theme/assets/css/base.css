@@ -206,3 +206,9 @@ ul, ol {
 main:focus {
 	outline: none;
 }
+
+/* Fixed bottom bars step aside while a text field is focused (typing-state.js). */
+html.is-typing .mobile-summary-bar,
+html.is-typing .mobile-buy-bar {
+	display: none;
+}

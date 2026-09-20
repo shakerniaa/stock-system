@@ -65,9 +65,9 @@ $submit_status = isset( $_GET['repair_request'] ) ? sanitize_key( wp_unslash( $_
 						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><?php echo wp_kses( $service['icon'], array( 'rect' => array( 'x' => true, 'y' => true, 'width' => true, 'height' => true, 'rx' => true ), 'path' => array( 'd' => true ), 'circle' => array( 'cx' => true, 'cy' => true, 'r' => true ), 'ellipse' => array( 'cx' => true, 'cy' => true, 'rx' => true, 'ry' => true ) ) ); ?></svg>
 						<?php echo esc_html( $service['name'] ); ?>
 					</span>
-					<span><?php echo esc_html( $service['turnaround'] ); ?></span>
-					<span><?php echo $service['warranty'] ? esc_html( $service['warranty'] ) : '—'; ?></span>
-					<span class="repair-table__price<?php echo $service['price_from'] ? '' : ' is-quote'; ?>"><?php echo $service['price_from'] ? esc_html( stocksystem_format_number( $service['price_from'] ) ) : esc_html__( 'پس از بررسی', 'stocksystem' ); ?></span>
+					<span data-label="<?php esc_attr_e( 'زمان انجام', 'stocksystem' ); ?>"><?php echo esc_html( $service['turnaround'] ); ?></span>
+					<span data-label="<?php esc_attr_e( 'گارانتی', 'stocksystem' ); ?>"><?php echo $service['warranty'] ? esc_html( $service['warranty'] ) : '—'; ?></span>
+					<span data-label="<?php esc_attr_e( 'هزینه از', 'stocksystem' ); ?>" class="repair-table__price<?php echo $service['price_from'] ? '' : ' is-quote'; ?>"><?php echo $service['price_from'] ? esc_html( stocksystem_format_number( $service['price_from'] ) ) : esc_html__( 'پس از بررسی', 'stocksystem' ); ?></span>
 				</div>
 			<?php endforeach; ?>
 		</div>

@@ -329,7 +329,7 @@ function ss_ensure_global_attribute( $slug, $label, $terms ) {
 }
 
 $ram_term_ids     = ss_ensure_global_attribute( 'ram', 'RAM', array( '8GB', '16GB', '32GB' ) );
-$storage_term_ids = ss_ensure_global_attribute( 'storage', 'Storage', array( '256GB SSD', '512GB SSD', '1TB SSD' ) );
+$storage_term_ids = ss_ensure_global_attribute( 'storage', 'ذخیره‌سازی', array( '256GB SSD', '512GB SSD', '1TB SSD' ) );
 
 $ram_attr = new WC_Product_Attribute();
 $ram_attr->set_id( wc_attribute_taxonomy_id_by_name( 'ram' ) );

@@ -24,6 +24,7 @@ function stocksystem_enqueue_assets() {
 
 	wp_enqueue_script( 'stocksystem-breakpoints', STOCKSYSTEM_URI . '/assets/js/breakpoints.js', array(), STOCKSYSTEM_VERSION, true );
 	wp_enqueue_script( 'stocksystem-navigation', STOCKSYSTEM_URI . '/assets/js/navigation.js', array( 'stocksystem-breakpoints' ), STOCKSYSTEM_VERSION, true );
+	wp_enqueue_script( 'stocksystem-typing-state', STOCKSYSTEM_URI . '/assets/js/typing-state.js', array(), STOCKSYSTEM_VERSION, true );
 	wp_enqueue_script( 'stocksystem-toast', STOCKSYSTEM_URI . '/assets/js/toast.js', array(), STOCKSYSTEM_VERSION, true );
 	wp_enqueue_script( 'stocksystem-product-card', STOCKSYSTEM_URI . '/assets/js/product-card.js', array(), STOCKSYSTEM_VERSION, true );
 	wp_enqueue_script( 'stocksystem-archive-filters', STOCKSYSTEM_URI . '/assets/js/archive-filters.js', array(), STOCKSYSTEM_VERSION, true );
