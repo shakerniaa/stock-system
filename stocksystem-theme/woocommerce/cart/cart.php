@@ -11,8 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-do_action( 'woocommerce_before_cart' );
-
 $checkout_url = function_exists( 'wc_get_checkout_url' ) ? wc_get_checkout_url() : home_url( '/checkout/' );
 $shop_url     = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' );
 ?>
@@ -20,6 +18,8 @@ $shop_url     = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
 <div class="checkout-page">
 	<?php get_template_part( 'template-parts/checkout/step-indicator', null, array( 'current' => 1 ) ); ?>
 	<div class="container">
+
+		<?php do_action( 'woocommerce_before_cart' ); // Notices (coupon result, removed-item undo) sit inside the page frame. ?>
 
 		<h1 class="checkout-page__title">
 			<?php
@@ -66,7 +66,7 @@ $shop_url     = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
 						<div class="cart-coupon-applied">
 							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>
 							<?php echo esc_html( wc_cart_totals_coupon_label( $coupon ) ); ?>
-							<a href="<?php echo esc_url( wc_get_cart_remove_coupon_url( $code ) ); ?>"><?php esc_html_e( 'حذف', 'stocksystem' ); ?></a>
+							<a href="<?php echo esc_url( stocksystem_remove_coupon_url( $code ) ); ?>"><?php esc_html_e( 'حذف', 'stocksystem' ); ?></a>
 						</div>
 					<?php endforeach; ?>
 				<?php endif; ?>
@@ -74,7 +74,7 @@ $shop_url     = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
 				<div class="checkout-summary__lines">
 					<span><span><?php esc_html_e( 'جمع کالاها', 'stocksystem' ); ?></span><span><?php wc_cart_totals_subtotal_html(); ?></span></span>
 					<?php foreach ( WC()->cart->get_coupons() as $code => $coupon ) : ?>
-						<span class="checkout-summary__discount"><span><?php echo esc_html( wc_cart_totals_coupon_label( $coupon ) ); ?></span><span>−<?php wc_cart_totals_coupon_html( $coupon ); ?></span></span>
+						<span class="checkout-summary__discount"><span><?php echo esc_html( wc_cart_totals_coupon_label( $coupon ) ); ?></span><span><?php echo wp_kses_post( stocksystem_coupon_discount_html( $coupon ) ); ?></span></span>
 					<?php endforeach; ?>
 					<span><span><?php esc_html_e( 'هزینهٔ ارسال', 'stocksystem' ); ?></span><span class="checkout-summary__muted"><?php esc_html_e( 'در تسویه‌حساب محاسبه می‌شود', 'stocksystem' ); ?></span></span>
 				</div>

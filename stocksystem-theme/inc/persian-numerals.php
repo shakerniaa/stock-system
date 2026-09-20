@@ -118,3 +118,38 @@ function stocksystem_jdate( $format = 'j F Y', $timestamp = null ) {
 
 	return stocksystem_to_persian_digits( $out );
 }
+
+/**
+ * Page links: Persian digits in the visible numbers and aria-labels (never
+ * in the hrefs, which must stay ASCII), and screen-reader text on the
+ * WooCommerce arrow-only prev/next links.
+ */
+add_filter(
+	'paginate_links_output',
+	function ( $output ) {
+		if ( ! is_string( $output ) ) {
+			return $output;
+		}
+
+		$output = preg_replace_callback(
+			'/>([^<]*\d[^<]*)</u',
+			function ( $m ) {
+				return '>' . stocksystem_to_persian_digits( $m[1] ) . '<';
+			},
+			$output
+		);
+
+		$output = preg_replace_callback(
+			'/aria-label="([^"]*)"/u',
+			function ( $m ) {
+				return 'aria-label="' . stocksystem_to_persian_digits( $m[1] ) . '"';
+			},
+			$output
+		);
+
+		$output = preg_replace( '/(class="prev page-numbers"[^>]*>)→</u', '$1<span aria-hidden="true">→</span><span class="screen-reader-text">' . esc_html__( 'صفحهٔ قبل', 'stocksystem' ) . '</span><', $output );
+		$output = preg_replace( '/(class="next page-numbers"[^>]*>)←</u', '$1<span aria-hidden="true">←</span><span class="screen-reader-text">' . esc_html__( 'صفحهٔ بعد', 'stocksystem' ) . '</span><', $output );
+
+		return $output;
+	}
+);

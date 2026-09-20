@@ -60,7 +60,7 @@ $order_button_text = apply_filters( 'woocommerce_order_button_text', __( 'ثبت
 		<span class="cart-subtotal"><span><?php esc_html_e( 'جمع کالاها', 'stocksystem' ); ?></span><span><?php wc_cart_totals_subtotal_html(); ?></span></span>
 
 		<?php foreach ( $cart->get_coupons() as $code => $coupon ) : ?>
-			<span class="checkout-summary__discount cart-discount"><span><?php echo esc_html( wc_cart_totals_coupon_label( $coupon, false ) ); ?></span><span>−<?php wc_cart_totals_coupon_html( $coupon ); ?></span></span>
+			<span class="checkout-summary__discount cart-discount"><span><?php echo esc_html( wc_cart_totals_coupon_label( $coupon, false ) ); ?></span><span><?php echo wp_kses_post( stocksystem_coupon_discount_html( $coupon ) ); ?></span></span>
 		<?php endforeach; ?>
 
 		<?php if ( $cart->needs_shipping() && $cart->show_shipping() ) : ?>

@@ -1019,7 +1019,8 @@ table.shop_table tfoot td {
 
 .product-grid--single {
 	grid-template-columns: 1fr;
-	max-width: 280px;
+	max-width: 300px;
+	margin-inline: auto;
 }
 
 /* ---- Responsive ---- */
@@ -1535,4 +1536,17 @@ table.shop_table tfoot td {
 	.checkout-summary > .checkout-summary__terms {
 		display: none;
 	}
+}
+
+/* Cart auto-updates on quantity change (assets/js/cart.js): the manual
+   update button is only the no-JS fallback, and the page dims while the
+   fresh render is fetched. */
+.cart-auto-update .cart-actions button[name="update_cart"] {
+	display: none;
+}
+
+.checkout-page.is-updating .container {
+	opacity: .55;
+	pointer-events: none;
+	transition: opacity var(--transition-hover);
 }

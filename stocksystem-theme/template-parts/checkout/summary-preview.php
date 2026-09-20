@@ -36,7 +36,7 @@ $cart = WC()->cart;
 	<div class="checkout-summary__lines">
 		<span><span><?php esc_html_e( 'جمع کالاها', 'stocksystem' ); ?></span><span><?php wc_cart_totals_subtotal_html(); ?></span></span>
 		<?php foreach ( $cart->get_coupons() as $code => $coupon ) : ?>
-			<span class="checkout-summary__discount"><span><?php echo esc_html( wc_cart_totals_coupon_label( $coupon ) ); ?></span><span>−<?php wc_cart_totals_coupon_html( $coupon ); ?></span></span>
+			<span class="checkout-summary__discount"><span><?php echo esc_html( wc_cart_totals_coupon_label( $coupon ) ); ?></span><span><?php echo wp_kses_post( stocksystem_coupon_discount_html( $coupon ) ); ?></span></span>
 		<?php endforeach; ?>
 		<span><span><?php esc_html_e( 'هزینهٔ ارسال', 'stocksystem' ); ?></span><span class="checkout-summary__muted"><?php esc_html_e( 'در گام بعد', 'stocksystem' ); ?></span></span>
 	</div>

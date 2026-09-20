@@ -807,3 +807,85 @@
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
+
+/* ---- Pagination ----
+   Same look for WooCommerce's product pagination (nav.woocommerce-pagination
+   > ul.page-numbers) and WordPress' the_posts_pagination() (nav.pagination
+   > .nav-links). The design's 44px touch target, ink fill for the current page. */
+.woocommerce-pagination,
+.navigation.pagination {
+	margin-block: var(--sp-32) var(--sp-16);
+}
+
+.woocommerce-pagination ul.page-numbers,
+.navigation.pagination .nav-links {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: var(--sp-8);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.woocommerce-pagination ul.page-numbers li {
+	margin: 0;
+}
+
+.woocommerce-pagination .page-numbers:not(ul),
+.navigation.pagination .page-numbers {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 44px;
+	height: 44px;
+	padding-inline: var(--sp-12);
+	border: var(--border-interactive) solid var(--c-line);
+	border-radius: var(--radius-input);
+	background: var(--c-paper);
+	font-size: var(--fs-14);
+	font-weight: 600;
+	color: var(--c-text);
+	transition: border-color var(--transition-hover), color var(--transition-hover), background-color var(--transition-hover);
+}
+
+.woocommerce-pagination a.page-numbers:hover,
+.navigation.pagination a.page-numbers:hover {
+	border-color: var(--c-teal-500);
+	color: var(--c-teal-700);
+}
+
+.woocommerce-pagination a.page-numbers:focus-visible,
+.navigation.pagination a.page-numbers:focus-visible {
+	outline: var(--focus-ring-width) solid var(--focus-ring-color);
+	outline-offset: 2px;
+}
+
+.woocommerce-pagination .page-numbers.current,
+.navigation.pagination .page-numbers.current {
+	border-color: var(--c-ink-800);
+	background: var(--c-ink-800);
+	color: #fff;
+}
+
+.woocommerce-pagination .page-numbers.dots,
+.navigation.pagination .page-numbers.dots {
+	min-width: 0;
+	border-color: transparent;
+	background: transparent;
+	color: var(--c-text-3);
+}
+
+.navigation.pagination .screen-reader-text {
+	position: absolute;
+}
+
+@media (max-width: 599px) {
+	.woocommerce-pagination .page-numbers:not(ul),
+	.navigation.pagination .page-numbers {
+		min-width: 40px;
+		height: 40px;
+		padding-inline: var(--sp-8);
+	}
+}

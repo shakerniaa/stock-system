@@ -178,9 +178,75 @@
 			}
 		} );
 
+		// Remove a line without leaving the page: WooCommerce's remove_from_cart
+		// endpoint drops the item, then the cart-fragments refresh re-renders
+		// #mini-cart-content and the header badges.
+		panel.addEventListener( 'click', function ( event ) {
+			var button = event.target.closest( '.mini-cart-panel__remove' );
+			if ( ! button || button.disabled ) {
+				return;
+			}
+			event.preventDefault();
+
+			var row = button.closest( '.mini-cart-panel__row' );
+			var endpoint = ( window.wc_add_to_cart_params && window.wc_add_to_cart_params.wc_ajax_url ) || '/?wc-ajax=%%endpoint%%';
+			var name = button.getAttribute( 'data-product-name' );
+
+			button.disabled = true;
+			if ( row ) {
+				row.classList.add( 'is-removing' );
+			}
+
+			fetch( endpoint.replace( '%%endpoint%%', 'remove_from_cart' ), {
+				method: 'POST',
+				credentials: 'same-origin',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				body: 'cart_item_key=' + encodeURIComponent( button.getAttribute( 'data-cart-item-key' ) )
+			} )
+				.then( function ( response ) {
+					return response.json();
+				} )
+				.then( function ( data ) {
+					if ( ! data || ! data.fragments ) {
+						throw new Error( 'remove failed' );
+					}
+					if ( window.jQuery ) {
+						window.jQuery( document.body ).trigger( 'wc_fragment_refresh' );
+					}
+					if ( window.stocksystemToast ) {
+						window.stocksystemToast.show( name ? '«' + name + '» از سبد حذف شد' : 'از سبد حذف شد', 'success' );
+					}
+					// Fragments swap in via cart-fragments; keep the drawer open and give it focus back.
+					if ( autoCloseTimer ) {
+						window.clearTimeout( autoCloseTimer );
+					}
+				} )
+				.catch( function () {
+					button.disabled = false;
+					if ( row ) {
+						row.classList.remove( 'is-removing' );
+					}
+					if ( window.stocksystemToast ) {
+						window.stocksystemToast.show( 'حذف انجام نشد؛ دوباره تلاش کنید.', 'error' );
+					}
+				} );
+		} );
+
 		// WooCommerce fires this jQuery event on every successful add-to-cart.
 		if ( window.jQuery ) {
-			window.jQuery( document.body ).on( 'added_to_cart', function () {
+			window.jQuery( document.body ).on( 'added_to_cart', function ( event, fragments, hash, $button ) {
+				// The card button confirms briefly ("✓ به سبد اضافه شد"), then goes back to its label.
+				var btn = $button && $button[ 0 ];
+				if ( btn && ! btn.hasAttribute( 'data-label' ) ) {
+					btn.setAttribute( 'data-label', btn.textContent.trim() );
+					btn.textContent = 'به سبد اضافه شد';
+					window.setTimeout( function () {
+						btn.textContent = btn.getAttribute( 'data-label' );
+						btn.removeAttribute( 'data-label' );
+						btn.classList.remove( 'added' );
+					}, 2500 );
+				}
+
 				openPanel( panel, document.getElementById( 'mini-cart-toggle' ) );
 				if ( autoCloseTimer ) {
 					window.clearTimeout( autoCloseTimer );

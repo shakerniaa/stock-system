@@ -56,6 +56,10 @@ function stocksystem_enqueue_assets() {
 		wp_enqueue_script( 'stocksystem-product-page', STOCKSYSTEM_URI . '/assets/js/product-page.js', array(), STOCKSYSTEM_VERSION, true );
 	}
 
+	if ( function_exists( 'is_cart' ) && is_cart() ) {
+		wp_enqueue_script( 'stocksystem-cart', STOCKSYSTEM_URI . '/assets/js/cart.js', array(), STOCKSYSTEM_VERSION, true );
+	}
+
 	if ( function_exists( 'is_checkout' ) && is_checkout() ) {
 		wp_enqueue_script( 'stocksystem-checkout', STOCKSYSTEM_URI . '/assets/js/checkout.js', array( 'jquery' ), STOCKSYSTEM_VERSION, true );
 	}

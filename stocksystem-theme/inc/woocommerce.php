@@ -240,3 +240,34 @@ function stocksystem_create_order_tracking_page() {
 	}
 }
 add_action( 'after_switch_theme', 'stocksystem_create_order_tracking_page' );
+
+/**
+ * Coupon helpers for the cart / checkout summaries. wc_cart_totals_coupon_html()
+ * prints "-amount [Remove]" (its own sign and an English-labelled link), which
+ * doubles the minus sign in our rows and duplicates the removal control shown
+ * with the applied code — so the summaries print just the amount.
+ */
+function stocksystem_coupon_discount_html( $coupon ) {
+	$amount = WC()->cart->get_coupon_discount_amount( $coupon->get_code(), WC()->cart->display_cart_ex_tax );
+
+	if ( $coupon->get_free_shipping() && empty( $amount ) ) {
+		return esc_html__( 'ارسال رایگان', 'stocksystem' );
+	}
+
+	return '−' . wc_price( $amount );
+}
+
+function stocksystem_remove_coupon_url( $code ) {
+	return add_query_arg( 'remove_coupon', rawurlencode( $code ), wc_get_cart_url() );
+}
+
+// Coupon codes are stored lowercase by WooCommerce; show them the way they are written on flyers.
+add_filter(
+	'woocommerce_cart_totals_coupon_label',
+	function ( $label, $coupon ) {
+		/* translators: %s: coupon code */
+		return sprintf( __( 'کد تخفیف: %s', 'stocksystem' ), strtoupper( $coupon->get_code() ) );
+	},
+	10,
+	2
+);

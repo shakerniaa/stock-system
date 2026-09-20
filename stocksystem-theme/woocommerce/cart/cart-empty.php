@@ -11,8 +11,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' );
 
-$suggestion = function_exists( 'wc_get_products' ) ? wc_get_products( array( 'limit' => 1, 'orderby' => 'popularity', 'status' => 'publish' ) ) : array();
+// A buyable, in-stock, priced product — not a quote-only server or a sold-out model.
+$suggestion = function_exists( 'wc_get_products' ) ? wc_get_products( array( 'limit' => 12, 'orderby' => 'popularity', 'status' => 'publish', 'stock_status' => 'instock' ) ) : array();
+$suggestion = array_values(
+	array_filter(
+		$suggestion,
+		function ( $candidate ) {
+			return $candidate->is_purchasable() && '' !== $candidate->get_price() && ! $candidate->is_type( 'variable' );
+		}
+	)
+);
 ?>
+<div class="container">
+<?php wc_print_notices(); // Removed-item «بازگردانی» and coupon notices. ?>
 <div class="cart-empty">
 	<span class="cart-empty__icon" aria-hidden="true">
 		<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16l-1.5 10.5a2 2 0 0 1-2 1.7H7.5a2 2 0 0 1-2-1.7L4 6z"></path><path d="M9 6V4.5a3 3 0 0 1 6 0V6"></path></svg>
@@ -40,4 +51,5 @@ $suggestion = function_exists( 'wc_get_products' ) ? wc_get_products( array( 'li
 			</div>
 		</div>
 	<?php endif; ?>
+</div>
 </div>
