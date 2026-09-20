@@ -353,7 +353,7 @@
 	flex: 1;
 	height: 52px;
 	border-radius: var(--radius-button);
-	background: var(--c-teal-500);
+	background: var(--c-cta);
 	color: #fff;
 	border: none;
 	font-size: var(--fs-16);
@@ -361,7 +361,7 @@
 }
 
 .buy-box__panel .single_add_to_cart_button:hover {
-	background: var(--c-teal-600);
+	background: var(--c-cta-hover);
 }
 
 .buy-box__panel .single_add_to_cart_button.disabled {
@@ -640,7 +640,7 @@
 	flex: 1;
 	height: 52px;
 	border-radius: var(--radius-button-lg);
-	background: var(--c-teal-500);
+	background: var(--c-cta);
 	color: #fff;
 	border: none;
 	font-size: var(--fs-15-5);
@@ -648,7 +648,7 @@
 }
 
 .configurator__summary .single_add_to_cart_button:hover {
-	background: var(--c-teal-600);
+	background: var(--c-cta-hover);
 }
 
 /* ---- Related products ---- */

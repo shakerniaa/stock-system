@@ -61,3 +61,9 @@
 - آستانهٔ دقیق ارسال رایگان و هزینهٔ پست به شهرهای مختلف
 - متن نهایی شرایط مرجوعی و گارانتی (بر مبنای ۱ ماه)
 - عکس‌ها، لوگوی برداری، فونت PeydaFaNum
+
+---
+
+## Amendment (2026-09-20) — Decision #1, CTA colour
+
+White text on `#0EBAAF` measures 2.42:1 (WCAG AA needs 4.5:1). Owner approved keeping white text and darkening the **fill** of primary actions to `#077A73` (5.2:1), hover `#056660`. Teal `#0EBAAF` remains the brand colour for icons, borders, focus on dark, and for fills that carry dark `#04211F` text.

@@ -92,7 +92,7 @@
 }
 
 .checkout-stepper__stage.is-current .checkout-stepper__circle {
-	background: var(--c-teal-500);
+	background: var(--c-cta);
 	border-color: var(--c-teal-500);
 	color: #fff;
 }
@@ -103,7 +103,7 @@
 }
 
 .checkout-stepper__stage.is-done .checkout-stepper__circle {
-	background: var(--c-teal-500);
+	background: var(--c-cta);
 	border-color: var(--c-teal-500);
 	color: #fff;
 }
@@ -423,7 +423,7 @@
 }
 
 .checkout-recipient-toggle input:checked + .checkout-recipient-toggle__box {
-	background: var(--c-teal-500);
+	background: var(--c-cta);
 	border-color: var(--c-teal-500);
 	color: #fff;
 }

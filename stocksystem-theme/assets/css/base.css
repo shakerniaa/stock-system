@@ -191,7 +191,7 @@ ul, ol {
 	font-size: var(--fs-14);
 	font-weight: 600;
 	color: #fff;
-	background: var(--c-teal-500);
+	background: var(--c-cta);
 	border: none;
 	border-radius: var(--radius-input);
 	padding-inline: var(--sp-20);
