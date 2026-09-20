@@ -17,6 +17,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Falls back to the six categories shown in 01 Home.dc.html.
  */
 function stocksystem_nav_categories() {
+	static $memo = null;
+
+	// Called by the nav bar, mega menu, mobile drawer, footer and homepage — build once per request.
+	if ( null === $memo ) {
+		$memo = stocksystem_nav_categories_build();
+	}
+
+	return $memo;
+}
+
+function stocksystem_nav_categories_build() {
 	$fallback = array(
 		(object) array( 'name' => 'لپ‌تاپ استوک', 'count' => 0, 'url' => '#' ),
 		(object) array( 'name' => 'آل‌این‌وان', 'count' => 0, 'url' => '#' ),

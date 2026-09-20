@@ -1,13 +1,14 @@
 /**
- * Peyda — self-hosted Persian brand typeface.
- * Shipping raw .ttf for now per CLAUDE.md ("subset later"); swap src to
- * WOFF2 (Arabic + Persian + Latin + digits subset) before production —
- * expect ~70% size reduction. Keep font-display: swap.
+ * Peyda — self-hosted Persian brand typeface, as WOFF2 subsets (Latin,
+ * Persian/Arabic letters and digits, punctuation, arrows; every OpenType
+ * shaping feature kept). ~19 KB per weight instead of ~200 KB TTF. To add a
+ * character outside these ranges, re-run dev-tools/build-fonts.sh.
+ * font-display: swap keeps text visible while the file loads.
  */
 
 @font-face {
 	font-family: 'Peyda';
-	src: url('../fonts/Peyda-Regular.ttf') format('truetype');
+	src: url('../fonts/Peyda-Regular.woff2') format('woff2');
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
@@ -15,7 +16,7 @@
 
 @font-face {
 	font-family: 'Peyda';
-	src: url('../fonts/Peyda-Medium.ttf') format('truetype');
+	src: url('../fonts/Peyda-Medium.woff2') format('woff2');
 	font-weight: 500;
 	font-style: normal;
 	font-display: swap;
@@ -23,7 +24,7 @@
 
 @font-face {
 	font-family: 'Peyda';
-	src: url('../fonts/Peyda-SemiBold.ttf') format('truetype');
+	src: url('../fonts/Peyda-SemiBold.woff2') format('woff2');
 	font-weight: 600;
 	font-style: normal;
 	font-display: swap;
@@ -31,7 +32,7 @@
 
 @font-face {
 	font-family: 'Peyda';
-	src: url('../fonts/Peyda-Bold.ttf') format('truetype');
+	src: url('../fonts/Peyda-Bold.woff2') format('woff2');
 	font-weight: 700;
 	font-style: normal;
 	font-display: swap;
@@ -39,7 +40,7 @@
 
 @font-face {
 	font-family: 'Peyda';
-	src: url('../fonts/Peyda-ExtraBold.ttf') format('truetype');
+	src: url('../fonts/Peyda-ExtraBold.woff2') format('woff2');
 	font-weight: 800;
 	font-style: normal;
 	font-display: swap;

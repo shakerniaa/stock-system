@@ -1,0 +1,7 @@
+{
+  "name": "stocksystem-theme-build",
+  "private": true,
+  "description": "Build step for the theme's CSS/JS bundles (npm install, then npm run build)",
+  "scripts": { "build": "node build-assets.mjs" },
+  "devDependencies": { "esbuild": "^0.25.0" }
+}

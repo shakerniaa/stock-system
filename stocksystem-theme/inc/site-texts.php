@@ -29,7 +29,7 @@ function stocksystem_text_overrides() {
 	static $map = null;
 
 	if ( null === $map ) {
-		$saved = get_option( 'stocksystem_texts', array() );
+		$saved = stocksystem_get_option( 'stocksystem_texts' );
 		$map   = is_array( $saved ) ? $saved : array();
 	}
 

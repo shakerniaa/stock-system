@@ -197,6 +197,24 @@ Method that works: serve the design kit (`cd stocksystem-dev-kit && python3 -m h
 - Tested with the real forms (FAQ row added and saved, colour pickers/media buttons render) and on the front end for every page above with all options set, then all options were deleted and the defaults were verified unchanged (home 5 sections, about 4 stats, repair 4 rows, FAQ 8, terms 6). «متن‌های سایت» no longer lists the strings that moved into these pages (533 left).
 - Not verified here: real image uploads, the map iframe (needs an admin with `unfiltered_html`; sanitising in wp-cli runs without a user), and the pop-up/announcement timing across a real day.
 
+**Speed (theme side) — measured on the logged-out home page, local server:**
+
+| | before | after |
+|---|---|---|
+| requests | 47 | 20 |
+| fonts | 5 TTF, 985 KB | 5 WOFF2, 93 KB (3 preloaded) |
+| theme CSS | 14 files, 96 KB | 2 files, 74 KB (13 KB gzipped) |
+| JS | 18 files, 184 KB | 9 files, 140 KB (47 KB gzipped) |
+| images | 10, 419 KB | 4, 115 KB (rest lazy) |
+| HTML | 78 KB | 61 KB (10 KB gzipped) |
+
+- **Fonts**: Peyda TTF → WOFF2 subset (Latin, Persian/Arabic, digits, punctuation, arrows; all OpenType shaping features kept; every character used anywhere on the site checked against the subset). TTFs removed from the theme (they stay in `stocksystem-dev-kit/assets/fonts`; `dev-tools/build-fonts.sh` rebuilds).
+- **Bundles**: `dev-tools/build-assets.mjs` (esbuild) → `assets/dist`: global CSS/JS merged and minified, page-specific files minified; `inc/enqueue.php` serves them when `dist/manifest.json` exists (unless `SCRIPT_DEBUG`; with `WP_DEBUG` it falls back to sources if any source is newer than the build). Merged handles stay registered as empty ones so dependencies keep working. **Verified: computed styles of ~4,000 elements on 7 pages are identical between the sources and the build**; add-to-cart + mini-cart, wishlist, mega menu, configurator (variation + price), checkout to the payment step, OTP validation and request all work on the bundle.
+- **`inc/performance.php`**: emoji/generator/RSD/WLW/shortlink/oEmbed removed; block-editor and global-styles CSS only on pages that have blocks; jQuery Migrate removed; jQuery deferred (with the theme scripts that need it); hero first image `fetchpriority=high` with real width/height; images: first row eager / rest lazy, `srcset`/`sizes`/`loading`/`decoding` now survive `wp_kses_post()` (they were silently stripped from every product/blog image — one size for everyone, nothing lazy), new uploads generated as WebP when the server supports it; the theme's own options are autoloaded (each missing option was a query per page) and the category list is built once per request. Query count −6 %; the rest is WooCommerce — a page cache on the host removes it for visitors.
+- **Images**: logo 264 KB PNG → 10 KB WebP (with proper size), the four bundled fallback product photos → WebP (1.1 MB → 90 KB), unused logo variants removed.
+- **`HOSTING.md`**: the host-side checklist (PHP/OPcache, compression, cache headers, page + object cache, image optimisation, cron, how to rebuild the assets).
+- Not changed on purpose: WooCommerce's order-attribution script (17 KB, records where an order came from), cart-fragments (needed for the live mini-cart badge).
+
 **Still to compare** at desktop, honestly only spot-checked: the checkout/cart at 1280 side by side with `04`/`12`, blog article pixel metrics, and login/register/lost-password + wishlist (`16-B/C`). Tooling note: the browser pane's screenshots are unreliable right after a viewport change or when batched after a `navigate` (they come back cropped/zoomed) — take the screenshot as its own call after a ~1s wait, and prefer DOM/computed-style checks and text diffs (design frame `innerText` vs live `innerText`) for structure. **Content-dependent, not code gaps**: footer social icons and the trust/e-namad badge slots (need the client's handles/badges), real product photography for everything the kit has no picture of, the map on the About page, opening hours, and the real Iranian payment-gateway plugin (the mock gateway above is a stand-in).
 
 Deliberately trimmed from `08 Account.dc.html`'s sidebar (not built, not planned unless asked): device-test-sheet list, repair-request list, device comparison tool, loyalty points, support tickets, notifications. Only the items the README's build-order line actually names (orders, tracking, wishlist, OTP, wallet) plus WooCommerce's own addresses/account-details were built.

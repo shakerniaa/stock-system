@@ -131,7 +131,7 @@ function stocksystem_home( $section = null ) {
 	static $cache = null;
 
 	if ( null === $cache ) {
-		$cache = stocksystem_home_merge( stocksystem_home_defaults(), get_option( 'stocksystem_home', array() ) );
+		$cache = stocksystem_home_merge( stocksystem_home_defaults(), stocksystem_get_option( 'stocksystem_home' ) );
 	}
 
 	if ( null === $section ) {

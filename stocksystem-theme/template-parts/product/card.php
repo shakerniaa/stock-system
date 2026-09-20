@@ -42,8 +42,11 @@ if ( in_array( 'badge--warning', wp_list_pluck( $badges, 'class' ), true ) ) {
 			echo wp_kses_post(
 				$product->get_image(
 					'medium',
-					array(
-						'class' => 'product-card__image' . ( ! $product->is_in_stock() ? ' product-card__image--disabled' : '' ),
+					array_merge(
+						array(
+							'class' => 'product-card__image' . ( ! $product->is_in_stock() ? ' product-card__image--disabled' : '' ),
+						),
+						stocksystem_image_attrs( 'product-card', is_front_page() ? 0 : 4 ) // Archives: first row eager. Home: below the hero, all lazy.
 					)
 				)
 			);

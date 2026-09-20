@@ -21,8 +21,11 @@ $secondary   = stocksystem_home_link( $hero['cta2_url'], home_url( '/stock-condi
 $hero_images = array();
 foreach ( $hero['images'] as $hero_image_id ) {
 	if ( $hero_image_id && wp_attachment_is_image( $hero_image_id ) ) {
+		$hero_src      = wp_get_attachment_image_src( $hero_image_id, 'medium' );
 		$hero_images[] = array(
-			'src' => wp_get_attachment_image_url( $hero_image_id, 'medium' ),
+			'src' => $hero_src[0],
+			'w'   => $hero_src[1],
+			'h'   => $hero_src[2],
 			'alt' => trim( (string) get_post_meta( $hero_image_id, '_wp_attachment_image_alt', true ) ),
 		);
 	}
@@ -42,8 +45,11 @@ if ( empty( $hero_images ) && function_exists( 'wc_get_products' ) ) {
 	$hero_products = wc_get_products( $hero_args );
 	foreach ( $hero_products as $hero_product ) {
 		if ( $hero_product->get_image_id() ) {
+			$hero_src      = wp_get_attachment_image_src( $hero_product->get_image_id(), 'medium' );
 			$hero_images[] = array(
-				'src' => wp_get_attachment_image_url( $hero_product->get_image_id(), 'medium' ),
+				'src' => $hero_src[0],
+				'w'   => $hero_src[1],
+				'h'   => $hero_src[2],
 				'alt' => $hero_product->get_name(),
 			);
 		}
@@ -51,9 +57,9 @@ if ( empty( $hero_images ) && function_exists( 'wc_get_products' ) ) {
 }
 if ( empty( $hero_images ) ) {
 	$hero_images = array(
-		array( 'src' => STOCKSYSTEM_URI . '/assets/images/products/dell-inspiron-3520.png', 'alt' => 'Dell Inspiron 3520' ),
-		array( 'src' => STOCKSYSTEM_URI . '/assets/images/products/elitebook-840-g8.png', 'alt' => 'HP EliteBook 840 G8' ),
-		array( 'src' => STOCKSYSTEM_URI . '/assets/images/products/surface-laptop-4.png', 'alt' => 'Surface Laptop 4' ),
+		array( 'src' => STOCKSYSTEM_URI . '/assets/images/products/dell-inspiron-3520.webp', 'w' => 600, 'h' => 600, 'alt' => 'Dell Inspiron 3520' ),
+		array( 'src' => STOCKSYSTEM_URI . '/assets/images/products/elitebook-840-g8.webp', 'w' => 400, 'h' => 400, 'alt' => 'HP EliteBook 840 G8' ),
+		array( 'src' => STOCKSYSTEM_URI . '/assets/images/products/surface-laptop-4.webp', 'w' => 1200, 'h' => 875, 'alt' => 'Surface Laptop 4' ),
 	);
 }
 ?>
@@ -90,8 +96,9 @@ if ( empty( $hero_images ) ) {
 		</div>
 
 		<div class="home-hero__media">
-			<?php foreach ( $hero_images as $image ) : ?>
-				<img src="<?php echo esc_url( $image['src'] ); ?>" alt="<?php echo esc_attr( $image['alt'] ); ?>">
+			<?php foreach ( $hero_images as $hero_index => $image ) : ?>
+				<?php // The first image is the page's largest visible element: fetch it first (LCP). ?>
+				<img src="<?php echo esc_url( $image['src'] ); ?>" alt="<?php echo esc_attr( $image['alt'] ); ?>" width="<?php echo (int) $image['w']; ?>" height="<?php echo (int) $image['h']; ?>" decoding="async"<?php echo 0 === $hero_index ? ' fetchpriority="high"' : ''; ?>>
 			<?php endforeach; ?>
 		</div>
 	</div>

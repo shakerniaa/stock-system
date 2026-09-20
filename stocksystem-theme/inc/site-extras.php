@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function stocksystem_logo_url() {
 	$custom = stocksystem_opt_image( 'look', 'logo', 'full' );
 
-	return $custom ? $custom : STOCKSYSTEM_URI . '/assets/images/logo-lockup-dark.png';
+	return $custom ? $custom : STOCKSYSTEM_URI . '/assets/images/logo-lockup-dark.webp';
 }
 
 function stocksystem_print_favicon() {
@@ -301,7 +301,7 @@ function stocksystem_otp_message( $phone, $code ) {
  * ---------------------------------------------------------------------- */
 
 function stocksystem_enqueue_extras() {
-	wp_enqueue_style( 'stocksystem-extras', STOCKSYSTEM_URI . '/assets/css/components/extras.css', array( 'stocksystem-base' ), STOCKSYSTEM_VERSION );
-	wp_enqueue_script( 'stocksystem-extras', STOCKSYSTEM_URI . '/assets/js/extras.js', array(), STOCKSYSTEM_VERSION, true );
+	stocksystem_enqueue_style( 'stocksystem-extras', 'components/extras.css', array( 'stocksystem-base' ) );
+	stocksystem_enqueue_script( 'stocksystem-extras', 'extras.js' );
 }
 add_action( 'wp_enqueue_scripts', 'stocksystem_enqueue_extras', 30 );

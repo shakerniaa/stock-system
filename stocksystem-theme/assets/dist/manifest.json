@@ -1,0 +1,48 @@
+{
+ "built": "2026-09-20T15:28:30.523Z",
+ "global_css": [
+  "fonts.css",
+  "tokens.css",
+  "base.css",
+  "components/buttons.css",
+  "components/toast.css",
+  "components/notices.css",
+  "components/header.css",
+  "components/footer.css",
+  "components/product-card.css",
+  "components/archive.css",
+  "components/blog.css",
+  "components/extras.css"
+ ],
+ "global_js": [
+  "breakpoints.js",
+  "navigation.js",
+  "typing-state.js",
+  "toast.js",
+  "product-card.js",
+  "archive-filters.js",
+  "faq-accordion.js",
+  "wishlist.js",
+  "extras.js"
+ ],
+ "css": {
+  "components/about.css": "css/about.min.css",
+  "components/account.css": "css/account.min.css",
+  "components/checkout.css": "css/checkout.min.css",
+  "components/error-404.css": "css/error-404.min.css",
+  "components/grading.css": "css/grading.min.css",
+  "components/home.css": "css/home.min.css",
+  "components/product-page.css": "css/product-page.min.css",
+  "components/repair.css": "css/repair.min.css",
+  "components/support.css": "css/support.min.css"
+ },
+ "js": {
+  "account-nav.js": "js/account-nav.min.js",
+  "cart.js": "js/cart.min.js",
+  "checkout.js": "js/checkout.min.js",
+  "faq-filter.js": "js/faq-filter.min.js",
+  "otp-login.js": "js/otp-login.min.js",
+  "product-configurator.js": "js/product-configurator.min.js",
+  "product-page.js": "js/product-page.min.js"
+ }
+}

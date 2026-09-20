@@ -28,6 +28,7 @@ require STOCKSYSTEM_DIR . '/inc/admin-pages.php';
 require STOCKSYSTEM_DIR . '/inc/admin-pages-site.php';
 require STOCKSYSTEM_DIR . '/inc/site-extras.php';
 require STOCKSYSTEM_DIR . '/inc/seo-meta.php';
+require STOCKSYSTEM_DIR . '/inc/performance.php';
 require STOCKSYSTEM_DIR . '/inc/menus.php';
 require STOCKSYSTEM_DIR . '/inc/js-strings.php';
 require STOCKSYSTEM_DIR . '/inc/persian-numerals.php';

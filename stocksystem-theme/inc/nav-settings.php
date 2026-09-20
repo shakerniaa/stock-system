@@ -32,7 +32,7 @@ function stocksystem_nav_settings() {
 	static $cache = null;
 
 	if ( null === $cache ) {
-		$saved = get_option( 'stocksystem_nav', array() );
+		$saved = stocksystem_get_option( 'stocksystem_nav' );
 		$saved = is_array( $saved ) ? $saved : array();
 
 		$cache = array(

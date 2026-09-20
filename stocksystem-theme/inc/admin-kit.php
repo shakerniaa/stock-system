@@ -68,7 +68,7 @@ function stocksystem_opt( $slug, $key = null ) {
 	static $cache = array();
 
 	if ( ! isset( $cache[ $slug ] ) ) {
-		$saved  = get_option( 'stocksystem_' . $slug, array() );
+		$saved  = stocksystem_get_option( 'stocksystem_' . $slug );
 		$saved  = is_array( $saved ) ? $saved : array();
 		$values = array();
 

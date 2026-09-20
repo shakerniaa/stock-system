@@ -28,7 +28,7 @@ $category   = ! empty( $categories ) ? $categories[0] : null;
 ?>
 <a class="blog-card" href="<?php echo esc_url( get_permalink( $post ) ); ?>">
 	<span class="blog-card__cover">
-		<?php echo get_the_post_thumbnail( $post, 'medium_large' ); ?>
+		<?php echo get_the_post_thumbnail( $post, 'medium_large', stocksystem_image_attrs( 'blog-card', is_front_page() ? 0 : 3 ) ); ?>
 	</span>
 	<span class="blog-card__meta">
 		<?php if ( $category ) : ?>
