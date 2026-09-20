@@ -287,3 +287,40 @@ add_action(
 		}
 	}
 );
+
+/**
+ * Fresh WooCommerce (8.3+) creates the Cart and Checkout pages with its block
+ * editor blocks, which bypass every template in woocommerce/cart and
+ * woocommerce/checkout. This theme is built on the classic templates, so on
+ * activation (and whenever an admin screen loads) a page that still holds block
+ * markup is switched to the classic shortcode.
+ */
+function stocksystem_ensure_classic_cart_checkout() {
+	if ( ! function_exists( 'wc_get_page_id' ) ) {
+		return;
+	}
+
+	$pages = array(
+		'cart'     => array( 'wp:woocommerce/cart', '[woocommerce_cart]' ),
+		'checkout' => array( 'wp:woocommerce/checkout', '[woocommerce_checkout]' ),
+	);
+
+	foreach ( $pages as $key => $info ) {
+		$page_id = (int) wc_get_page_id( $key );
+		$page    = $page_id > 0 ? get_post( $page_id ) : null;
+
+		if ( $page && false !== strpos( $page->post_content, $info[0] ) ) {
+			wp_update_post( array( 'ID' => $page_id, 'post_content' => $info[1] ) );
+		}
+	}
+}
+add_action( 'after_switch_theme', 'stocksystem_ensure_classic_cart_checkout', 20 );
+add_action(
+	'admin_init',
+	function () {
+		if ( current_user_can( 'manage_options' ) && ! get_transient( 'stocksystem_classic_pages_checked' ) ) {
+			stocksystem_ensure_classic_cart_checkout();
+			set_transient( 'stocksystem_classic_pages_checked', 1, DAY_IN_SECONDS );
+		}
+	}
+);
