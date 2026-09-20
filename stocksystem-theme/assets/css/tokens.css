@@ -15,8 +15,8 @@
 	   Decision #1: teal is the ONLY primary CTA color (add to cart, buy,
 	   pay). White text on teal. Never use teal for inventory status. */
 	--c-teal-500: #0EBAAF; /* primary CTA fill, links, focus ring */
-	--c-cta: #077A73; /* primary CTA fill: white text is 5.2:1 (was #0EBAAF, 2.4:1) — owner-approved */
-	--c-cta-hover: #056660;
+	--c-cta: #0EBAAF; /* primary CTA fill (Decision #1, white text). Owner reverted the AA-darkened #077A73 — white on this is 2.42:1, a known accepted trade-off */
+	--c-cta-hover: #0A8F87;
 	--c-teal-600: #077A73; /* accent text on light — darkened from the kit's #0A8F87 (3.7:1) to reach AA 4.5:1 on white / #F4F8F8 / teal tint; also the CTA hover fill */
 	--c-teal-700: #0A6F69; /* reserved: do not use for "in stock" (see status-success) */
 	--c-teal-300: #5FD9D0; /* accent text on dark */
