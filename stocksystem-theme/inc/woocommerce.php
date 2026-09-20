@@ -121,12 +121,12 @@ remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wr
 remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10 );
 
 function stocksystem_wc_wrapper_start() {
-	echo '<main id="primary" class="site-main container">';
+	echo '<div class="site-main container">';
 }
 add_action( 'woocommerce_before_main_content', 'stocksystem_wc_wrapper_start', 10 );
 
 function stocksystem_wc_wrapper_end() {
-	echo '</main>';
+	echo '</div>';
 }
 add_action( 'woocommerce_after_main_content', 'stocksystem_wc_wrapper_end', 10 );
 

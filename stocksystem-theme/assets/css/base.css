@@ -79,6 +79,27 @@ ul, ol {
 	outline-offset: var(--focus-ring-offset);
 }
 
+.site-topbar,
+.site-masthead,
+.mobile-header,
+.mobile-drawer,
+.primary-nav,
+.home-hero,
+.faq-hero,
+.repair-form-section,
+.site-footer,
+.btn--dark,
+.btn--outline-on-dark {
+	--focus-ring-color: var(--c-teal-300);
+}
+
+/* Light panels that hang from the dark header */
+.mega-menu,
+.mini-cart-panel,
+.search-suggestions {
+	--focus-ring-color: var(--c-teal-600);
+}
+
 .container {
 	max-width: var(--container-max);
 	margin-inline: auto;
@@ -127,7 +148,7 @@ ul, ol {
 	inset-inline-start: var(--sp-12);
 	top: -100px;
 	z-index: 1000;
-	background: var(--c-teal-500);
+	background: var(--c-ink-900);
 	color: #fff;
 	padding: var(--sp-10) var(--sp-16);
 	border-radius: var(--radius-button);
@@ -179,4 +200,9 @@ ul, ol {
 
 .site-search-form button:hover {
 	background: var(--c-teal-600);
+}
+
+/* Skip-link target: focusable so the jump lands there, but no ring on the whole page body. */
+main:focus {
+	outline: none;
 }

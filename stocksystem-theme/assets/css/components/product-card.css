@@ -108,6 +108,13 @@
 	box-shadow: 0 1px 3px rgba(4, 33, 31, .15);
 }
 
+/* 30–32px heart, 44px hit area */
+.wishlist-toggle::after {
+	content: '';
+	position: absolute;
+	inset: -7px;
+}
+
 .wishlist-toggle.is-active {
 	color: var(--c-red-600);
 }

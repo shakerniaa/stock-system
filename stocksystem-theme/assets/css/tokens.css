@@ -15,7 +15,7 @@
 	   Decision #1: teal is the ONLY primary CTA color (add to cart, buy,
 	   pay). White text on teal. Never use teal for inventory status. */
 	--c-teal-500: #0EBAAF; /* primary CTA fill, links, focus ring */
-	--c-teal-600: #0A8F87; /* accent text on light (AA-safe) */
+	--c-teal-600: #077A73; /* accent text on light — darkened from the kit's #0A8F87 (3.7:1) to reach AA 4.5:1 on white / #F4F8F8 / teal tint; also the CTA hover fill */
 	--c-teal-700: #0A6F69; /* reserved: do not use for "in stock" (see status-success) */
 	--c-teal-300: #5FD9D0; /* accent text on dark */
 	--c-teal-050: #E6F7F5; /* accent surface tint */
@@ -44,7 +44,7 @@
 	/* ---- Color: status (Decision #9) ----
 	   "In stock" = green, NOT teal. Teal is reserved for brand/CTA only
 	   so status and action never collide visually. */
-	--c-status-success: #13A05C; /* in stock */
+	--c-status-success: #0F7A44; /* in stock — kit's #13A05C is 3.0:1 on its own tint; this is 4.9:1 */
 	--c-status-success-050: #E7F7EE; /* in-stock surface tint */
 	--c-status-warning-500: var(--c-amber-500); /* low stock */
 	--c-status-warning-700: var(--c-amber-700);
@@ -58,7 +58,7 @@
 	--c-line-soft: #EFF5F4;
 	--c-text: #06292A;
 	--c-text-2: #4C6664;
-	--c-text-3: #8FA5A3;
+	--c-text-3: #5B7573; /* muted text — kit's #8FA5A3 is 2.6:1 on white; this is 5:1 */
 	--c-text-disabled: #B7C7C6;
 	--c-on-dark: #EBEDEC;
 	--c-on-dark-2: #B9CBC9;
@@ -155,7 +155,9 @@
 	--shadow-dark-frame: 0 30px 60px -30px rgba(0, 0, 0, .6);
 
 	/* ---- Focus ---- */
-	--focus-ring-color: var(--c-teal-500);
+	/* teal-500 is only 2.4:1 on white; teal-600 clears the 3:1 non-text minimum.
+	   Dark surfaces switch to teal-300 in base.css. */
+	--focus-ring-color: var(--c-teal-600);
 	--focus-ring-width: 2px;
 	--focus-ring-offset: 2px;
 

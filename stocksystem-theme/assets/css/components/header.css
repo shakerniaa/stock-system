@@ -670,8 +670,14 @@ a.mini-cart-panel__name:hover {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 32px;
-	height: 32px;
+	width: 44px; /* 44px touch target (was 32) */
+	height: 44px;
+}
+
+.mobile-header__logo {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
 }
 
 .mobile-header__logo img {
@@ -682,7 +688,7 @@ a.mini-cart-panel__name:hover {
 .mobile-header__row-actions {
 	display: flex;
 	align-items: center;
-	gap: var(--sp-14);
+	gap: var(--sp-4);
 	margin-inline-start: auto;
 }
 
@@ -891,4 +897,12 @@ a.mini-cart-panel__name:hover {
 	.checkout-header__secure-short {
 		display: inline;
 	}
+}
+
+/* The search inputs drop their own outline, so the field itself carries the
+   keyboard-focus ring. */
+.site-masthead__search:focus-within,
+.mobile-header__search:focus-within {
+	outline: var(--focus-ring-width) solid var(--focus-ring-color);
+	outline-offset: 2px;
 }

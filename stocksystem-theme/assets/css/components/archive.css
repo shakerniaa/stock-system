@@ -889,3 +889,17 @@
 		padding-inline: var(--sp-8);
 	}
 }
+
+@media (max-width: 767px) {
+	.archive-header__chip {
+		height: 40px;
+	}
+
+	#mobile-filters-close {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+	}
+}

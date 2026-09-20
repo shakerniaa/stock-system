@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 
-<main id="primary" class="site-main container">
+<div class="site-main container">
 	<?php if ( have_posts() ) : ?>
 		<?php while ( have_posts() ) : the_post(); ?>
 			<article <?php post_class(); ?>>
@@ -23,7 +23,7 @@ get_header();
 	<?php else : ?>
 		<p><?php esc_html_e( 'محتوایی یافت نشد.', 'stocksystem' ); ?></p>
 	<?php endif; ?>
-</main>
+</div>
 
 <?php
 get_footer();

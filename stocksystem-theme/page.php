@@ -24,24 +24,24 @@ while ( have_posts() ) :
 		// Full-bleed: the cart/checkout templates draw their own stepper
 		// band, headings, and containers.
 		?>
-		<main id="primary" class="site-main">
+		<div class="site-main">
 			<?php the_content(); ?>
-		</main>
+		</div>
 	<?php elseif ( $is_account ) : ?>
-		<main id="primary" class="site-main container">
+		<div class="site-main container">
 			<?php the_content(); ?>
-		</main>
+		</div>
 	<?php else : ?>
 		<header class="legal-page__header">
 			<div class="container">
 				<h1><?php the_title(); ?></h1>
 			</div>
 		</header>
-		<main id="primary" class="site-main legal-page">
+		<div class="site-main legal-page">
 			<div class="container legal-page__single legal-page__prose">
 				<?php the_content(); ?>
 			</div>
-		</main>
+		</div>
 		<?php
 	endif;
 endwhile;

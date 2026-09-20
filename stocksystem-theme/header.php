@@ -32,3 +32,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php get_template_part( 'template-parts/header/mobile-header' ); ?>
 	<?php endif; ?>
 </header>
+<main id="primary" tabindex="-1">

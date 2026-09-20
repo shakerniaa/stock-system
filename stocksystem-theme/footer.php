@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+?>
+</main>
+<?php
 get_template_part( 'template-parts/footer/site-footer' );
 ?>
 
