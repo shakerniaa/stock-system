@@ -507,7 +507,6 @@
 .form-row .select2-container--default .select2-selection--single .select2-selection__arrow {
 	height: 46px;
 	inset-inline-start: auto;
-	inset-inline-end: 8px;
 }
 
 .form-row .select2-container--default.select2-container--focus .select2-selection--single,
