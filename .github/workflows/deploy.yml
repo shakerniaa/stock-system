@@ -1,0 +1,72 @@
+# Automatic build + deploy for a shared host with FTP only (no SSH).
+#
+# To switch it on (one time):
+#   1. Copy this file to  .github/workflows/deploy.yml  in the repository
+#      (GitHub website: Add file → Create new file, or push it with a token
+#      that has the "workflow" scope — `gh auth refresh -s workflow`).
+#   2. GitHub → Settings → Secrets and variables → Actions → New repository secret:
+#        FTP_SERVER    host name or IP of the FTP server (from the hosting panel)
+#        FTP_USERNAME  FTP account
+#        FTP_PASSWORD  its password
+#        FTP_DIR       remote theme folder, e.g. /public_html/wp-content/themes/stocksystem-theme/
+#        FTP_PROTOCOL  optional: ftp (default), ftps (explicit TLS — use it if the host offers it)
+#      Without these secrets the workflow still builds the theme and publishes the ready-to-upload zip
+#      (Releases → "Latest theme build"); it just skips the FTP step.
+#
+# Every push to master that touches the theme rebuilds the CSS/JS bundles and deploys.
+name: Build theme and deploy
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'stocksystem-theme/**'
+      - 'dev-tools/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HAS_FTP: ${{ secrets.FTP_SERVER != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: dev-tools/package-lock.json
+
+      - name: Build CSS/JS bundles
+        run: cd dev-tools && npm ci && node build-assets.mjs
+
+      - name: Zip the theme
+        run: zip -qr stocksystem-theme.zip stocksystem-theme -x '*.DS_Store' '*/Thumbs.db'
+
+      - name: Publish the zip as the "latest" release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest stocksystem-theme.zip \
+            --title "Latest theme build" \
+            --notes "Built from ${{ github.sha }} — upload in WordPress: Appearance → Themes → Add New → Upload Theme." \
+            --target "${{ github.sha }}"
+
+      - name: Deploy over FTP
+        if: env.HAS_FTP == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
+          local-dir: ./stocksystem-theme/
+          server-dir: ${{ secrets.FTP_DIR }}
+          exclude: |
+            **/.DS_Store
+            **/Thumbs.db
