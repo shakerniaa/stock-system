@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function stocksystem_home_defaults() {
 	return array(
 		'hero'       => array(
-			'eyebrow'    => '', // empty = «استوک اروپایی · تست‌شده · <متن گارانتی>».
+			'eyebrow'    => '', // empty = «استوک تست‌شده · <متن گارانتی>».
 			'title'      => 'لپ‌تاپ و کامپیوتر حرفه‌ای، با قیمتی که منطقی است',
 			'desc'       => 'هر دستگاه پیش از فروش تست سخت‌افزاری کامل می‌شود و برگهٔ وضعیت دارد: سلامت باتری، ساعت کارکرد و وضعیت بدنه — بدون ابهام.',
 			'cta1_label' => 'مشاهدهٔ لپ‌تاپ‌ها',
@@ -408,7 +408,7 @@ function stocksystem_home_render_page() {
 				<?php stocksystem_home_section_head( 'hero', __( 'بالای صفحه (هیرو)', 'stocksystem' ), null, false ); ?>
 				<div class="ss-grid">
 					<?php
-					stocksystem_home_field( '[hero][eyebrow]', $c['hero']['eyebrow'], __( 'برچسب کوچک بالای تیتر', 'stocksystem' ), array( 'placeholder' => sprintf( __( 'استوک اروپایی · تست‌شده · %s', 'stocksystem' ), stocksystem_business( 'warranty_text' ) ), 'help' => __( 'خالی = «استوک اروپایی · تست‌شده · متن گارانتی» با متن گارانتی از بخش سفارشی‌سازی.', 'stocksystem' ) ) );
+					stocksystem_home_field( '[hero][eyebrow]', $c['hero']['eyebrow'], __( 'برچسب کوچک بالای تیتر', 'stocksystem' ), array( 'placeholder' => sprintf( __( 'استوک تست‌شده · %s', 'stocksystem' ), stocksystem_business( 'warranty_text' ) ), 'help' => __( 'خالی = «استوک تست‌شده · متن گارانتی» با متن گارانتی از بخش سفارشی‌سازی.', 'stocksystem' ) ) );
 					stocksystem_home_field( '[hero][title]', $c['hero']['title'], __( 'تیتر اصلی', 'stocksystem' ) );
 					stocksystem_home_field( '[hero][desc]', $c['hero']['desc'], __( 'توضیح زیر تیتر', 'stocksystem' ), array( 'type' => 'textarea', 'class' => 'ss-field--wide' ) );
 					stocksystem_home_field( '[hero][cta1_label]', $c['hero']['cta1_label'], __( 'دکمهٔ اصلی — متن', 'stocksystem' ) );

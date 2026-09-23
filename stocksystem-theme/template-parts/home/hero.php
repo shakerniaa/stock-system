@@ -73,8 +73,8 @@ if ( empty( $hero_images ) ) {
 		<div class="home-hero__copy">
 			<span class="home-hero__eyebrow">
 				<?php
-				// Empty in the admin = «استوک اروپایی · تست‌شده · <warranty text from Customizer>».
-				echo esc_html( '' !== $hero['eyebrow'] ? $hero['eyebrow'] : sprintf( /* translators: %s: warranty text */ __( 'استوک اروپایی · تست‌شده · %s', 'stocksystem' ), stocksystem_business( 'warranty_text' ) ) );
+				// Empty in the admin = «استوک تست‌شده · <warranty text from Customizer>».
+				echo esc_html( '' !== $hero['eyebrow'] ? $hero['eyebrow'] : sprintf( /* translators: %s: warranty text */ __( 'استوک تست‌شده · %s', 'stocksystem' ), stocksystem_business( 'warranty_text' ) ) );
 				?>
 			</span>
 			<h1 class="home-hero__title"><?php echo esc_html( $hero['title'] ); ?></h1>

@@ -51,7 +51,7 @@ do_action( 'woocommerce_before_single_product' );
 						<?php foreach ( $badges as $badge ) : ?>
 							<span class="badge <?php echo esc_attr( $badge['class'] ); ?>"><?php echo esc_html( $badge['label'] ); ?></span>
 						<?php endforeach; ?>
-						<span class="badge badge--neutral"><?php esc_html_e( 'استوک اروپایی', 'stocksystem' ); ?></span>
+						<span class="badge badge--neutral"><?php esc_html_e( 'تست‌شده و گارانتی‌دار', 'stocksystem' ); ?></span>
 					</span>
 				<?php endif; ?>
 

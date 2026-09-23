@@ -38,7 +38,7 @@ $newsletter_status = isset( $_GET['newsletter'] ) ? sanitize_key( wp_unslash( $_
 	<div class="container site-footer__columns">
 		<div class="site-footer__brand">
 			<img src="<?php echo esc_url( stocksystem_logo_url() ); ?>" alt="<?php bloginfo( 'name' ); ?>" width="150" height="40">
-			<p><?php echo esc_html( stocksystem_business( 'warranty_text' ) ); ?> — <?php esc_html_e( 'فروش لپ‌تاپ و کامپیوتر استوک اروپایی با تست کامل سخت‌افزاری و برگهٔ وضعیت دستگاه.', 'stocksystem' ); ?></p>
+			<p><?php echo esc_html( stocksystem_business( 'warranty_text' ) ); ?> — <?php esc_html_e( 'فروش لپ‌تاپ و کامپیوتر استوک با تست کامل سخت‌افزاری و برگهٔ وضعیت دستگاه.', 'stocksystem' ); ?></p>
 			<a class="site-footer__phone ltr" href="tel:<?php echo esc_attr( stocksystem_business( 'phone' ) ); ?>">
 				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 5.5h4l2 4.5-2.5 1.5a10 10 0 0 0 4.5 4.5l1.5-2.5 4.5 2v4a1.5 1.5 0 0 1-1.7 1.5C10.8 19.8 4.2 13.2 3 6.2A1.5 1.5 0 0 1 4.5 5.5z"></path></svg>
 				<?php echo esc_html( stocksystem_business( 'phone' ) ); ?>

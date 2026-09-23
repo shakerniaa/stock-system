@@ -175,7 +175,7 @@ function stocksystem_admin_pages_site() {
 					'title'  => __( 'اشتراک‌گذاری (تلگرام، واتساپ، اینستاگرام …)', 'stocksystem' ),
 					'fields' => array(
 						'og_image' => array( 'type' => 'image', 'label' => __( 'تصویر پیش‌فرض اشتراک‌گذاری (۱۲۰۰×۶۳۰)', 'stocksystem' ), 'help' => __( 'وقتی لینک صفحه‌ای که تصویر مخصوص ندارد فرستاده می‌شود.', 'stocksystem' ) ),
-						'home_desc' => array( 'type' => 'textarea', 'label' => __( 'توضیح متا برای صفحهٔ اصلی و صفحه‌های بدون توضیح', 'stocksystem' ), 'default' => __( 'فروش لپ‌تاپ و کامپیوتر استوک اروپایی با تست کامل سخت‌افزاری، برگهٔ وضعیت دستگاه و گارانتی.', 'stocksystem' ) ),
+						'home_desc' => array( 'type' => 'textarea', 'label' => __( 'توضیح متا برای صفحهٔ اصلی و صفحه‌های بدون توضیح', 'stocksystem' ), 'default' => __( 'فروش لپ‌تاپ و کامپیوتر استوک با تست کامل سخت‌افزاری، برگهٔ وضعیت دستگاه و گارانتی.', 'stocksystem' ) ),
 					),
 				),
 				array(
