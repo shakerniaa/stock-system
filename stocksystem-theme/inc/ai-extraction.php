@@ -223,14 +223,27 @@ function stocksystem_ai_call_anthropic( $settings, $content_blocks ) {
 	return $text;
 }
 
-/** Strips a ```json fence if the model added one anyway, then decodes. */
-function stocksystem_ai_parse_json_rows( $text ) {
+/**
+ * Strips a ```json fence if the model added one anyway, then decodes.
+ * Shared by the rows-array parser below (phase 2) and the single-object
+ * content response in inc/ai-content.php (phase 3).
+ */
+function stocksystem_ai_decode_json_response( $text ) {
 	$text = trim( $text );
 	$text = preg_replace( '/^```(?:json)?\s*|\s*```$/', '', $text );
 
 	$decoded = json_decode( $text, true );
 	if ( ! is_array( $decoded ) ) {
 		return new WP_Error( 'stocksystem_ai_bad_json', __( 'پاسخ هوش مصنوعی قابل‌خواندن نبود.', 'stocksystem' ) );
+	}
+
+	return $decoded;
+}
+
+function stocksystem_ai_parse_json_rows( $text ) {
+	$decoded = stocksystem_ai_decode_json_response( $text );
+	if ( is_wp_error( $decoded ) ) {
+		return $decoded;
 	}
 
 	return array_map( 'stocksystem_normalize_extracted_row', $decoded );

@@ -44,6 +44,7 @@ require STOCKSYSTEM_DIR . '/inc/suppliers.php';
 require STOCKSYSTEM_DIR . '/inc/supplier-quotes.php';
 require STOCKSYSTEM_DIR . '/inc/ai-extraction.php';
 require STOCKSYSTEM_DIR . '/inc/import-batches.php';
+require STOCKSYSTEM_DIR . '/inc/ai-content.php';
 require STOCKSYSTEM_DIR . '/inc/product-notify.php';
 require STOCKSYSTEM_DIR . '/inc/order-statuses.php';
 require STOCKSYSTEM_DIR . '/inc/wallet.php';

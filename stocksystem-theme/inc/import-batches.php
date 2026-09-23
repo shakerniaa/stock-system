@@ -426,6 +426,13 @@ function stocksystem_create_product_from_extracted_row( $row, $supplier_id ) {
 		}
 	}
 
+	/**
+	 * Generic "a product was imported" event — phase 2 doesn't need to
+	 * know phase 3 (inc/ai-content.php) exists; it just fires this, and
+	 * whatever's hooked to it (SEO content generation, today) runs.
+	 */
+	do_action( 'stocksystem_product_imported', $product_id );
+
 	return $product_id;
 }
 
