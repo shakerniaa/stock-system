@@ -3,9 +3,10 @@
  * AI-generated SEO content for a product: title/description for the
  * existing «سئو» box (_ss_seo_title/_ss_seo_desc in inc/seo-meta.php), a
  * full description (post_content), and a brand-taxonomy guess. Reuses the
- * same provider call as the import extraction (stocksystem_ai_call_anthropic()
- * in inc/ai-extraction.php) with a plain text prompt instead of an image —
- * one provider adapter, two use cases.
+ * same provider dispatcher as the import extraction
+ * (stocksystem_ai_call_provider() in inc/ai-extraction.php, which routes to
+ * whichever provider is configured — Anthropic or OpenAI) with a plain
+ * text-only content block instead of an image — same adapters, two use cases.
  *
  * Runs automatically after phase 2 confirms an import batch (one
  * Action Scheduler job per product — see the stocksystem_product_imported
@@ -90,7 +91,7 @@ function stocksystem_generate_seo_content( $product_id ) {
 		return;
 	}
 
-	$response = stocksystem_ai_call_anthropic(
+	$response = stocksystem_ai_call_provider(
 		$settings,
 		array(
 			array(

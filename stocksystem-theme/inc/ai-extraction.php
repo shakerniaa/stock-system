@@ -6,9 +6,11 @@
  * dev-tools/sample-supplier-lists/) — not one call per row.
  *
  * The provider sits behind one function boundary
- * (stocksystem_ai_extract_rows_from_attachment): swapping providers later
- * means rewriting stocksystem_ai_call_anthropic(), not the import feature
- * built on top of it in inc/import-batches.php.
+ * (stocksystem_ai_call_provider(), which dispatches to
+ * stocksystem_ai_call_anthropic() or stocksystem_ai_call_openai()): both
+ * call sites (here and inc/ai-content.php) build provider-neutral content
+ * blocks — [{'type'=>'text','text'=>…}] / [{'type'=>'image','path'=>…,'mime'=>…}]
+ * — and never touch a provider's actual request shape directly.
  *
  * @package StockSystem
  */
@@ -71,17 +73,25 @@ function stocksystem_ai_settings_page() {
 				<tr>
 					<th><label for="stocksystem_ai_provider"><?php esc_html_e( 'ارائه‌دهنده', 'stocksystem' ); ?></label></th>
 					<td>
-						<input type="text" id="stocksystem_ai_provider" name="provider" class="regular-text" value="<?php echo esc_attr( $settings['provider'] ); ?>">
-						<p class="description"><?php esc_html_e( 'فعلاً فقط «anthropic» پیاده‌سازی شده است.', 'stocksystem' ); ?></p>
+						<select id="stocksystem_ai_provider" name="provider">
+							<option value="anthropic" <?php selected( $settings['provider'], 'anthropic' ); ?>>Anthropic (Claude)</option>
+							<option value="openai" <?php selected( $settings['provider'], 'openai' ); ?>>OpenAI (GPT)</option>
+						</select>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="stocksystem_ai_key"><?php esc_html_e( 'کلید API', 'stocksystem' ); ?></label></th>
-					<td><input type="password" id="stocksystem_ai_key" name="api_key" class="regular-text" value="<?php echo esc_attr( $settings['api_key'] ); ?>" autocomplete="off"></td>
+					<td>
+						<input type="password" id="stocksystem_ai_key" name="api_key" class="regular-text" value="<?php echo esc_attr( $settings['api_key'] ); ?>" autocomplete="off">
+						<p class="description"><?php esc_html_e( 'کلید همان ارائه‌دهندهٔ انتخاب‌شده در بالا — کلید Anthropic و OpenAI با هم فرق دارند و اینجا فقط یکی ذخیره می‌شود.', 'stocksystem' ); ?></p>
+					</td>
 				</tr>
 				<tr>
 					<th><label for="stocksystem_ai_model"><?php esc_html_e( 'مدل', 'stocksystem' ); ?></label></th>
-					<td><input type="text" id="stocksystem_ai_model" name="model" class="regular-text" value="<?php echo esc_attr( $settings['model'] ); ?>"></td>
+					<td>
+						<input type="text" id="stocksystem_ai_model" name="model" class="regular-text" value="<?php echo esc_attr( $settings['model'] ); ?>">
+						<p class="description"><?php esc_html_e( 'برای Anthropic مثلاً claude-sonnet-5؛ برای OpenAI مثلاً gpt-4o-mini. تغییر مدل فقط همین متن را عوض می‌کند، نیازی به تغییر کد نیست.', 'stocksystem' ); ?></p>
+					</td>
 				</tr>
 			</table>
 			<?php submit_button(); ?>
@@ -138,23 +148,17 @@ function stocksystem_ai_extract_from_image( $attachment_id ) {
 	}
 
 	$path = get_attached_file( $attachment_id );
-	$mime = get_post_mime_type( $attachment_id );
-	$data = file_get_contents( $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local uploaded file, not a remote URL.
-
-	if ( false === $data ) {
+	if ( ! $path || ! file_exists( $path ) ) {
 		return new WP_Error( 'stocksystem_ai_read_failed', __( 'فایل خوانده نشد.', 'stocksystem' ) );
 	}
 
-	$response = stocksystem_ai_call_anthropic(
+	$response = stocksystem_ai_call_provider(
 		$settings,
 		array(
 			array(
-				'type'   => 'image',
-				'source' => array(
-					'type'       => 'base64',
-					'media_type' => $mime,
-					'data'       => base64_encode( $data ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- API payload encoding, not obfuscation.
-				),
+				'type' => 'image',
+				'path' => $path,
+				'mime' => get_post_mime_type( $attachment_id ),
 			),
 			array(
 				'type' => 'text',
@@ -170,7 +174,43 @@ function stocksystem_ai_extract_from_image( $attachment_id ) {
 	return stocksystem_ai_parse_json_rows( $response );
 }
 
+/* -------------------------------------------------------------------------
+ * Provider dispatcher — the ONE place that knows which adapter to call.
+ * Content blocks are provider-neutral: {'type':'text','text':…} or
+ * {'type':'image','path':…,'mime':…}. Both call sites (here and
+ * inc/ai-content.php) only ever build this shape; each adapter below is
+ * responsible for translating it into its own API's actual request.
+ * ---------------------------------------------------------------------- */
+
+function stocksystem_ai_call_provider( $settings, $content_blocks ) {
+	if ( 'openai' === $settings['provider'] ) {
+		return stocksystem_ai_call_openai( $settings, $content_blocks );
+	}
+
+	return stocksystem_ai_call_anthropic( $settings, $content_blocks );
+}
+
 function stocksystem_ai_call_anthropic( $settings, $content_blocks ) {
+	$blocks = array();
+	foreach ( $content_blocks as $block ) {
+		if ( 'image' === $block['type'] ) {
+			$data = file_get_contents( $block['path'] ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local uploaded file, not a remote URL.
+			if ( false === $data ) {
+				return new WP_Error( 'stocksystem_ai_read_failed', __( 'فایل خوانده نشد.', 'stocksystem' ) );
+			}
+			$blocks[] = array(
+				'type'   => 'image',
+				'source' => array(
+					'type'       => 'base64',
+					'media_type' => $block['mime'],
+					'data'       => base64_encode( $data ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- API payload encoding, not obfuscation.
+				),
+			);
+		} else {
+			$blocks[] = array( 'type' => 'text', 'text' => $block['text'] );
+		}
+	}
+
 	$response = wp_remote_post(
 		'https://api.anthropic.com/v1/messages',
 		array(
@@ -187,7 +227,7 @@ function stocksystem_ai_call_anthropic( $settings, $content_blocks ) {
 					'messages'   => array(
 						array(
 							'role'    => 'user',
-							'content' => $content_blocks,
+							'content' => $blocks,
 						),
 					),
 				)
@@ -216,6 +256,82 @@ function stocksystem_ai_call_anthropic( $settings, $content_blocks ) {
 	}
 
 	$text = isset( $body['content'][0]['text'] ) ? $body['content'][0]['text'] : '';
+	if ( '' === $text ) {
+		return new WP_Error( 'stocksystem_ai_empty_response', __( 'پاسخی از هوش مصنوعی دریافت نشد.', 'stocksystem' ) );
+	}
+
+	return $text;
+}
+
+/**
+ * OpenAI's Chat Completions API — same neutral content-block input as the
+ * Anthropic adapter above, translated into OpenAI's own shapes: an image
+ * block becomes a base64 data: URL (not a raw source object), and the
+ * reply is read from choices[0].message.content instead of content[0].text.
+ */
+function stocksystem_ai_call_openai( $settings, $content_blocks ) {
+	$blocks = array();
+	foreach ( $content_blocks as $block ) {
+		if ( 'image' === $block['type'] ) {
+			$data = file_get_contents( $block['path'] ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local uploaded file, not a remote URL.
+			if ( false === $data ) {
+				return new WP_Error( 'stocksystem_ai_read_failed', __( 'فایل خوانده نشد.', 'stocksystem' ) );
+			}
+			$blocks[] = array(
+				'type'      => 'image_url',
+				'image_url' => array(
+					'url' => 'data:' . $block['mime'] . ';base64,' . base64_encode( $data ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- API payload encoding, not obfuscation.
+				),
+			);
+		} else {
+			$blocks[] = array( 'type' => 'text', 'text' => $block['text'] );
+		}
+	}
+
+	$response = wp_remote_post(
+		'https://api.openai.com/v1/chat/completions',
+		array(
+			'timeout' => 90,
+			'headers' => array(
+				'authorization' => 'Bearer ' . $settings['api_key'],
+				'content-type'  => 'application/json',
+			),
+			'body'    => wp_json_encode(
+				array(
+					'model'                 => $settings['model'],
+					'max_completion_tokens' => 4096,
+					'messages'              => array(
+						array(
+							'role'    => 'user',
+							'content' => $blocks,
+						),
+					),
+				)
+			),
+		)
+	);
+
+	if ( is_wp_error( $response ) ) {
+		return $response;
+	}
+
+	$code = wp_remote_retrieve_response_code( $response );
+	$body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+	if ( $code < 200 || $code >= 300 ) {
+		$message = is_array( $body ) && isset( $body['error']['message'] ) ? $body['error']['message'] : wp_remote_retrieve_body( $response );
+		return new WP_Error(
+			'stocksystem_ai_http_error',
+			sprintf(
+				/* translators: 1: HTTP status code, 2: error message from the API */
+				__( 'خطای API (%1$d): %2$s', 'stocksystem' ),
+				$code,
+				$message
+			)
+		);
+	}
+
+	$text = isset( $body['choices'][0]['message']['content'] ) ? $body['choices'][0]['message']['content'] : '';
 	if ( '' === $text ) {
 		return new WP_Error( 'stocksystem_ai_empty_response', __( 'پاسخی از هوش مصنوعی دریافت نشد.', 'stocksystem' ) );
 	}
