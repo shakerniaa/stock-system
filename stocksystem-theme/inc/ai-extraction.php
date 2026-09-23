@@ -76,21 +76,23 @@ function stocksystem_ai_settings_page() {
 						<select id="stocksystem_ai_provider" name="provider">
 							<option value="anthropic" <?php selected( $settings['provider'], 'anthropic' ); ?>>Anthropic (Claude)</option>
 							<option value="openai" <?php selected( $settings['provider'], 'openai' ); ?>>OpenAI (GPT)</option>
+							<option value="avalai" <?php selected( $settings['provider'], 'avalai' ); ?>>AvalAI (avalai.ir)</option>
 						</select>
+						<p class="description"><?php esc_html_e( 'AvalAI یک درگاه ایرانی است که مدل‌های چند شرکت (از جمله OpenAI و Anthropic) را با یک کلید API واحد در دسترس می‌گذارد.', 'stocksystem' ); ?></p>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="stocksystem_ai_key"><?php esc_html_e( 'کلید API', 'stocksystem' ); ?></label></th>
 					<td>
 						<input type="password" id="stocksystem_ai_key" name="api_key" class="regular-text" value="<?php echo esc_attr( $settings['api_key'] ); ?>" autocomplete="off">
-						<p class="description"><?php esc_html_e( 'کلید همان ارائه‌دهندهٔ انتخاب‌شده در بالا — کلید Anthropic و OpenAI با هم فرق دارند و اینجا فقط یکی ذخیره می‌شود.', 'stocksystem' ); ?></p>
+						<p class="description"><?php esc_html_e( 'کلید همان ارائه‌دهندهٔ انتخاب‌شده در بالا — کلید هرکدام با بقیه فرق دارد و اینجا فقط یکی ذخیره می‌شود.', 'stocksystem' ); ?></p>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="stocksystem_ai_model"><?php esc_html_e( 'مدل', 'stocksystem' ); ?></label></th>
 					<td>
 						<input type="text" id="stocksystem_ai_model" name="model" class="regular-text" value="<?php echo esc_attr( $settings['model'] ); ?>">
-						<p class="description"><?php esc_html_e( 'برای Anthropic مثلاً claude-sonnet-5؛ برای OpenAI مثلاً gpt-4o-mini. تغییر مدل فقط همین متن را عوض می‌کند، نیازی به تغییر کد نیست.', 'stocksystem' ); ?></p>
+						<p class="description"><?php esc_html_e( 'برای Anthropic مثلاً claude-sonnet-5؛ برای OpenAI مثلاً gpt-4o-mini؛ برای AvalAI همان نام مدلی که در فهرست مدل‌های avalai.ir برای همان شرکت نوشته (مثلاً همان claude-sonnet-5، چون AvalAI اسم اصلی مدل هر شرکت را بدون تغییر می‌پذیرد). تغییر مدل فقط همین متن را عوض می‌کند، نیازی به تغییر کد نیست.', 'stocksystem' ); ?></p>
 					</td>
 				</tr>
 			</table>
@@ -183,11 +185,14 @@ function stocksystem_ai_extract_from_image( $attachment_id ) {
  * ---------------------------------------------------------------------- */
 
 function stocksystem_ai_call_provider( $settings, $content_blocks ) {
-	if ( 'openai' === $settings['provider'] ) {
-		return stocksystem_ai_call_openai( $settings, $content_blocks );
+	switch ( $settings['provider'] ) {
+		case 'openai':
+			return stocksystem_ai_call_openai( $settings, $content_blocks );
+		case 'avalai':
+			return stocksystem_ai_call_avalai( $settings, $content_blocks );
+		default:
+			return stocksystem_ai_call_anthropic( $settings, $content_blocks );
 	}
-
-	return stocksystem_ai_call_anthropic( $settings, $content_blocks );
 }
 
 function stocksystem_ai_call_anthropic( $settings, $content_blocks ) {
@@ -270,6 +275,26 @@ function stocksystem_ai_call_anthropic( $settings, $content_blocks ) {
  * reply is read from choices[0].message.content instead of content[0].text.
  */
 function stocksystem_ai_call_openai( $settings, $content_blocks ) {
+	return stocksystem_ai_call_openai_compatible( $settings, $content_blocks, 'https://api.openai.com/v1/chat/completions' );
+}
+
+/**
+ * AvalAI (avalai.ir): an Iranian gateway that re-exposes OpenAI, Anthropic,
+ * Google, etc. behind ONE OpenAI-shaped API — same request/response/error
+ * JSON, same Bearer auth, same image_url vision format as OpenAI's own API
+ * (confirmed against their docs, docs.avalai.ir/en/api-reference/chat).
+ * Only the base URL differs, so this reuses 100% of the OpenAI adapter's
+ * logic rather than duplicating it. Their docs pass each underlying
+ * provider's OWN model name through unprefixed (e.g. "claude-sonnet-5"
+ * works exactly as it does with the Anthropic adapter above) — so the
+ * "مدل" field just holds whatever model name AvalAI's own model list
+ * shows, regardless of which provider is actually behind it.
+ */
+function stocksystem_ai_call_avalai( $settings, $content_blocks ) {
+	return stocksystem_ai_call_openai_compatible( $settings, $content_blocks, 'https://api.avalai.ir/v1/chat/completions' );
+}
+
+function stocksystem_ai_call_openai_compatible( $settings, $content_blocks, $endpoint ) {
 	$blocks = array();
 	foreach ( $content_blocks as $block ) {
 		if ( 'image' === $block['type'] ) {
@@ -289,7 +314,7 @@ function stocksystem_ai_call_openai( $settings, $content_blocks ) {
 	}
 
 	$response = wp_remote_post(
-		'https://api.openai.com/v1/chat/completions',
+		$endpoint,
 		array(
 			'timeout' => 90,
 			'headers' => array(
