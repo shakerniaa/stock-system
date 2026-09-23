@@ -41,17 +41,23 @@ function stocksystem_register_import_post_type() {
 			'capability_type' => 'page',
 			'map_meta_cap'    => true,
 			// Same admin-only lockdown as inc/suppliers.php — extracted
-			// rows include supplier purchase prices.
+			// rows include supplier purchase prices. Deliberately NOT
+			// overriding edit_post/read_post/delete_post here — see the
+			// long comment in inc/suppliers.php's capabilities array for
+			// why that broke current_user_can('manage_options') site-wide
+			// once two post types here both did it.
 			'capabilities'    => array(
-				'edit_post'          => 'manage_options',
-				'read_post'          => 'manage_options',
-				'delete_post'        => 'manage_options',
-				'edit_posts'         => 'manage_options',
-				'edit_others_posts'  => 'manage_options',
-				'publish_posts'      => 'manage_options',
-				'read_private_posts' => 'manage_options',
-				'delete_posts'       => 'manage_options',
-				'create_posts'       => 'manage_options',
+				'edit_posts'             => 'manage_options',
+				'edit_others_posts'      => 'manage_options',
+				'edit_private_posts'     => 'manage_options',
+				'edit_published_posts'   => 'manage_options',
+				'publish_posts'          => 'manage_options',
+				'read_private_posts'     => 'manage_options',
+				'delete_posts'           => 'manage_options',
+				'delete_private_posts'   => 'manage_options',
+				'delete_published_posts' => 'manage_options',
+				'delete_others_posts'    => 'manage_options',
+				'create_posts'           => 'manage_options',
 			),
 		)
 	);

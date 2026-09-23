@@ -40,16 +40,36 @@ function stocksystem_register_supplier_post_type() {
 			// Purchase prices/margins are internal — only someone who can
 			// already manage the whole "استوک سیستم" menu should ever see
 			// this post type at all.
+			//
+			// Deliberately NOT overriding edit_post/read_post/delete_post
+			// (the per-object META capabilities) here: WordPress registers
+			// whatever string you give those into a GLOBAL reverse-lookup
+			// table ($post_type_meta_caps in wp-includes/capabilities.php)
+			// so that map_meta_cap() can route a custom meta-cap name back
+			// to its real meaning. Setting them to 'manage_options' — a
+			// real, extremely commonly-checked primitive capability —
+			// registered 'manage_options' itself as an alias needing
+			// translation, which broke current_user_can('manage_options')
+			// SITE-WIDE (even WordPress's own Settings menu vanished) as
+			// soon as a second post type here did the same thing. Left
+			// unset, these default to capability_type's own safe,
+			// already-globally-correct names (edit_page/read_page/
+			// delete_page), which still resolve to the primitive
+			// capabilities below via WordPress's normal (non-buggy) post
+			// meta-cap logic. Confirmed via a real admin login after the
+			// fix — see zesty-toasting-treasure.md.
 			'capabilities'    => array(
-				'edit_post'          => 'manage_options',
-				'read_post'          => 'manage_options',
-				'delete_post'        => 'manage_options',
-				'edit_posts'         => 'manage_options',
-				'edit_others_posts'  => 'manage_options',
-				'publish_posts'      => 'manage_options',
-				'read_private_posts' => 'manage_options',
-				'delete_posts'       => 'manage_options',
-				'create_posts'       => 'manage_options',
+				'edit_posts'             => 'manage_options',
+				'edit_others_posts'      => 'manage_options',
+				'edit_private_posts'     => 'manage_options',
+				'edit_published_posts'   => 'manage_options',
+				'publish_posts'          => 'manage_options',
+				'read_private_posts'     => 'manage_options',
+				'delete_posts'           => 'manage_options',
+				'delete_private_posts'   => 'manage_options',
+				'delete_published_posts' => 'manage_options',
+				'delete_others_posts'    => 'manage_options',
+				'create_posts'           => 'manage_options',
 			),
 		)
 	);
