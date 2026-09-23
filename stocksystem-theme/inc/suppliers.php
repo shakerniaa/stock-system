@@ -63,6 +63,7 @@ add_action( 'init', 'stocksystem_register_supplier_post_type' );
 function stocksystem_supplier_add_meta_boxes() {
 	add_meta_box( 'stocksystem_supplier_contact', __( 'اطلاعات تماس', 'stocksystem' ), 'stocksystem_supplier_contact_box', 'stocksystem_supplier', 'normal', 'high' );
 	add_meta_box( 'stocksystem_supplier_pricing', __( 'قانون سود', 'stocksystem' ), 'stocksystem_supplier_pricing_box', 'stocksystem_supplier', 'normal', 'default' );
+	add_meta_box( 'stocksystem_supplier_csv_map', __( 'نگاشت ستون CSV (اختیاری)', 'stocksystem' ), 'stocksystem_supplier_csv_map_box', 'stocksystem_supplier', 'normal', 'low' );
 }
 add_action( 'add_meta_boxes', 'stocksystem_supplier_add_meta_boxes' );
 
@@ -107,6 +108,23 @@ function stocksystem_supplier_pricing_box( $post ) {
 	<?php
 }
 
+function stocksystem_supplier_csv_map_box( $post ) {
+	$value = get_post_meta( $post->ID, '_csv_column_map', true );
+	?>
+	<p style="color:#666">
+		<?php esc_html_e( 'فقط برای فایل‌های CSV این تامین‌کننده لازم است، و فقط اگر ستون‌های آن با نام‌های رایج (model، price، …) تشخیص داده نشوند. مقدار هر کلید باید دقیقاً همان متن هدر ستون در فایل CSV این تامین‌کننده باشد.', 'stocksystem' ); ?>
+	</p>
+	<p class="form-field">
+		<textarea
+			name="stocksystem_supplier[csv_column_map]"
+			rows="4"
+			style="width:94%; margin:0 3%; font-family:monospace"
+			placeholder='{"model": "Item Name", "price": "Cost"}'
+		><?php echo esc_textarea( $value ); ?></textarea>
+	</p>
+	<?php
+}
+
 function stocksystem_save_supplier_meta( $post_id ) {
 	if ( ! isset( $_POST['stocksystem_supplier_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['stocksystem_supplier_nonce'] ) ), 'stocksystem_supplier_save' ) ) {
 		return;
@@ -126,12 +144,27 @@ function stocksystem_save_supplier_meta( $post_id ) {
 
 	$decoded = isset( $raw['pricing_rules'] ) ? json_decode( $raw['pricing_rules'], true ) : null;
 	update_post_meta( $post_id, '_pricing_rules', is_array( $decoded ) ? wp_json_encode( $decoded, JSON_UNESCAPED_UNICODE ) : '' );
+
+	$csv_map = isset( $raw['csv_column_map'] ) ? json_decode( $raw['csv_column_map'], true ) : null;
+	update_post_meta( $post_id, '_csv_column_map', is_array( $csv_map ) ? wp_json_encode( $csv_map, JSON_UNESCAPED_UNICODE ) : '' );
 }
 add_action( 'save_post', 'stocksystem_save_supplier_meta' );
 
 /* -------------------------------------------------------------------------
  * Data helpers
  * ---------------------------------------------------------------------- */
+
+/** Decoded CSV column-map override for a supplier: [ field => exact header text ], or []. */
+function stocksystem_supplier_csv_column_map( $supplier_id ) {
+	$raw = get_post_meta( $supplier_id, '_csv_column_map', true );
+	if ( ! $raw ) {
+		return array();
+	}
+
+	$decoded = json_decode( $raw, true );
+
+	return is_array( $decoded ) ? $decoded : array();
+}
 
 /** Decoded pricing rules for a supplier: [ [ category, min, max, type, value ], … ]. */
 function stocksystem_supplier_pricing_rules( $supplier_id ) {

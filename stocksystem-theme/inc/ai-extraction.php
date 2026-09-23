@@ -109,7 +109,7 @@ function stocksystem_ai_extraction_prompt() {
 PROMPT;
 }
 
-function stocksystem_ai_extract_rows_from_attachment( $attachment_id ) {
+function stocksystem_ai_extract_rows_from_attachment( $attachment_id, $supplier_id = 0 ) {
 	$path = get_attached_file( $attachment_id );
 	if ( ! $path || ! file_exists( $path ) ) {
 		return new WP_Error( 'stocksystem_ai_missing_file', __( 'فایل پیدا نشد.', 'stocksystem' ) );
@@ -118,7 +118,7 @@ function stocksystem_ai_extract_rows_from_attachment( $attachment_id ) {
 	$ext = strtolower( pathinfo( $path, PATHINFO_EXTENSION ) );
 
 	if ( 'csv' === $ext ) {
-		return stocksystem_parse_csv_rows( $path );
+		return stocksystem_parse_csv_rows( $path, $supplier_id );
 	}
 
 	if ( wp_attachment_is_image( $attachment_id ) ) {
@@ -279,10 +279,12 @@ function stocksystem_normalize_extracted_row( $row ) {
 
 /**
  * Best-effort header aliases — no real supplier CSV has been seen yet
- * (all 3 samples so far are images, see فاز ۲ در zesty-toasting-treasure.md);
- * revisit the alias list once one shows up.
+ * (all 3 samples so far are images, see فاز ۲ در zesty-toasting-treasure.md).
+ * A supplier can override/extend this via its own «نگاشت ستون CSV» meta
+ * (stocksystem_supplier_csv_column_map(), inc/suppliers.php) when its
+ * headers don't match anything in the generic table below.
  */
-function stocksystem_parse_csv_rows( $path ) {
+function stocksystem_parse_csv_rows( $path, $supplier_id = 0 ) {
 	$handle = fopen( $path, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen -- local uploaded file.
 	if ( ! $handle ) {
 		return new WP_Error( 'stocksystem_csv_open_failed', __( 'فایل CSV باز نشد.', 'stocksystem' ) );
@@ -310,6 +312,21 @@ function stocksystem_parse_csv_rows( $path ) {
 		foreach ( $aliases as $field => $names ) {
 			if ( in_array( $label, $names, true ) ) {
 				$column_map[ $field ] = $index;
+			}
+		}
+	}
+
+	// A supplier-specific override always wins over the generic guess
+	// above — find the column whose header matches the supplier's exact
+	// text and point that field at it, even if the generic table already
+	// (mis)matched something else for it.
+	$overrides = $supplier_id ? stocksystem_supplier_csv_column_map( $supplier_id ) : array();
+	foreach ( $overrides as $field => $wanted_header ) {
+		$wanted_header = strtolower( trim( (string) $wanted_header ) );
+		foreach ( $header as $index => $label ) {
+			if ( strtolower( trim( (string) $label ) ) === $wanted_header ) {
+				$column_map[ $field ] = $index;
+				break;
 			}
 		}
 	}

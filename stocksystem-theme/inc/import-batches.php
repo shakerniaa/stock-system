@@ -168,6 +168,7 @@ function stocksystem_import_render_review( $post ) {
 				<th><?php esc_html_e( 'حافظه (GB)', 'stocksystem' ); ?></th>
 				<th><?php esc_html_e( 'دسته', 'stocksystem' ); ?></th>
 				<th><?php esc_html_e( 'قیمت (تومان)', 'stocksystem' ); ?></th>
+				<th><?php esc_html_e( 'محصول مشابه', 'stocksystem' ); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -190,6 +191,21 @@ function stocksystem_import_render_review( $post ) {
 							<br><small style="color:#C8481A"><?php echo esc_html( $row['price_note'] ? $row['price_note'] : __( 'نامطمئن — بررسی کنید', 'stocksystem' ) ); ?></small>
 						<?php endif; ?>
 					</td>
+					<td>
+						<?php $matches = is_array( $row['matched_products'] ?? null ) ? $row['matched_products'] : array(); ?>
+						<?php if ( $matches ) : ?>
+							<select name="stocksystem_batch_rows[<?php echo (int) $i; ?>][target_product_id]" style="width:170px">
+								<option value="0"><?php esc_html_e( 'محصول جدید بساز', 'stocksystem' ); ?></option>
+								<?php foreach ( $matches as $match ) : ?>
+									<option value="<?php echo esc_attr( $match['product_id'] ); ?>" <?php selected( (int) ( $row['target_product_id'] ?? 0 ), $match['product_id'] ); ?>>
+										<?php echo esc_html( sprintf( '%s (%d%%)', $match['title'], round( $match['score'] * 100 ) ) ); ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
+						<?php else : ?>
+							<span>-</span>
+						<?php endif; ?>
+					</td>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>
@@ -202,20 +218,34 @@ function stocksystem_import_render_review( $post ) {
 }
 
 function stocksystem_import_render_done( $post ) {
-	$product_ids = get_post_meta( $post->ID, '_created_product_ids', true );
-	$product_ids = is_array( $product_ids ) ? $product_ids : array();
+	$created = get_post_meta( $post->ID, '_created_product_ids', true );
+	$created = is_array( $created ) ? $created : array();
+	$updated = get_post_meta( $post->ID, '_updated_product_ids', true );
+	$updated = is_array( $updated ) ? $updated : array();
 
 	printf(
 		/* translators: %d: number of drafts created */
 		'<p>' . esc_html__( '%d پیش‌نویس ساخته شد:', 'stocksystem' ) . '</p>',
-		count( $product_ids )
+		count( $created )
 	);
-
 	echo '<ul>';
-	foreach ( $product_ids as $product_id ) {
+	foreach ( $created as $product_id ) {
 		printf( '<li><a href="%s">%s</a></li>', esc_url( (string) get_edit_post_link( $product_id ) ), esc_html( get_the_title( $product_id ) ) );
 	}
 	echo '</ul>';
+
+	if ( $updated ) {
+		printf(
+			/* translators: %d: number of existing products a quote was added to */
+			'<p>' . esc_html__( '%d محصول موجود قیمت جدید گرفت (به‌جای ساخت محصول تکراری):', 'stocksystem' ) . '</p>',
+			count( $updated )
+		);
+		echo '<ul>';
+		foreach ( $updated as $product_id ) {
+			printf( '<li><a href="%s">%s</a></li>', esc_url( (string) get_edit_post_link( $product_id ) ), esc_html( get_the_title( $product_id ) ) );
+		}
+		echo '</ul>';
+	}
 }
 
 /* -------------------------------------------------------------------------
@@ -310,7 +340,8 @@ function stocksystem_save_batch_row_edits( $post_id, $posted_rows ) {
 				$existing[ $i ][ $field ] = (float) $edited[ $field ];
 			}
 		}
-		$existing[ $i ]['include'] = ! empty( $edited['include'] );
+		$existing[ $i ]['include']           = ! empty( $edited['include'] );
+		$existing[ $i ]['target_product_id'] = isset( $edited['target_product_id'] ) ? absint( $edited['target_product_id'] ) : 0;
 	}
 
 	update_post_meta( $post_id, '_extracted_rows', wp_json_encode( $existing, JSON_UNESCAPED_UNICODE ) );
@@ -324,7 +355,8 @@ function stocksystem_run_import_batch( $batch_id ) {
 	update_post_meta( $batch_id, '_status', 'processing' );
 
 	$attachment_id = (int) get_post_meta( $batch_id, '_attachment_id', true );
-	$rows          = stocksystem_ai_extract_rows_from_attachment( $attachment_id );
+	$supplier_id   = (int) get_post_meta( $batch_id, '_supplier_id', true );
+	$rows          = stocksystem_ai_extract_rows_from_attachment( $attachment_id, $supplier_id );
 
 	if ( is_wp_error( $rows ) ) {
 		update_post_meta( $batch_id, '_status', 'failed' );
@@ -335,7 +367,9 @@ function stocksystem_run_import_batch( $batch_id ) {
 	foreach ( $rows as &$row ) {
 		// Low-confidence prices (the scale-ambiguity case) start unchecked
 		// in the review table — an explicit opt-in, not a silent guess.
-		$row['include'] = 'low' !== $row['price_confidence'];
+		$row['include']          = 'low' !== $row['price_confidence'];
+		$row['matched_products'] = stocksystem_find_similar_products( trim( ( $row['brand'] ?? '' ) . ' ' . ( $row['model'] ?? '' ) ) );
+		$row['target_product_id'] = 0;
 	}
 	unset( $row );
 
@@ -352,12 +386,22 @@ function stocksystem_confirm_import_batch( $post_id ) {
 	$rows        = json_decode( get_post_meta( $post_id, '_extracted_rows', true ), true );
 	$supplier_id = (int) get_post_meta( $post_id, '_supplier_id', true );
 	$created     = array();
+	$updated     = array();
 
 	if ( is_array( $rows ) ) {
 		foreach ( $rows as $row ) {
 			if ( empty( $row['include'] ) ) {
 				continue;
 			}
+
+			$target_product_id = (int) ( $row['target_product_id'] ?? 0 );
+			if ( $target_product_id > 0 ) {
+				if ( stocksystem_add_quote_to_existing_product( $row, $supplier_id, $target_product_id ) ) {
+					$updated[] = $target_product_id;
+				}
+				continue;
+			}
+
 			$product_id = stocksystem_create_product_from_extracted_row( $row, $supplier_id );
 			if ( $product_id ) {
 				$created[] = $product_id;
@@ -366,7 +410,93 @@ function stocksystem_confirm_import_batch( $post_id ) {
 	}
 
 	update_post_meta( $post_id, '_created_product_ids', $created );
+	update_post_meta( $post_id, '_updated_product_ids', $updated );
 	update_post_meta( $post_id, '_status', 'done' );
+}
+
+/**
+ * "This row is actually a supplier already listed" path — logs the quote
+ * (phase 1) on the existing product instead of creating a duplicate.
+ * Deliberately does NOT fire stocksystem_product_imported: an existing
+ * product likely already has real content, and auto-regenerating its SEO
+ * text without being asked would silently overwrite the owner's own edits.
+ */
+function stocksystem_add_quote_to_existing_product( $row, $supplier_id, $product_id ) {
+	if ( 'product' !== get_post_type( $product_id ) || empty( $row['price_toman'] ) ) {
+		return false;
+	}
+
+	stocksystem_record_supplier_quote( $product_id, $supplier_id, $row['price_toman'], 'import', $row['price_note'] ?? '' );
+
+	return true;
+}
+
+/* -------------------------------------------------------------------------
+ * Similar-product matching — prevents the same model being imported twice
+ * as two separate products just because two suppliers both offer it.
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Existing products whose title overlaps enough with $text to be worth
+ * flagging as "maybe this is the same item" — never auto-merges, only
+ * suggests, in the review table. No exact-match requirement: catches
+ * near-duplicates (a supplier writing "840" where the catalog has "845")
+ * too, which is exactly the case the owner should eyeball, not skip.
+ */
+function stocksystem_find_similar_products( $text, $limit = 3 ) {
+	$tokens = stocksystem_tokenize_for_matching( $text );
+	if ( empty( $tokens ) ) {
+		return array();
+	}
+
+	$candidates = get_posts(
+		array(
+			'post_type'      => 'product',
+			'post_status'    => array( 'publish', 'draft', 'pending', 'private' ),
+			'posts_per_page' => 50,
+			// Seed the search with the most distinctive words rather than
+			// the whole string — WordPress's 's' does a broad LIKE match,
+			// so a shorter, more specific seed finds better candidates.
+			's'              => implode( ' ', array_slice( $tokens, 0, 3 ) ),
+			'fields'         => 'ids',
+		)
+	);
+
+	$scored = array();
+	foreach ( $candidates as $candidate_id ) {
+		$overlap = stocksystem_token_overlap( $tokens, stocksystem_tokenize_for_matching( get_the_title( $candidate_id ) ) );
+		if ( $overlap >= 0.5 ) {
+			$scored[] = array(
+				'product_id' => $candidate_id,
+				'title'      => get_the_title( $candidate_id ),
+				'score'      => $overlap,
+			);
+		}
+	}
+
+	usort( $scored, static fn( $a, $b ) => $b['score'] <=> $a['score'] );
+
+	return array_slice( $scored, 0, $limit );
+}
+
+/** Lowercases, strips punctuation (Persian/Latin-aware), splits into words ≥2 chars. */
+function stocksystem_tokenize_for_matching( $text ) {
+	$text  = mb_strtolower( (string) $text );
+	$text  = preg_replace( '/[^\p{L}\p{N}\s]/u', ' ', $text );
+	$words = preg_split( '/\s+/u', trim( $text ) );
+
+	return array_values( array_filter( $words, static fn( $w ) => mb_strlen( $w ) > 1 ) );
+}
+
+/** Jaccard similarity (intersection / union) between two token lists. */
+function stocksystem_token_overlap( $a, $b ) {
+	if ( empty( $a ) || empty( $b ) ) {
+		return 0;
+	}
+
+	$union = array_unique( array_merge( $a, $b ) );
+
+	return count( array_intersect( $a, $b ) ) / count( $union );
 }
 
 function stocksystem_create_product_from_extracted_row( $row, $supplier_id ) {
