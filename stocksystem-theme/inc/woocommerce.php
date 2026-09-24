@@ -24,14 +24,19 @@ add_action( 'after_switch_theme', 'stocksystem_set_default_low_stock_threshold' 
 
 /**
  * Product tabs (03 Product.dc.html shows "مشخصات فنی / گارانتی و خدمات /
- * نظرات"): drop the long-form description tab (this design is spec-
- * focused, not copy-focused), relabel additional-information to
- * "مشخصات فنی", and add a warranty/shipping/returns tab sourced from the
- * same Customizer settings as the buy box — leave the reviews tab alone,
- * WooCommerce's own fa_IR translation already labels/counts it.
+ * نظرات"): the design's first cut was spec-focused and dropped WooCommerce's
+ * long-form description tab entirely — but that tab is the only place a
+ * merchant can write free-form copy about a product (condition notes, what's
+ * in the box, usage notes …), so it's kept and relabelled instead of removed.
+ * It only appears when the product's main content editor has something in it
+ * (WooCommerce's own rule), so an empty description doesn't add an empty tab.
+ * Order: توضیحات (10, native) → گارانتی و خدمات (15) → مشخصات فنی (20,
+ * native "additional information", relabelled) → نظرات (30, native).
  */
 function stocksystem_product_tabs( $tabs ) {
-	unset( $tabs['description'] );
+	if ( isset( $tabs['description'] ) ) {
+		$tabs['description']['title'] = __( 'توضیحات محصول', 'stocksystem' );
+	}
 
 	if ( isset( $tabs['additional_information'] ) ) {
 		$tabs['additional_information']['title'] = __( 'مشخصات فنی', 'stocksystem' );
@@ -51,6 +56,16 @@ function stocksystem_product_tabs( $tabs ) {
 	return $tabs;
 }
 add_filter( 'woocommerce_product_tabs', 'stocksystem_product_tabs' );
+
+// The description tab's own <h2> heading — defaults to WooCommerce's English
+// "Description" unless a translation pack overrides it; matched to the tab
+// title above instead of relying on that.
+add_filter(
+	'woocommerce_product_description_heading',
+	function () {
+		return __( 'توضیحات محصول', 'stocksystem' );
+	}
+);
 
 function stocksystem_warranty_tab_content() {
 	?>
