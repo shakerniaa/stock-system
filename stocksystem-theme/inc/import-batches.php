@@ -104,6 +104,37 @@ function stocksystem_import_add_meta_box() {
 }
 add_action( 'add_meta_boxes', 'stocksystem_import_add_meta_box' );
 
+/**
+ * WordPress's classic post-edit screen (#post form) does NOT include
+ * enctype="multipart/form-data" by default — that's only added on
+ * WordPress's own dedicated upload forms (media/theme/plugin installers,
+ * see wp-admin/includes/media.php etc.), never on the generic post-edit
+ * form itself. Without it, the browser silently sends our file input as
+ * plain form-urlencoded data, which can't carry file bytes at all — no
+ * error, $_FILES is just empty, regardless of file size. This is the
+ * standard, documented workaround (a WordPress Trac limitation, not
+ * fixable via a PHP filter): force the attribute on via JS before submit.
+ */
+function stocksystem_import_form_enctype_fix() {
+	$screen = get_current_screen();
+	if ( ! $screen || 'stocksystem_import' !== $screen->post_type ) {
+		return;
+	}
+	?>
+	<script>
+	( function () {
+		var form = document.getElementById( 'post' );
+		if ( form ) {
+			form.setAttribute( 'enctype', 'multipart/form-data' );
+			form.setAttribute( 'encoding', 'multipart/form-data' );
+		}
+	} )();
+	</script>
+	<?php
+}
+add_action( 'admin_footer-post.php', 'stocksystem_import_form_enctype_fix' );
+add_action( 'admin_footer-post-new.php', 'stocksystem_import_form_enctype_fix' );
+
 function stocksystem_import_box( $post ) {
 	wp_nonce_field( 'stocksystem_batch_save', 'stocksystem_batch_nonce' );
 

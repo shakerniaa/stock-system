@@ -441,8 +441,10 @@ function stocksystem_nav_render_page() {
 	$all_terms = array();
 
 	if ( taxonomy_exists( 'product_cat' ) ) {
-		$default = get_term( (int) get_option( 'default_product_cat' ), 'product_cat' );
-		$exclude = ( $default && ! is_wp_error( $default ) && 'uncategorized' === $default->slug ) ? array( $default->term_id ) : array();
+		// Same rule as stocksystem_nav_categories_build(): the default "Uncategorized"
+		// bucket is identified by its term id, not its (locale-dependent) slug.
+		$default_id = (int) get_option( 'default_product_cat' );
+		$exclude    = $default_id ? array( $default_id ) : array();
 		$terms   = get_terms( array( 'taxonomy' => 'product_cat', 'parent' => 0, 'hide_empty' => false, 'exclude' => $exclude, 'menu_order' => 'ASC' ) );
 		$all_terms = is_wp_error( $terms ) ? array() : $terms;
 	}

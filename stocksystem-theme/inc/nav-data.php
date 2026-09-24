@@ -41,13 +41,15 @@ function stocksystem_nav_categories_build() {
 		return $fallback;
 	}
 
-	// WooCommerce always creates an "Uncategorized" default bucket; it
-	// isn't a real shop category and shouldn't appear in the nav, mega
-	// menu, homepage tiles or footer.
+	// WooCommerce always creates a default "Uncategorized" bucket for products
+	// with no category; it isn't a real shop category and shouldn't appear in
+	// the nav, mega menu, homepage tiles or footer. Its slug is only literally
+	// "uncategorized" on an English install — on a Persian one WordPress gives
+	// it a Persian slug — so the term id (not the slug) is what identifies it.
 	$exclude = array();
-	$default = get_term( (int) get_option( 'default_product_cat' ), 'product_cat' );
-	if ( $default && ! is_wp_error( $default ) && 'uncategorized' === $default->slug ) {
-		$exclude[] = $default->term_id;
+	$default_id = (int) get_option( 'default_product_cat' );
+	if ( $default_id ) {
+		$exclude[] = $default_id;
 	}
 
 	$terms = get_terms(
