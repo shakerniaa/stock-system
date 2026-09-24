@@ -43,66 +43,156 @@ if ( ! defined( 'ABSPATH' ) ) {
  * match the site's existing `pa_ram` / `pa_size` / `pa_color` pattern —
  * only the legacy `pa_ذخیره‌سازی` breaks that pattern, and it is left
  * alone here rather than renamed.
+ *
+ * An attribute that applies to more than one category (CPU, RAM type,
+ * resolution, ports, …) is listed exactly ONCE, under whichever group
+ * it's most associated with — never duplicated per category. Each
+ * item's `used_by` is display-only (shown on the admin page as "هم در:
+ * ...") so the owner can see where a shared attribute applies without
+ * the catalog defining it twice (which would just make the second
+ * definition a same-run no-op, but would be confusing to read).
+ *
+ * TO ADD A NEW ATTRIBUTE LATER: add one more array() item to whichever
+ * group below fits best — label, slug (short/ASCII/unique across the
+ * WHOLE catalog, not just its group), and a values array. Nothing else
+ * changes. Deploy the theme update and click "ایجاد ویژگی‌های استاندارد"
+ * again on استوک سیستم ← ویژگی‌های استاندارد — the run is idempotent, so
+ * only the new item gets created; everything already on the site is
+ * detected by label and left alone.
  */
 function stocksystem_standard_attributes_catalog() {
 	return array(
 		'shared'    => array(
-			'title' => __( 'مشترک بین دسته‌ها', 'stocksystem' ),
+			'title' => __( 'مشترک بین همهٔ دسته‌های کامپیوتری', 'stocksystem' ),
 			'items' => array(
 				array(
 					'label'  => __( 'پردازنده', 'stocksystem' ),
 					'slug'   => 'cpu',
-					'values' => array( 'Intel Core i3-1115G4', 'Intel Core i5-1135G7', 'Intel Core i5-1235U', 'Intel Core i7-1165G7', 'Intel Core i7-1255U', 'AMD Ryzen 5 3500U', 'AMD Ryzen 5 5500U', 'AMD Ryzen 7 5700U', 'Apple M1' ),
+					'values' => array( 'Intel Core i3-1115G4', 'Intel Core i5-1135G7', 'Intel Core i5-1235U', 'Intel Core i5-10400', 'Intel Core i7-1165G7', 'Intel Core i7-1255U', 'Intel Core i7-10700', 'Intel Core i9-9900K', 'AMD Ryzen 3 3200U', 'AMD Ryzen 5 3500U', 'AMD Ryzen 5 5500U', 'AMD Ryzen 7 5700U', 'AMD Ryzen 5 5600X', 'Apple M1', 'Apple M2' ),
+					'used_by' => array( 'laptop', 'aio', 'desktop', 'parts' ),
 				),
 				array(
 					'label'  => __( 'نسل پردازنده', 'stocksystem' ),
 					'slug'   => 'cpu-gen',
-					'values' => array( 'نسل ۸', 'نسل ۹', 'نسل ۱۰', 'نسل ۱۱', 'نسل ۱۲', 'نسل ۱۳' ),
+					'values' => array( 'نسل ۶', 'نسل ۷', 'نسل ۸', 'نسل ۹', 'نسل ۱۰', 'نسل ۱۱', 'نسل ۱۲', 'نسل ۱۳' ),
+					'used_by' => array( 'laptop', 'aio', 'desktop' ),
+				),
+				array(
+					'label'  => __( 'تعداد هسته پردازنده', 'stocksystem' ),
+					'slug'   => 'cpu-cores',
+					'values' => array( '۲ هسته', '۴ هسته', '۶ هسته', '۸ هسته', '۱۲ هسته و بیشتر' ),
+					'used_by' => array( 'laptop', 'aio', 'desktop' ),
 				),
 				array(
 					'label'  => __( 'نوع رم', 'stocksystem' ),
 					'slug'   => 'ram-type',
-					'values' => array( 'DDR3', 'DDR4', 'DDR5' ),
+					'values' => array( 'DDR2', 'DDR3', 'DDR3L', 'DDR4', 'DDR5' ),
+					'used_by' => array( 'laptop', 'aio', 'desktop', 'parts' ),
+				),
+				array(
+					'label'  => __( 'تعداد اسلات رم', 'stocksystem' ),
+					'slug'   => 'ram-slots',
+					'values' => array( '۱ اسلات', '۲ اسلات', '۴ اسلات' ),
+					'used_by' => array( 'laptop', 'aio', 'desktop', 'parts (مادربرد)' ),
+				),
+				array(
+					'label'  => __( 'نوع ذخیره‌سازی', 'stocksystem' ),
+					'slug'   => 'storage-type',
+					'values' => array( 'HDD', 'SSD SATA', 'SSD NVMe', 'HDD + SSD' ),
+					'used_by' => array( 'laptop', 'aio', 'desktop', 'parts' ),
+				),
+				array(
+					'label'  => __( 'اینترفیس ذخیره‌سازی', 'stocksystem' ),
+					'slug'   => 'storage-if',
+					'values' => array( 'SATA', 'NVMe', 'M.2', 'mSATA', 'IDE' ),
+					'used_by' => array( 'parts' ),
 				),
 				array(
 					'label'  => __( 'کارت گرافیک', 'stocksystem' ),
 					'slug'   => 'gpu',
-					'values' => array( 'Intel UHD Graphics', 'Intel Iris Xe', 'NVIDIA GTX 1650', 'NVIDIA MX450', 'NVIDIA RTX 3050', 'AMD Radeon Vega' ),
+					'values' => array( 'Intel UHD Graphics', 'Intel Iris Xe', 'NVIDIA GT 730', 'NVIDIA GTX 1650', 'NVIDIA MX450', 'NVIDIA RTX 3050', 'NVIDIA RTX 3060', 'AMD Radeon Vega', 'AMD Radeon RX 570' ),
+					'used_by' => array( 'laptop', 'aio', 'desktop', 'parts' ),
 				),
 				array(
 					'label'  => __( 'نوع گرافیک', 'stocksystem' ),
 					'slug'   => 'gpu-type',
 					'values' => array( 'یکپارچه (Integrated)', 'مجزا (Dedicated)' ),
+					'used_by' => array( 'laptop', 'aio', 'desktop' ),
 				),
-			),
-		),
-		'laptop'    => array(
-			'title' => __( 'لپ‌تاپ و آل‌این‌وان', 'stocksystem' ),
-			'items' => array(
+				array(
+					'label'  => __( 'حافظهٔ کارت گرافیک (VRAM)', 'stocksystem' ),
+					'slug'   => 'vram',
+					'values' => array( '2GB', '4GB', '6GB', '8GB', '12GB' ),
+					'used_by' => array( 'laptop', 'aio', 'desktop', 'parts' ),
+				),
+				array(
+					'label'  => __( 'سیستم‌عامل', 'stocksystem' ),
+					'slug'   => 'os',
+					'values' => array( 'ویندوز ۱۰', 'ویندوز ۱۱', 'بدون سیستم‌عامل (Free DOS)', 'macOS' ),
+					'used_by' => array( 'laptop', 'aio', 'desktop' ),
+				),
 				array(
 					'label'  => __( 'رزولوشن نمایشگر', 'stocksystem' ),
 					'slug'   => 'resolution',
-					'values' => array( 'HD (1366×768)', 'FHD (1920×1080)', '2K', '4K' ),
+					'values' => array( 'HD (1366×768)', 'FHD (1920×1080)', '2K (2560×1440)', '4K (3840×2160)' ),
+					'used_by' => array( 'laptop', 'aio', 'monitor' ),
 				),
 				array(
 					'label'  => __( 'نوع پنل نمایشگر', 'stocksystem' ),
 					'slug'   => 'panel-type',
-					'values' => array( 'IPS', 'TN', 'OLED', 'VA' ),
+					'values' => array( 'IPS', 'TN', 'VA', 'OLED' ),
+					'used_by' => array( 'laptop', 'aio', 'monitor' ),
 				),
 				array(
-					'label'  => __( 'وزن', 'stocksystem' ),
-					'slug'   => 'weight',
-					'values' => array( '۱٫۳ کیلوگرم', '۱٫۵ کیلوگرم', '۱٫۸ کیلوگرم', '۲٫۲ کیلوگرم' ),
+					'label'  => __( 'نرخ تازه‌سازی', 'stocksystem' ),
+					'slug'   => 'refresh-rate',
+					'values' => array( '60Hz', '75Hz', '90Hz', '100Hz', '120Hz', '144Hz' ),
+					'used_by' => array( 'laptop', 'aio', 'monitor' ),
+				),
+				array(
+					'label'  => __( 'صفحهٔ لمسی', 'stocksystem' ),
+					'slug'   => 'touchscreen',
+					'values' => array( 'دارد', 'ندارد' ),
+					'used_by' => array( 'laptop', 'aio' ),
+				),
+				array(
+					'label'  => __( 'نوع پایهٔ نمایشگر', 'stocksystem' ),
+					'slug'   => 'stand',
+					'values' => array( 'ثابت', 'قابل تنظیم ارتفاع', 'قابل نصب دیواری (VESA)' ),
+					'used_by' => array( 'aio', 'monitor' ),
 				),
 				array(
 					'label'  => __( 'پورت‌ها', 'stocksystem' ),
 					'slug'   => 'ports',
-					'values' => array( 'USB-C', 'USB-A', 'HDMI', 'Thunderbolt 4', 'RJ45', 'Jack صدا' ),
+					'values' => array( 'USB-C', 'USB-A 3.0', 'USB-A 2.0', 'HDMI', 'Thunderbolt 4', 'DisplayPort', 'VGA', 'DVI', 'RJ45', 'Jack صدا' ),
+					'used_by' => array( 'laptop', 'aio', 'monitor', 'desktop' ),
+				),
+				array(
+					'label'  => __( 'اتصال بی‌سیم (Wi-Fi/بلوتوث)', 'stocksystem' ),
+					'slug'   => 'wireless',
+					'values' => array( 'Wi-Fi 5 + بلوتوث ۴٫۲', 'Wi-Fi 5 + بلوتوث ۵٫۰', 'Wi-Fi 6 + بلوتوث ۵٫۱', 'ندارد' ),
+					'used_by' => array( 'laptop', 'aio', 'desktop' ),
+				),
+				array(
+					'label'  => __( 'وبکم', 'stocksystem' ),
+					'slug'   => 'webcam',
+					'values' => array( 'دارد HD', 'دارد FHD', 'ندارد' ),
+					'used_by' => array( 'laptop', 'aio', 'monitor' ),
+				),
+			),
+		),
+		'laptop'    => array(
+			'title' => __( 'مخصوص لپ‌تاپ', 'stocksystem' ),
+			'items' => array(
+				array(
+					'label'  => __( 'وزن', 'stocksystem' ),
+					'slug'   => 'weight',
+					'values' => array( '۱٫۱ کیلوگرم', '۱٫۳ کیلوگرم', '۱٫۵ کیلوگرم', '۱٫۸ کیلوگرم', '۲٫۲ کیلوگرم', '۲٫۵ کیلوگرم و بیشتر' ),
 				),
 				array(
 					'label'  => __( 'قابلیت ارتقا رم', 'stocksystem' ),
 					'slug'   => 'ram-upgrade',
-					'values' => array( 'تا ۱۶GB', 'تا ۳۲GB', 'تا ۶۴GB', 'غیرقابل ارتقا' ),
+					'values' => array( 'تا ۱۶GB', 'تا ۳۲GB', 'تا ۶۴GB', 'غیرقابل ارتقا (لحیم‌شده)' ),
 				),
 				array(
 					'label'  => __( 'صفحه‌کلید', 'stocksystem' ),
@@ -110,34 +200,54 @@ function stocksystem_standard_attributes_catalog() {
 					'values' => array( 'بک‌لایت‌دار', 'بدون نور پس‌زمینه', 'دارای نامبرپد' ),
 				),
 				array(
+					'label'  => __( 'حسگر اثر انگشت', 'stocksystem' ),
+					'slug'   => 'fingerprint',
+					'values' => array( 'دارد', 'ندارد' ),
+				),
+				array(
+					'label'  => __( 'جنس بدنه', 'stocksystem' ),
+					'slug'   => 'body-material',
+					'values' => array( 'پلاستیک', 'آلومینیوم', 'منیزیم-آلومینیوم', 'کربن‌فایبر' ),
+				),
+				array(
+					'label'  => __( 'نوع کاربری لپ‌تاپ', 'stocksystem' ),
+					'slug'   => 'device-type',
+					'values' => array( 'اداری/دانشجویی', 'گیمینگ', 'ورک‌استیشن', 'اولترابوک', 'تبدیل‌شونده ۲در۱' ),
+				),
+				array(
 					'label'  => __( 'نوع اتصال مانیتور (آل‌این‌وان)', 'stocksystem' ),
 					'slug'   => 'aio-connect',
 					'values' => array( 'تمام‌یکپارچه', 'جدا‌شونده' ),
 				),
-				array(
-					'label'  => __( 'صفحهٔ لمسی', 'stocksystem' ),
-					'slug'   => 'touchscreen',
-					'values' => array( 'دارد', 'ندارد' ),
-				),
 			),
 		),
 		'monitor'   => array(
-			'title' => __( 'مانیتور', 'stocksystem' ),
+			'title' => __( 'مخصوص مانیتور', 'stocksystem' ),
 			'items' => array(
-				array(
-					'label'  => __( 'نرخ تازه‌سازی', 'stocksystem' ),
-					'slug'   => 'refresh-rate',
-					'values' => array( '60Hz', '75Hz', '100Hz', '144Hz' ),
-				),
 				array(
 					'label'  => __( 'نوع سطح صفحه', 'stocksystem' ),
 					'slug'   => 'panel-curve',
 					'values' => array( 'تخت (Flat)', 'خمیده (Curved)' ),
 				),
+				array(
+					'label'  => __( 'زمان پاسخ', 'stocksystem' ),
+					'slug'   => 'response-time',
+					'values' => array( '1ms', '4ms', '5ms', '8ms' ),
+				),
+				array(
+					'label'  => __( 'نسبت تصویر', 'stocksystem' ),
+					'slug'   => 'aspect-ratio',
+					'values' => array( '16:9', '16:10', '21:9', '4:3' ),
+				),
+				array(
+					'label'  => __( 'اسپیکر داخلی', 'stocksystem' ),
+					'slug'   => 'speaker',
+					'values' => array( 'دارد', 'ندارد' ),
+				),
 			),
 		),
 		'desktop'   => array(
-			'title' => __( 'کیس و مینی‌کیس', 'stocksystem' ),
+			'title' => __( 'مخصوص کیس و مینی‌کیس', 'stocksystem' ),
 			'items' => array(
 				array(
 					'label'  => __( 'فرم‌فاکتور', 'stocksystem' ),
@@ -154,28 +264,53 @@ function stocksystem_standard_attributes_catalog() {
 					'slug'   => 'gpu-slot',
 					'values' => array( 'دارد (PCIe x16)', 'ندارد' ),
 				),
+				array(
+					'label'  => __( 'جنس بدنهٔ کیس', 'stocksystem' ),
+					'slug'   => 'case-material',
+					'values' => array( 'فلزی', 'پلاستیکی', 'ترکیبی (فلز و پلاستیک)' ),
+				),
+				array(
+					'label'  => __( 'نورپردازی RGB', 'stocksystem' ),
+					'slug'   => 'rgb',
+					'values' => array( 'دارد', 'ندارد' ),
+				),
 			),
 		),
 		'parts'     => array(
-			'title' => __( 'قطعات', 'stocksystem' ),
+			'title' => __( 'قطعات (رم، هارد، گرافیک، مادربرد، پاور، کیس، خنک‌کننده)', 'stocksystem' ),
 			'items' => array(
 				array(
 					'label'  => __( 'فرکانس رم', 'stocksystem' ),
 					'slug'   => 'ram-freq',
-					'values' => array( '2400MHz', '2666MHz', '3200MHz', '3600MHz' ),
+					'values' => array( '1600MHz', '2133MHz', '2400MHz', '2666MHz', '3200MHz', '3600MHz' ),
 				),
 				array(
-					'label'  => __( 'اینترفیس ذخیره‌سازی', 'stocksystem' ),
-					'slug'   => 'storage-if',
-					'values' => array( 'SATA', 'NVMe', 'M.2' ),
+					'label'  => __( 'تایمینگ رم (CL)', 'stocksystem' ),
+					'slug'   => 'ram-cl',
+					'values' => array( 'CL16', 'CL18', 'CL19', 'CL22' ),
 				),
 				array(
-					'label'  => __( 'حافظهٔ کارت گرافیک (VRAM)', 'stocksystem' ),
-					'slug'   => 'vram',
-					'values' => array( '2GB', '4GB', '6GB', '8GB' ),
+					'label'  => __( 'فرم‌فاکتور رم', 'stocksystem' ),
+					'slug'   => 'ram-form',
+					'values' => array( 'DIMM (دسکتاپ)', 'SO-DIMM (لپ‌تاپ)' ),
 				),
 				array(
-					'label'  => __( 'سوکت مادربرد', 'stocksystem' ),
+					'label'  => __( 'فرم‌فاکتور ذخیره‌سازی', 'stocksystem' ),
+					'slug'   => 'storage-form',
+					'values' => array( '۲٫۵ اینچ', '۳٫۵ اینچ', 'M.2 2280', 'mSATA' ),
+				),
+				array(
+					'label'  => __( 'اینترفیس کارت گرافیک', 'stocksystem' ),
+					'slug'   => 'gpu-interface',
+					'values' => array( 'PCIe 3.0 x16', 'PCIe 4.0 x16' ),
+				),
+				array(
+					'label'  => __( 'کانکتور برق کارت گرافیک', 'stocksystem' ),
+					'slug'   => 'gpu-power',
+					'values' => array( 'بدون نیاز به کانکتور', '۶ پین', '۸ پین', '۶+۸ پین' ),
+				),
+				array(
+					'label'  => __( 'سوکت پردازنده (مادربرد)', 'stocksystem' ),
 					'slug'   => 'cpu-socket',
 					'values' => array( 'LGA1151', 'LGA1200', 'LGA1700', 'AM4', 'AM5' ),
 				),
@@ -185,9 +320,19 @@ function stocksystem_standard_attributes_catalog() {
 					'values' => array( 'H410', 'B460', 'B560', 'B660', 'B450', 'B550' ),
 				),
 				array(
+					'label'  => __( 'فرم‌فاکتور مادربرد', 'stocksystem' ),
+					'slug'   => 'mobo-form',
+					'values' => array( 'ATX', 'Micro-ATX', 'Mini-ITX' ),
+				),
+				array(
 					'label'  => __( 'سرتیفیکیت پاور', 'stocksystem' ),
 					'slug'   => 'psu-cert',
 					'values' => array( '80Plus White', '80Plus Bronze', '80Plus Gold' ),
+				),
+				array(
+					'label'  => __( 'نوع مدولار بودن پاور', 'stocksystem' ),
+					'slug'   => 'psu-modular',
+					'values' => array( 'فول مدولار', 'نیمه مدولار', 'غیرمدولار' ),
 				),
 				array(
 					'label'  => __( 'نوع خنک‌کننده', 'stocksystem' ),
@@ -197,7 +342,7 @@ function stocksystem_standard_attributes_catalog() {
 			),
 		),
 		'accessory' => array(
-			'title' => __( 'لوازم جانبی', 'stocksystem' ),
+			'title' => __( 'لوازم جانبی (کیبورد، ماوس، کیف، هاب و...)', 'stocksystem' ),
 			'items' => array(
 				array(
 					'label'  => __( 'نوع اتصال', 'stocksystem' ),
@@ -208,6 +353,16 @@ function stocksystem_standard_attributes_catalog() {
 					'label'  => __( 'جنس', 'stocksystem' ),
 					'slug'   => 'material',
 					'values' => array( 'پارچه‌ای', 'چرمی', 'پلاستیکی', 'نئوپرن' ),
+				),
+				array(
+					'label'  => __( 'نوع سوییچ کیبورد', 'stocksystem' ),
+					'slug'   => 'switch-type',
+					'values' => array( 'ممبران', 'مکانیکی بلو', 'مکانیکی رد', 'مکانیکی براون' ),
+				),
+				array(
+					'label'  => __( 'دقت حسگر ماوس (DPI)', 'stocksystem' ),
+					'slug'   => 'dpi',
+					'values' => array( '800', '1600', '3200', '6400' ),
 				),
 			),
 		),
@@ -399,11 +554,12 @@ function stocksystem_render_attributes_bootstrap_page() {
 		<h2><?php esc_html_e( 'فهرست ویژگی‌هایی که ساخته می‌شوند', 'stocksystem' ); ?></h2>
 		<?php foreach ( stocksystem_standard_attributes_catalog() as $group ) : ?>
 			<h3><?php echo esc_html( $group['title'] ); ?></h3>
-			<table class="widefat striped" style="max-width:900px;margin-bottom:24px;">
+			<table class="widefat striped" style="max-width:1100px;margin-bottom:24px;">
 				<thead>
 					<tr>
 						<th><?php esc_html_e( 'ویژگی', 'stocksystem' ); ?></th>
 						<th><?php esc_html_e( 'مقادیر نمونه', 'stocksystem' ); ?></th>
+						<th><?php esc_html_e( 'همچنین کاربرد دارد در', 'stocksystem' ); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -411,8 +567,10 @@ function stocksystem_render_attributes_bootstrap_page() {
 						<tr>
 							<td><?php echo esc_html( $item['label'] ); ?></td>
 							<td><?php echo esc_html( implode( '، ', $item['values'] ) ); ?></td>
+							<td><?php echo ! empty( $item['used_by'] ) ? esc_html( implode( '، ', $item['used_by'] ) ) : '—'; ?></td>
 						</tr>
 					<?php endforeach; ?>
+				</tbody>
 				</tbody>
 			</table>
 		<?php endforeach; ?>
