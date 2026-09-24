@@ -17,7 +17,7 @@ $is_logged_in = is_user_logged_in();
 <div class="mobile-drawer-backdrop" id="mobile-drawer-backdrop" hidden></div>
 <div id="mobile-drawer" class="mobile-drawer" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'منوی اصلی', 'stocksystem' ); ?>" hidden>
 	<div class="mobile-drawer__header">
-		<img src="<?php echo esc_url( stocksystem_logo_url() ); ?>" alt="<?php bloginfo( 'name' ); ?>" width="130" height="30">
+		<img src="<?php echo esc_url( stocksystem_logo_url() ); ?>" alt="<?php bloginfo( 'name' ); ?>" width="74" height="30">
 		<button type="button" class="mobile-drawer__close" id="mobile-drawer-close">
 			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
 			<span class="screen-reader-text"><?php esc_html_e( 'بستن منو', 'stocksystem' ); ?></span>

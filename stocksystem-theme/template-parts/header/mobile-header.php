@@ -29,7 +29,7 @@ $cart_count = function_exists( 'WC' ) && WC()->cart ? WC()->cart->get_cart_conte
 		</button>
 
 		<a class="mobile-header__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-			<img src="<?php echo esc_url( stocksystem_logo_url() ); ?>" alt="<?php bloginfo( 'name' ); ?>" width="110" height="26">
+			<img src="<?php echo esc_url( stocksystem_logo_url() ); ?>" alt="<?php bloginfo( 'name' ); ?>" width="78" height="32">
 		</a>
 
 		<span class="mobile-header__row-actions">
