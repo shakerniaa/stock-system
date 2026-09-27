@@ -129,7 +129,7 @@ function stocksystem_key_spec_priority() {
  * Values are already the visible, human label — safe to esc_html when
  * printed, not yet-escaped HTML.
  */
-function stocksystem_get_product_attribute_values( $product ) {
+function stocksystem_get_product_attribute_values( $product, $skip_variation_axes = false ) {
 	$values = array();
 
 	if ( ! $product instanceof WC_Product ) {
@@ -139,20 +139,40 @@ function stocksystem_get_product_attribute_values( $product ) {
 	$attributes = array_filter( $product->get_attributes(), 'wc_attributes_array_filter_visible' );
 
 	foreach ( $attributes as $attribute ) {
+		// On a variable product the RAM/storage axes aren't a fixed
+		// property — the customer picks them, and the configurator right
+		// above renders them as priced choices. Listing all their values
+		// as if they were one spec ("۱۶GB، ۳۲GB، ۸GB") reads like the
+		// machine somehow has all three. The spec TABLE still shows them
+		// (joined with «/» and marked selectable, the way spec sheets
+		// conventionally present a configurable axis); the at-a-glance
+		// panel skips them to avoid contradicting the configurator.
+		$is_variation_axis = $attribute->get_variation();
+
+		if ( $skip_variation_axes && $is_variation_axis ) {
+			continue;
+		}
+
+		$separator = $is_variation_axis ? ' / ' : '، ';
+
 		if ( $attribute->is_taxonomy() ) {
 			$slug  = preg_replace( '/^pa_/', '', $attribute->get_name() );
 			$terms = wc_get_product_terms( $product->get_id(), $attribute->get_name(), array( 'fields' => 'names' ) );
 			if ( empty( $terms ) ) {
 				continue;
 			}
-			$values[ $slug ] = implode( '، ', $terms );
+			$values[ $slug ] = implode( $separator, $terms );
 		} else {
 			$slug    = sanitize_title( $attribute->get_name() );
 			$options = $attribute->get_options();
 			if ( empty( $options ) ) {
 				continue;
 			}
-			$values[ $slug ] = implode( '، ', $options );
+			$values[ $slug ] = implode( $separator, $options );
+		}
+
+		if ( $is_variation_axis ) {
+			$values[ $slug ] .= ' ' . __( '(قابل انتخاب)', 'stocksystem' );
 		}
 	}
 
@@ -228,7 +248,10 @@ function stocksystem_get_grouped_product_specs( $product ) {
  * this product hasn't filled in.
  */
 function stocksystem_get_key_specs( $product, $limit = 6 ) {
-	$values = stocksystem_get_product_attribute_values( $product );
+	// Skips the variation axes — see the note in
+	// stocksystem_get_product_attribute_values(): the configurator
+	// directly above this panel already presents them as priced choices.
+	$values = stocksystem_get_product_attribute_values( $product, true );
 
 	if ( empty( $values ) ) {
 		return array();

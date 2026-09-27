@@ -80,6 +80,19 @@ function stocksystem_standard_attributes_catalog() {
 					'variation_capable' => true,
 				),
 				array(
+					'label'  => __( 'سایز', 'stocksystem' ),
+					'slug'   => 'size',
+					'values' => array( '۱۱ اینچ', '۱۳ اینچ', '۱۴ اینچ', '۱۵٫۶ اینچ', '۱۷ اینچ', '۲۱٫۵ اینچ', '۲۳٫۸ اینچ', '۲۴ اینچ', '۲۷ اینچ', '۳۲ اینچ' ),
+					'used_by' => array( 'laptop', 'aio', 'monitor', 'accessory' ),
+				),
+				array(
+					'label'  => __( 'رنگ', 'stocksystem' ),
+					'slug'   => 'color',
+					'values' => array( 'مشکی', 'نقره‌ای', 'خاکستری', 'سفید', 'آبی' ),
+					'used_by' => array( 'laptop', 'aio', 'monitor', 'desktop', 'accessory' ),
+					'variation_capable' => true,
+				),
+				array(
 					'label'  => __( 'پردازنده', 'stocksystem' ),
 					'slug'   => 'cpu',
 					'values' => array( 'Intel Core i3-1115G4', 'Intel Core i5-1135G7', 'Intel Core i5-1235U', 'Intel Core i5-10400', 'Intel Core i7-1165G7', 'Intel Core i7-1255U', 'Intel Core i7-10700', 'Intel Core i9-9900K', 'AMD Ryzen 3 3200U', 'AMD Ryzen 5 3500U', 'AMD Ryzen 5 5500U', 'AMD Ryzen 7 5700U', 'AMD Ryzen 5 5600X', 'Apple M1', 'Apple M2' ),
@@ -469,18 +482,34 @@ function stocksystem_run_standard_attributes_bootstrap() {
 				continue;
 			}
 
-			foreach ( $item['values'] as $value ) {
-				if ( term_exists( $value, $taxonomy ) ) {
-					continue;
+			foreach ( $item['values'] as $index => $value ) {
+				$existing_term = term_exists( $value, $taxonomy );
+
+				if ( $existing_term ) {
+					$term_id = (int) $existing_term['term_id'];
+				} else {
+					$result = wp_insert_term( $value, $taxonomy );
+					if ( is_wp_error( $result ) ) {
+						// term_exists() already guards the common case; a
+						// leftover error here is worth surfacing, not hiding.
+						$report['errors'][] = $label . ' « ' . $value . ' »: ' . $result->get_error_message();
+						continue;
+					}
+					$term_id                   = (int) $result['term_id'];
+					$report['terms_created'][] = $label . ' « ' . $value . ' »';
 				}
-				$result = wp_insert_term( $value, $taxonomy );
-				if ( is_wp_error( $result ) ) {
-					// term_exists() already guards the common case; a
-					// leftover error here is worth surfacing, not hiding.
-					$report['errors'][] = $label . ' « ' . $value . ' »: ' . $result->get_error_message();
-					continue;
-				}
-				$report['terms_created'][] = $label . ' « ' . $value . ' »';
+
+				// Pin the display order to this catalog's own order, for
+				// existing terms too. Every attribute here is created with
+				// order_by => menu_order, and WooCommerce's own
+				// wc_change_get_terms_defaults() honours that — but only
+				// via each term's `order` meta, which defaults to 0, so
+				// without this every list silently falls back to an
+				// alphabetical sort ("۱۶GB، ۳۲GB، ۸GB" instead of
+				// "۸GB / ۱۶GB / ۳۲GB"). Setting it here is what makes the
+				// order identical across every product, spec table and
+				// configurator.
+				wc_set_term_order( $term_id, $index + 1, $taxonomy );
 			}
 		}
 	}

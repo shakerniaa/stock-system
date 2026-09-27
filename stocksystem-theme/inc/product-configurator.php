@@ -43,12 +43,23 @@ function stocksystem_configurator_attribute_options( WC_Product_Variable $produc
 
 	$options = array();
 	// WC_Product has no get_attribute_object() — look it up from the
-	// product's own attributes array (keyed the same way
-	// get_variation_attributes() keys $attribute_name: the raw
-	// attribute name, e.g. "pa_ram" for a taxonomy attribute).
-	$product_attributes = $product->get_attributes();
-	$attribute_object   = isset( $product_attributes[ $attribute_name ] ) ? $product_attributes[ $attribute_name ] : null;
-	$is_taxonomy        = $attribute_object && $attribute_object->is_taxonomy();
+	// product's own attributes array. Matched on get_name() rather than
+	// on the array key: get_variation_attributes() keys $attribute_name
+	// by the RAW attribute name ("pa_ذخیره‌سازی"), but the attributes
+	// array is keyed by WooCommerce's stored key, which is
+	// percent-encoded for a non-ASCII name ("pa_%d8%b0…"). Keying off
+	// the array key therefore missed the storage axis entirely, leaving
+	// $is_taxonomy false and rendering raw term slugs ("256gb-ssd") in
+	// the tiles instead of labels ("256GB SSD"). RAM was unaffected only
+	// because "pa_ram" is already ASCII.
+	$attribute_object = null;
+	foreach ( $product->get_attributes() as $candidate ) {
+		if ( $candidate->get_name() === $attribute_name ) {
+			$attribute_object = $candidate;
+			break;
+		}
+	}
+	$is_taxonomy = $attribute_object && $attribute_object->is_taxonomy();
 
 	foreach ( $variations as $variation ) {
 		$value = isset( $variation['attributes'][ $key ] ) ? $variation['attributes'][ $key ] : '';
@@ -79,6 +90,34 @@ function stocksystem_configurator_attribute_options( WC_Product_Variable $produc
 		$option['delta'] = null !== $option['min_price'] ? $option['min_price'] - $cheapest_in_stock : 0;
 	}
 	unset( $option );
+
+	// Options are discovered by walking the variations, so their order
+	// is whatever order WooCommerce happened to return those in —
+	// "۳۲GB، ۱۶GB، ۸GB" rather than ascending. Re-order them to the
+	// attribute's own term order (which inc/attributes-bootstrap.php
+	// pins via wc_set_term_order), so the tiles, the spec table and the
+	// archive filters all present capacities in the same sequence on
+	// every product.
+	if ( $is_taxonomy ) {
+		$ordered_slugs = wc_get_product_terms(
+			$product->get_id(),
+			$attribute_object->get_taxonomy(),
+			array( 'fields' => 'slugs' )
+		);
+
+		if ( ! empty( $ordered_slugs ) ) {
+			$sorted = array();
+			foreach ( $ordered_slugs as $slug ) {
+				if ( isset( $options[ $slug ] ) ) {
+					$sorted[ $slug ] = $options[ $slug ];
+					unset( $options[ $slug ] );
+				}
+			}
+			// Anything the term list didn't cover keeps its old position
+			// at the end rather than being dropped.
+			$options = $sorted + $options;
+		}
+	}
 
 	return array_values( $options );
 }

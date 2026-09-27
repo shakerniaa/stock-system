@@ -43,6 +43,7 @@ require STOCKSYSTEM_DIR . '/inc/product-test-report.php';
 require STOCKSYSTEM_DIR . '/inc/attributes-bootstrap.php';
 require STOCKSYSTEM_DIR . '/inc/product-specs.php';
 require STOCKSYSTEM_DIR . '/inc/category-spec-templates.php';
+require STOCKSYSTEM_DIR . '/inc/variation-pricing.php';
 require STOCKSYSTEM_DIR . '/inc/suppliers.php';
 require STOCKSYSTEM_DIR . '/inc/supplier-quotes.php';
 require STOCKSYSTEM_DIR . '/inc/ai-extraction.php';
