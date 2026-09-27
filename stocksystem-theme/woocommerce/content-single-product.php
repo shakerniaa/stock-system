@@ -78,6 +78,8 @@ do_action( 'woocommerce_before_single_product' );
 				?>
 			</div>
 
+			<?php get_template_part( 'template-parts/product/key-specs', null, array( 'product' => $product ) ); ?>
+
 			<div class="buy-box__trust">
 				<span class="buy-box__trust-item">
 					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"></path><path d="M9 12l2.2 2.2L15.5 10"></path></svg>

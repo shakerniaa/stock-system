@@ -41,6 +41,7 @@ require STOCKSYSTEM_DIR . '/inc/product-addons.php';
 require STOCKSYSTEM_DIR . '/inc/product-configurator.php';
 require STOCKSYSTEM_DIR . '/inc/product-test-report.php';
 require STOCKSYSTEM_DIR . '/inc/attributes-bootstrap.php';
+require STOCKSYSTEM_DIR . '/inc/product-specs.php';
 require STOCKSYSTEM_DIR . '/inc/suppliers.php';
 require STOCKSYSTEM_DIR . '/inc/supplier-quotes.php';
 require STOCKSYSTEM_DIR . '/inc/ai-extraction.php';

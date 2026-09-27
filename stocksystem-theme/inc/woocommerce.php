@@ -42,6 +42,17 @@ function stocksystem_product_tabs( $tabs ) {
 		$tabs['additional_information']['title'] = __( 'مشخصات فنی', 'stocksystem' );
 	}
 
+	// The panel's own <h2> (additional-information.php's own template,
+	// not the tab strip) defaults to whatever the active translation
+	// calls "Additional information" — override it too so it matches
+	// the tab label instead of drifting from it.
+	add_filter(
+		'woocommerce_product_additional_information_heading',
+		function () {
+			return __( 'مشخصات فنی', 'stocksystem' );
+		}
+	);
+
 	$tabs['stocksystem_warranty'] = array(
 		'title'    => __( 'گارانتی و خدمات', 'stocksystem' ),
 		'priority' => 15,
