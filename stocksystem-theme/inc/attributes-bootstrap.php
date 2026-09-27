@@ -66,6 +66,20 @@ function stocksystem_standard_attributes_catalog() {
 			'title' => __( 'مشترک بین همهٔ دسته‌های کامپیوتری', 'stocksystem' ),
 			'items' => array(
 				array(
+					'label'  => __( 'RAM', 'stocksystem' ),
+					'slug'   => 'ram',
+					'values' => array( '4GB', '8GB', '16GB', '32GB', '64GB' ),
+					'used_by' => array( 'laptop', 'aio', 'desktop', 'parts' ),
+					'variation_capable' => true,
+				),
+				array(
+					'label'  => __( 'ذخیره‌سازی', 'stocksystem' ),
+					'slug'   => 'ذخیرهسازی',
+					'values' => array( '128GB SSD', '256GB SSD', '512GB SSD', '1TB SSD', '1TB HDD', '2TB HDD' ),
+					'used_by' => array( 'laptop', 'aio', 'desktop', 'parts' ),
+					'variation_capable' => true,
+				),
+				array(
 					'label'  => __( 'پردازنده', 'stocksystem' ),
 					'slug'   => 'cpu',
 					'values' => array( 'Intel Core i3-1115G4', 'Intel Core i5-1135G7', 'Intel Core i5-1235U', 'Intel Core i5-10400', 'Intel Core i7-1165G7', 'Intel Core i7-1255U', 'Intel Core i7-10700', 'Intel Core i9-9900K', 'AMD Ryzen 3 3200U', 'AMD Ryzen 5 3500U', 'AMD Ryzen 5 5500U', 'AMD Ryzen 7 5700U', 'AMD Ryzen 5 5600X', 'Apple M1', 'Apple M2' ),

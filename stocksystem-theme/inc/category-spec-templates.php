@@ -76,6 +76,22 @@ function stocksystem_category_spec_templates() {
 }
 
 /**
+ * Slugs that typically drive variations (different SKUs/prices per
+ * value) rather than being purely descriptive — RAM capacity and
+ * storage capacity, the two the owner explicitly asked to be handled
+ * "properly": when stocksystem_apply_category_template() adds one of
+ * these for the FIRST time, it's created with "Used for variations"
+ * already on, so switching the product to a Variable product and
+ * picking multiple values is the only remaining manual step (no more
+ * remembering to tick that checkbox). Never touches an attribute the
+ * product already has — an existing simple-product RAM row some owner
+ * deliberately left display-only stays exactly as it was.
+ */
+function stocksystem_variation_capable_slugs() {
+	return array( 'ram', 'ذخیرهسازی' );
+}
+
+/**
  * Templates matching this product's assigned categories, in the
  * catalog's own order, de-duplicated by keyword — a product filed
  * under two categories that both match (rare) contributes both
@@ -178,7 +194,7 @@ function stocksystem_apply_category_template( $product_id ) {
 			$attribute->set_name( $taxonomy );
 			$attribute->set_options( array() );
 			$attribute->set_visible( true );
-			$attribute->set_variation( false );
+			$attribute->set_variation( in_array( $slug, stocksystem_variation_capable_slugs(), true ) );
 			$added[] = wc_attribute_label( $taxonomy );
 		}
 
@@ -256,9 +272,17 @@ add_action(
 						</thead>
 						<tbody>
 							<?php foreach ( $slugs as $slug ) : ?>
-								<?php $label = wc_attribute_label( 'pa_' . $slug ); ?>
+								<?php
+								$label              = wc_attribute_label( 'pa_' . $slug );
+								$is_variation_capable = in_array( $slug, stocksystem_variation_capable_slugs(), true );
+								?>
 								<tr>
-									<td><?php echo esc_html( $label ); ?></td>
+									<td>
+										<?php echo esc_html( $label ); ?>
+										<?php if ( $is_variation_capable ) : ?>
+											<br><span style="font-size:11px;color:#8a8a8a;"><?php esc_html_e( 'قابل تبدیل به تنوع (رم/هارد قابل انتخاب مشتری)', 'stocksystem' ); ?></span>
+										<?php endif; ?>
+									</td>
 									<td>
 										<?php if ( ! taxonomy_exists( 'pa_' . $slug ) ) : ?>
 											<span style="color:#a94442;"><?php esc_html_e( 'ویژگی هنوز ساخته نشده', 'stocksystem' ); ?></span>
@@ -292,6 +316,7 @@ add_action(
 					</p>
 					<p class="description">
 						<?php esc_html_e( 'ویژگی‌های خالی بالا به تب «ویژگی‌ها» اضافه می‌شوند (بدون مقدار — خودت مقدارشان را انتخاب می‌کنی)، و ترتیب همهٔ ویژگی‌ها طبق همین جدول تنظیم می‌شود. مقادیری که از قبل پر کرده‌ای دست‌نخورده می‌مانند.', 'stocksystem' ); ?>
+						<?php esc_html_e( 'ویژگی‌های «قابل تبدیل به تنوع» (رم و ذخیره‌سازی) در همین لحظه با تیک «Used for variations» ساخته می‌شوند — فقط کافی است نوع محصول را به «محصول متغیر» تغییر بدهی، چند مقدار برایشان انتخاب کنی و از تب «متغیرها» تنوعات را بسازی.', 'stocksystem' ); ?>
 					</p>
 				<?php endif; ?>
 			</div>
