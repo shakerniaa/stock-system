@@ -123,7 +123,10 @@
 	grid-template-columns: 1fr;
 	gap: var(--sp-24);
 	align-items: start;
-	padding-bottom: var(--sp-44);
+	/* padding-top matters: .archive-header is a full-bleed tinted band, and
+	   without it the toolbar and filter panel started flush against its
+	   bottom border with no breathing room at all. */
+	padding-block: var(--sp-24) var(--sp-44);
 }
 
 /* Desktop: 9/3 split with products first (README + 02 Category.dc.html
@@ -232,8 +235,11 @@
 	outline-offset: var(--focus-ring-offset);
 }
 
+/* The count follows its label directly rather than being pushed to the
+   far edge with margin-inline-start:auto. In a 3fr sidebar (~315px of
+   content) a short option like «HP» left its count stranded ~240px away,
+   which read as a layout fault rather than as a column of figures. */
 .archive-filters__checkbox-count {
-	margin-inline-start: auto;
 	font-size: var(--fs-12);
 	color: var(--c-text-3);
 }

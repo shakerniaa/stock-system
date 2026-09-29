@@ -23,12 +23,40 @@ function stocksystem_logo_url() {
 	return $custom ? $custom : STOCKSYSTEM_URI . '/assets/images/logo-lockup-dark.webp';
 }
 
+/**
+ * Browser-tab icon. Three sources, most specific first:
+ *   1. WordPress' own Site Icon (تنظیمات ← عمومی) — if that is set,
+ *      WordPress prints a full, correct icon set itself and we stay out
+ *      of the way entirely.
+ *   2. The «آیکون تب مرورگر» upload in استوک سیستم ← رنگ‌ها و لوگو.
+ *   3. The bundled brand mark, so a fresh install has a real favicon
+ *      instead of the browser's blank page glyph.
+ *
+ * The bundled set is generated from stocksystem-dev-kit/assets/
+ * logo-symbol-dark.png: the mark trimmed to its own bounds (the source
+ * has uneven padding, which renders it visibly off-centre at 16px) and
+ * centred on the brand's ink tile, so the teal stays legible against
+ * both light and dark browser chrome.
+ */
 function stocksystem_print_favicon() {
-	$icon = stocksystem_opt_image( 'look', 'favicon', 'full' );
-
-	if ( $icon && ! has_site_icon() ) {
-		echo '<link rel="icon" href="' . esc_url( $icon ) . '">' . "\n";
+	if ( has_site_icon() ) {
+		return;
 	}
+
+	$custom = stocksystem_opt_image( 'look', 'favicon', 'full' );
+
+	if ( $custom ) {
+		printf( '<link rel="icon" href="%s">' . "\n", esc_url( $custom ) );
+		printf( '<link rel="apple-touch-icon" href="%s">' . "\n", esc_url( $custom ) );
+		return;
+	}
+
+	$base = STOCKSYSTEM_URI . '/assets/icons/';
+
+	printf( '<link rel="icon" href="%s" sizes="32x32">' . "\n", esc_url( $base . 'icon-32.png' ) );
+	printf( '<link rel="icon" href="%s" sizes="192x192">' . "\n", esc_url( $base . 'icon-192.png' ) );
+	printf( '<link rel="apple-touch-icon" href="%s">' . "\n", esc_url( $base . 'apple-touch-icon.png' ) );
+	printf( '<link rel="shortcut icon" href="%s">' . "\n", esc_url( $base . 'favicon.ico' ) );
 }
 add_action( 'wp_head', 'stocksystem_print_favicon', 2 );
 
