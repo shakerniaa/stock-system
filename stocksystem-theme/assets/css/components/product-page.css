@@ -69,11 +69,28 @@
 	overflow: hidden;
 }
 
-.woocommerce-product-gallery__image img {
+/* :not(.zoomImg) is load-bearing. WooCommerce's hover zoom (jQuery.zoom)
+   appends a SECOND <img class="zoomImg"> into this same well and sets its
+   size/position inline — those inline styles beat the width/height here,
+   but object-fit and mix-blend-mode are not set inline, so without the
+   exclusion they still landed on the zoom layer: object-fit:contain
+   re-letterboxed the magnified crop back down to the whole image, and
+   multiply blended it into the base image underneath. Together that is
+   the "image doubled on top of itself" the zoom produced. */
+.woocommerce-product-gallery__image img:not(.zoomImg) {
 	width: 100%;
 	height: 420px;
 	object-fit: contain;
 	mix-blend-mode: multiply;
+}
+
+.woocommerce-product-gallery__image .zoomImg {
+	/* The magnified crop is exactly the natural-size image offset by the
+	   cursor — it must not be re-fitted. Opaque, on the same well colour,
+	   so a transparent PNG doesn't reveal the base image behind it. */
+	object-fit: none;
+	mix-blend-mode: normal;
+	background: var(--c-paper-alt);
 }
 
 .flex-control-thumbs {
