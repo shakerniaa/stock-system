@@ -1,0 +1,389 @@
+/* ==========================================================================
+   Product comparison — toggle, floating bar, and the compare table.
+   ========================================================================== */
+
+/* ---- Toggle on the card / buy box ---- */
+.compare-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--sp-8);
+	border: var(--border-default) solid var(--c-line);
+	background: var(--c-paper);
+	color: var(--c-text-2);
+	cursor: pointer;
+	font: inherit;
+	transition: color var(--transition-hover), border-color var(--transition-hover), background var(--transition-hover);
+}
+
+.compare-toggle:hover {
+	color: var(--c-teal-700);
+	border-color: var(--c-teal-500);
+}
+
+.compare-toggle.is-active {
+	background: var(--c-teal-050);
+	border-color: var(--c-teal-500);
+	color: var(--c-teal-700);
+}
+
+.compare-toggle:focus-visible {
+	outline: var(--focus-ring-width) solid var(--focus-ring-color);
+	outline-offset: var(--focus-ring-offset);
+}
+
+.compare-toggle.just-added {
+	transform: scale(.94);
+}
+
+/* Card corner: icon only, sitting under the wishlist heart. */
+.compare-toggle--icon {
+	position: absolute;
+	top: calc(var(--sp-12) + 40px);
+	inset-inline-start: var(--sp-12);
+	z-index: 2;
+	width: 34px;
+	height: 34px;
+	justify-content: center;
+	border-radius: 50%;
+	padding: 0;
+}
+
+.compare-toggle--icon .compare-toggle__label {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(1px, 1px, 1px, 1px);
+	white-space: nowrap;
+}
+
+/* Buy box: a full-width labelled control. */
+.compare-toggle--inline {
+	justify-content: center;
+	width: 100%;
+	height: 44px;
+	border-radius: var(--radius-button);
+	font-size: var(--fs-14);
+	font-weight: 600;
+}
+
+/* ---- Floating selection bar ---- */
+.compare-bar {
+	position: fixed;
+	inset-inline: 0;
+	bottom: 0;
+	z-index: calc(var(--z-mega-menu) - 5);
+	background: var(--c-ink-800);
+	color: var(--c-on-dark);
+	transform: translateY(100%);
+	visibility: hidden;
+	transition: transform var(--transition-hover), visibility var(--transition-hover);
+	padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.compare-bar.is-visible {
+	transform: none;
+	visibility: visible;
+}
+
+.compare-bar__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sp-16);
+	padding-block: var(--sp-12);
+}
+
+.compare-bar__items {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-8);
+	flex-wrap: wrap;
+}
+
+.compare-bar__chip {
+	position: relative;
+	width: 48px;
+	height: 48px;
+	border-radius: var(--radius-input);
+	background: var(--c-paper);
+	border: var(--border-default) solid var(--overlay-on-dark-20);
+	overflow: hidden;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--c-paper);
+}
+
+.compare-bar__chip img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	mix-blend-mode: multiply;
+}
+
+/* The × sits on a scrim so it stays readable over any thumbnail. */
+.compare-bar__chip svg {
+	position: absolute;
+	inset: 0;
+	margin: auto;
+	background: rgba(4, 33, 31, .55);
+	border-radius: 50%;
+	padding: 3px;
+	box-sizing: content-box;
+	opacity: 0;
+	transition: opacity var(--transition-hover);
+}
+
+.compare-bar__chip:hover svg,
+.compare-bar__chip:focus-visible svg {
+	opacity: 1;
+}
+
+.compare-bar__actions {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-12);
+	flex: 0 0 auto;
+}
+
+.compare-bar__clear {
+	background: none;
+	border: 0;
+	color: var(--c-on-dark-2);
+	font: inherit;
+	font-size: var(--fs-13);
+	cursor: pointer;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.compare-bar__clear:hover {
+	color: var(--c-on-dark);
+}
+
+body.has-compare-bar {
+	padding-bottom: 76px;
+}
+
+/* ---- Compare page ---- */
+.compare-page {
+	padding-bottom: var(--sp-44);
+}
+
+.compare-page__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sp-16);
+	flex-wrap: wrap;
+	margin-block: var(--sp-16) var(--sp-20);
+}
+
+.compare-page__title {
+	font-size: var(--fs-28);
+	font-weight: 700;
+	color: var(--c-text);
+}
+
+.compare-page__diff {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--sp-8);
+	font-size: var(--fs-14);
+	color: var(--c-text-2);
+	cursor: pointer;
+}
+
+.compare-page__empty,
+.compare-page__note {
+	font-size: var(--fs-15);
+	line-height: 1.9;
+	color: var(--c-text-2);
+	margin-bottom: var(--sp-16);
+}
+
+.compare-table-wrap {
+	overflow-x: auto;
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-card);
+}
+
+.compare-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: var(--fs-14);
+	background: var(--c-paper);
+}
+
+.compare-table th,
+.compare-table td {
+	text-align: start;
+	vertical-align: top;
+	border-bottom: var(--border-default) solid var(--c-line);
+}
+
+/* The feature column stays put while the products scroll sideways. */
+.compare-table__corner,
+.compare-table__label {
+	position: sticky;
+	inset-inline-start: 0;
+	z-index: 1;
+	background: var(--c-paper-alt);
+	min-width: 150px;
+	width: 150px;
+	padding: var(--sp-12) var(--sp-16);
+	font-weight: 400;
+	color: var(--c-text-2);
+}
+
+.compare-table__product {
+	min-width: 220px;
+	padding: var(--sp-16);
+	position: relative;
+	background: var(--c-paper);
+	vertical-align: top;
+}
+
+.compare-table__remove {
+	position: absolute;
+	top: var(--sp-8);
+	inset-inline-end: var(--sp-8);
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	border: var(--border-default) solid var(--c-line);
+	background: var(--c-paper);
+	color: var(--c-text-3);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.compare-table__remove:hover {
+	color: var(--c-status-error-600);
+	border-color: var(--c-status-error-600);
+}
+
+.compare-table__media {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 130px;
+	background: var(--c-paper-alt);
+	border-radius: var(--radius-input);
+	margin-bottom: var(--sp-10);
+}
+
+.compare-table__media img {
+	max-width: 86%;
+	max-height: 86%;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+	mix-blend-mode: multiply;
+}
+
+.compare-table__name {
+	display: block;
+	font-size: var(--fs-14);
+	font-weight: 700;
+	color: var(--c-text);
+	line-height: 1.6;
+	margin-bottom: var(--sp-6);
+}
+
+.compare-table__price {
+	display: block;
+	font-size: var(--fs-15);
+	font-weight: 800;
+	color: var(--c-text);
+	margin-bottom: var(--sp-10);
+}
+
+.compare-table__cta {
+	width: 100%;
+	justify-content: center;
+	height: 40px;
+	font-size: var(--fs-13-5);
+}
+
+.compare-table__group-title {
+	background: var(--c-ink-800);
+	color: var(--c-on-dark);
+	padding: var(--sp-10) var(--sp-16);
+	font-size: var(--fs-14);
+	font-weight: 700;
+	position: sticky;
+	inset-inline-start: 0;
+}
+
+.compare-table__cell {
+	padding: var(--sp-12) var(--sp-16);
+	color: var(--c-text);
+	font-weight: 600;
+	line-height: 1.8;
+}
+
+.compare-table__empty {
+	color: var(--c-text-3);
+	font-weight: 400;
+}
+
+/* Rows where the products actually differ are the point of the page. */
+.compare-table__row:not(.is-same) .compare-table__cell {
+	background: var(--c-teal-025, var(--c-teal-050));
+}
+
+.compare-table__row:last-child th,
+.compare-table__row:last-child td {
+	border-bottom: 0;
+}
+
+@media (max-width: 767px) {
+	.compare-page__title {
+		font-size: var(--fs-22);
+	}
+
+	.compare-table__corner,
+	.compare-table__label {
+		min-width: 112px;
+		width: 112px;
+		padding: var(--sp-10) var(--sp-12);
+		font-size: var(--fs-13);
+	}
+
+	.compare-table__product {
+		min-width: 180px;
+		padding: var(--sp-12);
+	}
+
+	.compare-table__media {
+		height: 96px;
+	}
+
+	.compare-table__cell {
+		padding: var(--sp-10) var(--sp-12);
+		font-size: var(--fs-13);
+	}
+
+	.compare-bar__chip {
+		width: 40px;
+		height: 40px;
+	}
+
+	.compare-bar__inner {
+		gap: var(--sp-10);
+	}
+
+	body.has-compare-bar {
+		padding-bottom: 68px;
+	}
+
+	/* The product page already pins its own buy bar to the bottom. */
+	body.single-product.has-compare-bar .compare-bar {
+		bottom: 72px;
+	}
+}

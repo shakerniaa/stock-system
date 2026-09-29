@@ -28,10 +28,11 @@ const GLOBAL_CSS = [
 	'components/buttons.css', 'components/toast.css', 'components/notices.css',
 	'components/header.css', 'components/footer.css', 'components/product-card.css',
 	'components/archive.css', 'components/blog.css', 'components/extras.css',
+	'components/compare.css',
 ];
 const GLOBAL_JS = [
 	'breakpoints.js', 'navigation.js', 'typing-state.js', 'toast.js', 'product-card.js',
-	'archive-filters.js', 'faq-accordion.js', 'wishlist.js', 'extras.js', 'footer.js',
+	'archive-filters.js', 'faq-accordion.js', 'wishlist.js', 'extras.js', 'footer.js', 'compare.js',
 ];
 
 const css = (src) => transformSync(src, { loader: 'css', minify: true }).code;

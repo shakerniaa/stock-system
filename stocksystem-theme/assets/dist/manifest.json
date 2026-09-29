@@ -1,5 +1,5 @@
 {
- "built": "2026-09-29T10:07:50.641Z",
+ "built": "2026-09-29T11:08:34.044Z",
  "global_css": [
   "fonts.css",
   "tokens.css",
@@ -12,7 +12,8 @@
   "components/product-card.css",
   "components/archive.css",
   "components/blog.css",
-  "components/extras.css"
+  "components/extras.css",
+  "components/compare.css"
  ],
  "global_js": [
   "breakpoints.js",
@@ -24,7 +25,8 @@
   "faq-accordion.js",
   "wishlist.js",
   "extras.js",
-  "footer.js"
+  "footer.js",
+  "compare.js"
  ],
  "css": {
   "components/about.css": "css/about.min.css",
