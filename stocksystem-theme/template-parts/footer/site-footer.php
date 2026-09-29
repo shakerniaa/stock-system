@@ -60,15 +60,23 @@ $newsletter_status = isset( $_GET['newsletter'] ) ? sanitize_key( wp_unslash( $_
 			<?php endif; ?>
 		</div>
 
-		<div class="site-footer__nav-col">
-			<span class="site-footer__nav-title"><?php esc_html_e( 'دسته‌های کالا', 'stocksystem' ); ?></span>
-			<?php foreach ( $categories as $category ) : ?>
-				<a href="<?php echo esc_url( $category->url ); ?>"><?php echo esc_html( $category->name ); ?></a>
-			<?php endforeach; ?>
-		</div>
+		<?php
+		// <details open> so the columns are expanded everywhere by default;
+		// assets/js/footer.js collapses them below the mobile breakpoint.
+		// With JS off nothing collapses, which is the safe direction.
+		?>
+		<details class="site-footer__nav-col" open>
+			<summary class="site-footer__nav-title"><?php esc_html_e( 'دسته‌های کالا', 'stocksystem' ); ?></summary>
+			<div class="site-footer__nav-links">
+				<?php foreach ( $categories as $category ) : ?>
+					<a href="<?php echo esc_url( $category->url ); ?>"><?php echo esc_html( $category->name ); ?></a>
+				<?php endforeach; ?>
+			</div>
+		</details>
 
-		<div class="site-footer__nav-col">
-			<span class="site-footer__nav-title"><?php esc_html_e( 'خدمات و راهنما', 'stocksystem' ); ?></span>
+		<details class="site-footer__nav-col" open>
+			<summary class="site-footer__nav-title"><?php esc_html_e( 'خدمات و راهنما', 'stocksystem' ); ?></summary>
+			<div class="site-footer__nav-links">
 			<?php
 			// Editable in Appearance → Menus (location «فوتر — ستون خدمات و راهنما»).
 			$service_links = stocksystem_menu_links(
@@ -85,7 +93,8 @@ $newsletter_status = isset( $_GET['newsletter'] ) ? sanitize_key( wp_unslash( $_
 				?>
 				<a href="<?php echo esc_url( $service_link['url'] ); ?>"><?php echo esc_html( $service_link['title'] ); ?></a>
 			<?php endforeach; ?>
-		</div>
+			</div>
+		</details>
 
 		<?php if ( ! empty( $footer_cfg['newsletter_show'] ) ) : ?>
 		<div class="site-footer__newsletter" id="footer-newsletter">
@@ -115,8 +124,38 @@ $newsletter_status = isset( $_GET['newsletter'] ) ? sanitize_key( wp_unslash( $_
 			&copy; <?php echo esc_html( stocksystem_jdate( 'Y' ) ); ?>
 			<?php bloginfo( 'name' ); ?> — <?php esc_html_e( 'تمام حقوق محفوظ است.', 'stocksystem' ); ?>
 		</span>
-		<?php if ( '' !== trim( (string) $footer_cfg['badges_html'] ) ) : ?>
-			<span class="site-footer__badges"><?php echo $footer_cfg['badges_html']; // phpcs:ignore WordPress.Security.EscapeOutput -- trusted admin code (e-Namad etc.), unfiltered_html only ?></span>
+		<?php
+		// Two sources, one row: uploaded badge images (استوک سیستم ←
+		// «نمادهای فوتر») and any pasted script/HTML widget that an
+		// authority only hands out as code.
+		$footer_badges = function_exists( 'stocksystem_footer_badges' ) ? stocksystem_footer_badges() : array();
+		?>
+		<?php if ( ! empty( $footer_badges ) || '' !== trim( (string) $footer_cfg['badges_html'] ) ) : ?>
+			<span class="site-footer__badges">
+				<?php foreach ( $footer_badges as $badge ) : ?>
+					<?php
+					$badge_img = wp_get_attachment_image(
+						$badge['image'],
+						'medium',
+						false,
+						array(
+							'class'    => 'site-footer__badge-img',
+							'alt'      => $badge['title'],
+							'loading'  => 'lazy',
+							'decoding' => 'async',
+						)
+					);
+					?>
+					<?php if ( '' !== trim( $badge['url'] ) ) : ?>
+						<a class="site-footer__badge" href="<?php echo esc_url( $badge['url'] ); ?>" target="_blank" rel="noopener noreferrer">
+							<?php echo $badge_img; // phpcs:ignore WordPress.Security.EscapeOutput -- wp_get_attachment_image() output ?>
+						</a>
+					<?php else : ?>
+						<span class="site-footer__badge"><?php echo $badge_img; // phpcs:ignore WordPress.Security.EscapeOutput -- wp_get_attachment_image() output ?></span>
+					<?php endif; ?>
+				<?php endforeach; ?>
+				<?php echo $footer_cfg['badges_html']; // phpcs:ignore WordPress.Security.EscapeOutput -- trusted admin code (e-Namad etc.), unfiltered_html only ?>
+			</span>
 		<?php endif; ?>
 	</div>
 </footer>

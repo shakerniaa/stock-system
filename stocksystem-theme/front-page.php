@@ -31,6 +31,10 @@ $stocksystem_home_parts = array(
 foreach ( stocksystem_home_section_order() as $stocksystem_home_slug ) {
 	get_template_part( $stocksystem_home_parts[ $stocksystem_home_slug ] );
 }
+
+// Extra product rows (استوک سیستم ← «ردیف‌های محصول»), each with its own
+// heading, source and count — see inc/home-rows.php.
+get_template_part( 'template-parts/home/product-rows' );
 ?>
 
 <?php get_footer(); ?>

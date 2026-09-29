@@ -117,6 +117,7 @@ function stocksystem_enqueue_assets() {
 	stocksystem_enqueue_script( 'stocksystem-faq-accordion', 'faq-accordion.js', array() );
 
 	stocksystem_enqueue_script( 'stocksystem-wishlist', 'wishlist.js', array() );
+	stocksystem_enqueue_script( 'stocksystem-footer', 'footer.js', array() );
 	wp_localize_script(
 		stocksystem_dist_manifest() ? 'stocksystem-global' : 'stocksystem-wishlist',
 		'stocksystemAjax',
@@ -130,6 +131,13 @@ function stocksystem_enqueue_assets() {
 
 	if ( is_front_page() ) {
 		stocksystem_enqueue_style( 'stocksystem-home', 'components/home.css', array( 'stocksystem-product-card', 'stocksystem-blog' ) );
+		// Alternative hero variants (استوک سیستم ← هیروی صفحهٔ اصلی). The
+		// classic hero is styled inside home.css, so these only load when
+		// one of the five new variants is actually selected.
+		if ( 'classic' !== stocksystem_hero_variant() ) {
+			stocksystem_enqueue_style( 'stocksystem-home-hero', 'components/home-hero.css', array( 'stocksystem-home' ) );
+			stocksystem_enqueue_script( 'stocksystem-home-hero', 'home-hero.js', array() );
+		}
 	}
 
 	if ( function_exists( 'is_product' ) && is_product() ) {

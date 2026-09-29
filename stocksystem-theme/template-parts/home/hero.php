@@ -1,9 +1,10 @@
 <?php
 /**
- * Homepage hero — 7/5 split. Source: 01 Home.dc.html.
+ * Homepage hero — routes to whichever variant is selected in
+ * استوک سیستم ← «هیروی صفحهٔ اصلی» (inc/hero-settings.php).
  *
- * Decision #5 fix: the design's badge hardcodes "گارانتی ۱۸ ماه"; pulled
- * from the Customizer warranty setting instead (default: 1 month).
+ * Each variant is a self-contained template part; switching in the
+ * admin swaps the whole hero without touching front-page.php.
  *
  * @package StockSystem
  */
@@ -12,94 +13,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$hero        = stocksystem_home( 'hero' ); // Appearance → «صفحهٔ اصلی».
-$categories  = stocksystem_nav_categories();
-$primary_cat = stocksystem_home_link( $hero['cta1_url'], ! empty( $categories ) ? $categories[0]->url : ( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ) ) );
-$secondary   = stocksystem_home_link( $hero['cta2_url'], home_url( '/stock-condition/' ) );
+$stocksystem_hero_variant = stocksystem_hero_variant();
 
-// Images chosen in the admin win; otherwise draw from the latest products.
-$hero_images = array();
-foreach ( $hero['images'] as $hero_image_id ) {
-	if ( $hero_image_id && wp_attachment_is_image( $hero_image_id ) ) {
-		$hero_src      = wp_get_attachment_image_src( $hero_image_id, 'medium' );
-		$hero_images[] = array(
-			'src' => $hero_src[0],
-			'w'   => $hero_src[1],
-			'h'   => $hero_src[2],
-			'alt' => trim( (string) get_post_meta( $hero_image_id, '_wp_attachment_image_alt', true ) ),
-		);
-	}
+// get_template_part() falls back to {$slug}.php — i.e. THIS file — when
+// {$slug}-{$name}.php is missing, which would recurse forever. Resolve
+// the variant file first and fall back to the classic hero explicitly.
+if ( ! locate_template( 'template-parts/home/hero-' . $stocksystem_hero_variant . '.php' ) ) {
+	$stocksystem_hero_variant = 'classic';
 }
 
-if ( empty( $hero_images ) && function_exists( 'wc_get_products' ) ) {
-	// The hero shows devices, so draw from the primary (first) category —
-	// laptops — rather than whatever product was added last.
-	$hero_args = array( 'limit' => 3, 'orderby' => 'date', 'order' => 'DESC', 'status' => 'publish' );
-	$hero_term = ( ! empty( $categories ) && ! empty( $categories[0]->id ) ) ? get_term( $categories[0]->id, 'product_cat' ) : null;
-	if ( is_wp_error( $hero_term ) ) {
-		$hero_term = null;
-	}
-	if ( $hero_term ) {
-		$hero_args['category'] = array( $hero_term->slug );
-	}
-	$hero_products = wc_get_products( $hero_args );
-	foreach ( $hero_products as $hero_product ) {
-		if ( $hero_product->get_image_id() ) {
-			$hero_src      = wp_get_attachment_image_src( $hero_product->get_image_id(), 'medium' );
-			$hero_images[] = array(
-				'src' => $hero_src[0],
-				'w'   => $hero_src[1],
-				'h'   => $hero_src[2],
-				'alt' => $hero_product->get_name(),
-			);
-		}
-	}
-}
-if ( empty( $hero_images ) ) {
-	$hero_images = array(
-		array( 'src' => STOCKSYSTEM_URI . '/assets/images/products/dell-inspiron-3520.webp', 'w' => 600, 'h' => 600, 'alt' => 'Dell Inspiron 3520' ),
-		array( 'src' => STOCKSYSTEM_URI . '/assets/images/products/elitebook-840-g8.webp', 'w' => 400, 'h' => 400, 'alt' => 'HP EliteBook 840 G8' ),
-		array( 'src' => STOCKSYSTEM_URI . '/assets/images/products/surface-laptop-4.webp', 'w' => 1200, 'h' => 875, 'alt' => 'Surface Laptop 4' ),
-	);
-}
-?>
-<section class="home-hero">
-	<span class="home-hero__decor" aria-hidden="true">
-		<span class="home-hero__decor-band"></span>
-		<span class="home-hero__decor-ring"></span>
-		<span class="home-hero__decor-ring"></span>
-	</span>
-	<div class="container home-hero__grid">
-		<div class="home-hero__copy">
-			<span class="home-hero__eyebrow">
-				<?php
-				// Empty in the admin = «استوک تست‌شده · <warranty text from Customizer>».
-				echo esc_html( '' !== $hero['eyebrow'] ? $hero['eyebrow'] : sprintf( /* translators: %s: warranty text */ __( 'استوک تست‌شده · %s', 'stocksystem' ), stocksystem_business( 'warranty_text' ) ) );
-				?>
-			</span>
-			<h1 class="home-hero__title"><?php echo esc_html( $hero['title'] ); ?></h1>
-			<p class="home-hero__desc"><?php echo esc_html( $hero['desc'] ); ?></p>
-			<div class="home-hero__ctas">
-				<a class="btn btn--primary" href="<?php echo esc_url( $primary_cat ); ?>"><?php echo esc_html( $hero['cta1_label'] ); ?></a>
-				<a class="btn btn--outline-on-dark" href="<?php echo esc_url( $secondary ); ?>"><?php echo esc_html( $hero['cta2_label'] ); ?></a>
-			</div>
-			<div class="home-hero__pillars">
-				<span class="home-hero__pillar-bar" aria-hidden="true"></span>
-				<span class="home-hero__pillar-list">
-					<?php foreach ( $hero['pillars'] as $pillar ) : ?>
-						<?php if ( '' !== $pillar ) : ?>
-							<span><?php echo esc_html( $pillar ); ?></span>
-						<?php endif; ?>
-					<?php endforeach; ?>
-				</span>
-			</div>
-		</div>
-
-		<div class="home-hero__media">
-			<?php foreach ( $hero_images as $hero_index => $image ) : ?>
-				<?php // The first image is the page's largest visible element: fetch it first (LCP). ?>
-				<img src="<?php echo esc_url( $image['src'] ); ?>" alt="<?php echo esc_attr( $image['alt'] ); ?>" width="<?php echo (int) $image['w']; ?>" height="<?php echo (int) $image['h']; ?>" decoding="async"<?php echo 0 === $hero_index ? ' fetchpriority="high"' : ''; ?>>
-			<?php endforeach; ?>
-		</div>
-	</div>
-</section>
+get_template_part( 'template-parts/home/hero', $stocksystem_hero_variant );

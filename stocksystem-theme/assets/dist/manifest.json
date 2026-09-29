@@ -1,5 +1,5 @@
 {
- "built": "2026-09-27T11:30:46.287Z",
+ "built": "2026-09-29T07:14:26.100Z",
  "global_css": [
   "fonts.css",
   "tokens.css",
@@ -23,7 +23,8 @@
   "archive-filters.js",
   "faq-accordion.js",
   "wishlist.js",
-  "extras.js"
+  "extras.js",
+  "footer.js"
  ],
  "css": {
   "components/about.css": "css/about.min.css",
@@ -31,6 +32,7 @@
   "components/checkout.css": "css/checkout.min.css",
   "components/error-404.css": "css/error-404.min.css",
   "components/grading.css": "css/grading.min.css",
+  "components/home-hero.css": "css/home-hero.min.css",
   "components/home.css": "css/home.min.css",
   "components/product-page.css": "css/product-page.min.css",
   "components/repair.css": "css/repair.min.css",
@@ -41,6 +43,7 @@
   "cart.js": "js/cart.min.js",
   "checkout.js": "js/checkout.min.js",
   "faq-filter.js": "js/faq-filter.min.js",
+  "home-hero.js": "js/home-hero.min.js",
   "otp-login.js": "js/otp-login.min.js",
   "product-configurator.js": "js/product-configurator.min.js",
   "product-page.js": "js/product-page.min.js"

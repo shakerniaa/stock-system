@@ -202,3 +202,135 @@
 .site-footer__newsletter-msg.is-error {
 	color: #F2A183;
 }
+
+/* ---- Trust badges uploaded as images (استوک سیستم ← نمادهای فوتر) ---- */
+.site-footer__badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--c-paper);
+	border-radius: var(--radius-input);
+	padding: var(--sp-6);
+}
+
+.site-footer__badge-img {
+	width: auto;
+	height: 52px;
+	max-width: 110px;
+	object-fit: contain;
+	display: block;
+}
+
+/* ---- Link columns as <details>: plain columns on desktop ---- */
+.site-footer__nav-col > summary {
+	list-style: none;
+	cursor: default;
+}
+
+.site-footer__nav-col > summary::-webkit-details-marker {
+	display: none;
+}
+
+.site-footer__nav-links {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-8);
+}
+
+.site-footer__nav-col > summary::after {
+	content: none;
+}
+
+@media (max-width: 767px) {
+	/* The footer used to run several screens tall on a phone: four full
+	   link lists, a newsletter box, the address and the socials, all
+	   stacked. The lists become accordions (assets/js/footer.js opens
+	   the first one), and everything else tightens up. */
+	.site-footer {
+		padding-block: var(--sp-24) var(--sp-16);
+	}
+
+	.site-footer__columns {
+		gap: 0;
+	}
+
+	.site-footer__nav-col {
+		border-top: var(--border-default) solid var(--overlay-on-dark-12);
+	}
+
+	.site-footer__nav-col > summary {
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-block: var(--sp-14);
+		margin: 0;
+	}
+
+	/* A chevron that flips when the column opens. */
+	.site-footer__nav-col > summary::after {
+		content: "";
+		width: 9px;
+		height: 9px;
+		/* Physical sides on purpose: border-inline-end flips to the left
+		   in RTL, which rotated this chevron sideways instead of down. */
+		border-right: 2px solid currentColor;
+		border-bottom: 2px solid currentColor;
+		transform: rotate(45deg);
+		transform-origin: center;
+		opacity: .65;
+		transition: transform .2s ease;
+		flex: 0 0 auto;
+	}
+
+	.site-footer__nav-col[open] > summary::after {
+		transform: rotate(-135deg);
+	}
+
+	.site-footer__nav-links {
+		padding-bottom: var(--sp-14);
+	}
+
+	.site-footer__brand {
+		gap: var(--sp-10);
+		padding-bottom: var(--sp-4);
+	}
+
+	/* The brand blurb and opening hours are the longest thing in the
+	   mobile footer and duplicate copy that already exists on the
+	   about/contact pages. */
+	.site-footer__brand > p {
+		display: none;
+	}
+
+	.site-footer__address {
+		font-size: var(--fs-12-5);
+		line-height: 1.7;
+	}
+
+	.site-footer__newsletter {
+		border-top: var(--border-default) solid var(--overlay-on-dark-12);
+		padding-block: var(--sp-14);
+	}
+
+	.site-footer__newsletter > p {
+		display: none;
+	}
+
+	.site-footer__bottom {
+		flex-direction: column;
+		align-items: center;
+		gap: var(--sp-12);
+		text-align: center;
+	}
+
+	.site-footer__badges {
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.site-footer__badge-img {
+		height: 44px;
+		max-width: 90px;
+	}
+}

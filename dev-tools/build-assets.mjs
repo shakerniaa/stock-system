@@ -31,7 +31,7 @@ const GLOBAL_CSS = [
 ];
 const GLOBAL_JS = [
 	'breakpoints.js', 'navigation.js', 'typing-state.js', 'toast.js', 'product-card.js',
-	'archive-filters.js', 'faq-accordion.js', 'wishlist.js', 'extras.js',
+	'archive-filters.js', 'faq-accordion.js', 'wishlist.js', 'extras.js', 'footer.js',
 ];
 
 const css = (src) => transformSync(src, { loader: 'css', minify: true }).code;
