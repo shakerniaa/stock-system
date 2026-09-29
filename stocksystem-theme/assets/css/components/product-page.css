@@ -202,40 +202,141 @@
 	padding-top: var(--sp-16);
 }
 
-/* The description tab holds whatever the merchant writes in the product's
+/* ==========================================================================
+   Product description prose
+   The description tab holds whatever the merchant writes in the product's
    own content editor — free-form rich text, not a fixed component — so
-   (unlike the rest of this design system) it needs generic prose rules:
-   the base stylesheet zeroes heading/paragraph margins and list markers
-   site-wide on the assumption every block of text has its own component. */
-.product-tabs .woocommerce-Tabs-panel--description > h2:first-child {
-	margin-bottom: var(--sp-12);
-	font-size: var(--fs-19);
-}
+   (unlike the rest of this design system) it needs generic element rules:
+   base.css zeroes heading/paragraph margins and list markers site-wide on
+   the assumption every block of text has its own component.
 
-.product-tabs .woocommerce-Tabs-panel--description h2,
-.product-tabs .woocommerce-Tabs-panel--description h3,
-.product-tabs .woocommerce-Tabs-panel--description h4 {
-	margin-block: var(--sp-20) var(--sp-10);
-	color: var(--c-text);
-}
-
-.product-tabs .woocommerce-Tabs-panel--description p {
-	margin-block: 0 var(--sp-14);
+   Everything here reuses the house vocabulary rather than inventing a
+   second one: the teal rule before a heading is the same "Rule + Stack"
+   motif as .product-specs__group-title, tables get the same hairline
+   grid as the spec panels, and images sit in the same framed well as
+   .test-report so a photo pasted mid-article doesn't read as raw upload.
+   ========================================================================== */
+.product-tabs .woocommerce-Tabs-panel--description {
 	font-size: var(--fs-15);
 	line-height: 1.95;
 	color: var(--c-text-2);
 }
 
+/* The tab's own «توضیحات محصول» heading, printed by WooCommerce. */
+.product-tabs .woocommerce-Tabs-panel--description > h2:first-child {
+	margin-block: 0 var(--sp-16);
+	font-size: var(--fs-19);
+	font-weight: 700;
+	color: var(--c-text);
+}
+
+.product-tabs .woocommerce-Tabs-panel--description > h2:first-child::before {
+	content: none;
+}
+
+/* ---- Headings ---- */
+.product-tabs .woocommerce-Tabs-panel--description h2 {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-10);
+	margin-block: var(--sp-32) var(--sp-14);
+	font-size: var(--fs-21);
+	font-weight: 700;
+	line-height: 1.5;
+	color: var(--c-text);
+}
+
+.product-tabs .woocommerce-Tabs-panel--description h2::before {
+	content: "";
+	flex: 0 0 auto;
+	width: 3px;
+	align-self: stretch;
+	min-height: 22px;
+	border-radius: 2px;
+	background: var(--c-teal-500);
+}
+
+.product-tabs .woocommerce-Tabs-panel--description h3 {
+	margin-block: var(--sp-24) var(--sp-10);
+	font-size: var(--fs-17);
+	font-weight: 700;
+	line-height: 1.6;
+	color: var(--c-teal-700);
+}
+
+.product-tabs .woocommerce-Tabs-panel--description h4,
+.product-tabs .woocommerce-Tabs-panel--description h5,
+.product-tabs .woocommerce-Tabs-panel--description h6 {
+	margin-block: var(--sp-20) var(--sp-8);
+	font-size: var(--fs-15);
+	font-weight: 700;
+	line-height: 1.6;
+	color: var(--c-text);
+}
+
+/* Two headings in a row shouldn't stack their margins. */
+.product-tabs .woocommerce-Tabs-panel--description h2 + h3,
+.product-tabs .woocommerce-Tabs-panel--description h3 + h4 {
+	margin-top: var(--sp-12);
+}
+
+/* ---- Text ---- */
+.product-tabs .woocommerce-Tabs-panel--description p {
+	margin-block: 0 var(--sp-14);
+}
+
+/* The opening paragraph reads as a lead, the way the design's own
+   section intros do. */
+.product-tabs .woocommerce-Tabs-panel--description > h2:first-child + p {
+	font-size: var(--fs-16);
+	color: var(--c-text);
+}
+
+.product-tabs .woocommerce-Tabs-panel--description strong,
+.product-tabs .woocommerce-Tabs-panel--description b {
+	color: var(--c-text);
+	font-weight: 700;
+}
+
+.product-tabs .woocommerce-Tabs-panel--description em,
+.product-tabs .woocommerce-Tabs-panel--description i {
+	font-style: normal;
+	color: var(--c-teal-700);
+}
+
+.product-tabs .woocommerce-Tabs-panel--description a {
+	color: var(--c-teal-600);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	text-decoration-thickness: 1px;
+}
+
+.product-tabs .woocommerce-Tabs-panel--description a:hover {
+	color: var(--c-orange-500);
+}
+
+.product-tabs .woocommerce-Tabs-panel--description mark {
+	background: var(--c-teal-050);
+	color: var(--c-text);
+	padding: 1px 5px;
+	border-radius: 4px;
+}
+
+.product-tabs .woocommerce-Tabs-panel--description hr {
+	margin-block: var(--sp-28);
+	border: 0;
+	border-top: var(--border-default) solid var(--c-line);
+}
+
+/* ---- Lists: teal markers instead of the browser's black discs ---- */
 .product-tabs .woocommerce-Tabs-panel--description ul,
 .product-tabs .woocommerce-Tabs-panel--description ol {
-	margin: 0 0 var(--sp-14);
+	margin: 0 0 var(--sp-16);
 	padding-inline-start: var(--sp-22);
 	display: flex;
 	flex-direction: column;
 	gap: var(--sp-8);
-	font-size: var(--fs-15);
 	line-height: 1.9;
-	color: var(--c-text-2);
 }
 
 .product-tabs .woocommerce-Tabs-panel--description ul {
@@ -246,34 +347,179 @@
 	list-style: decimal;
 }
 
-.product-tabs .woocommerce-Tabs-panel--description a {
-	color: var(--c-teal-600);
-	text-decoration: underline;
-	text-underline-offset: 3px;
-}
-
-.product-tabs .woocommerce-Tabs-panel--description strong {
-	color: var(--c-text);
+.product-tabs .woocommerce-Tabs-panel--description li::marker {
+	color: var(--c-teal-500);
 	font-weight: 700;
 }
 
-.product-tabs .woocommerce-Tabs-panel--description img {
-	border-radius: var(--radius-card);
-	margin-block: var(--sp-8);
+.product-tabs .woocommerce-Tabs-panel--description li > ul,
+.product-tabs .woocommerce-Tabs-panel--description li > ol {
+	margin-top: var(--sp-8);
+	margin-bottom: 0;
 }
 
+/* ---- Quotes: the house teal rule, as a pulled-out note ---- */
+.product-tabs .woocommerce-Tabs-panel--description blockquote {
+	margin: 0 0 var(--sp-18);
+	padding: var(--sp-16) var(--sp-18);
+	background: var(--c-paper-alt);
+	border-radius: var(--radius-card);
+	border-inline-start: 3px solid var(--c-teal-500);
+	color: var(--c-text);
+}
+
+.product-tabs .woocommerce-Tabs-panel--description blockquote p:last-child {
+	margin-bottom: 0;
+}
+
+/* ---- Images ----
+   A photo dropped into the editor arrives as a bare <img> (classic
+   editor), a <figure> (block editor) or a [caption] shortcode's
+   .wp-caption div. All three get the same framed well so mid-article
+   images match the panels around them. */
+.product-tabs .woocommerce-Tabs-panel--description img {
+	max-width: 100%;
+	height: auto;
+	border-radius: var(--radius-card);
+	border: var(--border-default) solid var(--c-line);
+	background: var(--c-paper-alt);
+}
+
+.product-tabs .woocommerce-Tabs-panel--description figure,
+.product-tabs .woocommerce-Tabs-panel--description .wp-caption {
+	margin: var(--sp-22) 0;
+	max-width: 100%;
+}
+
+.product-tabs .woocommerce-Tabs-panel--description figure img,
+.product-tabs .woocommerce-Tabs-panel--description .wp-caption img {
+	display: block;
+	width: 100%;
+}
+
+.product-tabs .woocommerce-Tabs-panel--description figcaption,
+.product-tabs .woocommerce-Tabs-panel--description .wp-caption-text {
+	margin: var(--sp-8) 0 0;
+	font-size: var(--fs-12-5);
+	line-height: 1.8;
+	color: var(--c-text-3);
+	text-align: center;
+}
+
+/* A standalone image on its own line gets the same vertical rhythm as a
+   figure, without needing the editor to wrap it. */
+.product-tabs .woocommerce-Tabs-panel--description p > img:only-child {
+	display: block;
+	margin-inline: auto;
+}
+
+.product-tabs .woocommerce-Tabs-panel--description p:has(> img:only-child) {
+	margin-block: var(--sp-22);
+	text-align: center;
+}
+
+/* WordPress alignment classes. */
+.product-tabs .woocommerce-Tabs-panel--description .aligncenter {
+	display: block;
+	margin-inline: auto;
+}
+
+.product-tabs .woocommerce-Tabs-panel--description .alignleft {
+	float: left;
+	margin: var(--sp-6) var(--sp-20) var(--sp-14) 0;
+	max-width: 45%;
+}
+
+.product-tabs .woocommerce-Tabs-panel--description .alignright {
+	float: right;
+	margin: var(--sp-6) 0 var(--sp-14) var(--sp-20);
+	max-width: 45%;
+}
+
+.product-tabs .woocommerce-Tabs-panel--description .alignnone {
+	display: block;
+	margin-block: var(--sp-18);
+}
+
+/* A gallery of thumbnails, however the editor produced it. */
+.product-tabs .woocommerce-Tabs-panel--description .wp-block-gallery,
+.product-tabs .woocommerce-Tabs-panel--description .gallery {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+	gap: var(--sp-12);
+	margin-block: var(--sp-22);
+}
+
+.product-tabs .woocommerce-Tabs-panel--description .gallery-item {
+	margin: 0;
+	width: auto !important;
+}
+
+.product-tabs .woocommerce-Tabs-panel--description iframe,
+.product-tabs .woocommerce-Tabs-panel--description video {
+	max-width: 100%;
+	border-radius: var(--radius-card);
+	border: var(--border-default) solid var(--c-line);
+	margin-block: var(--sp-22);
+	display: block;
+}
+
+/* ---- Tables: the same hairline grid the spec panels use ---- */
 .product-tabs .woocommerce-Tabs-panel--description table {
 	width: 100%;
-	margin-bottom: var(--sp-14);
-	border-collapse: collapse;
+	margin-block: var(--sp-8) var(--sp-22);
+	border-collapse: separate;
+	border-spacing: 0;
+	border: var(--border-default) solid var(--c-line);
+	border-radius: var(--radius-card);
+	overflow: hidden;
 	font-size: var(--fs-14);
 }
 
 .product-tabs .woocommerce-Tabs-panel--description table th,
 .product-tabs .woocommerce-Tabs-panel--description table td {
-	padding: 10px 14px;
-	border: var(--border-default) solid var(--c-line);
+	padding: var(--sp-12) var(--sp-16);
+	border: 0;
+	border-bottom: var(--border-default) solid var(--c-line);
 	text-align: start;
+	line-height: 1.8;
+}
+
+.product-tabs .woocommerce-Tabs-panel--description table th {
+	background: var(--c-paper-alt);
+	color: var(--c-text);
+	font-weight: 700;
+}
+
+.product-tabs .woocommerce-Tabs-panel--description table tr:last-child th,
+.product-tabs .woocommerce-Tabs-panel--description table tr:last-child td {
+	border-bottom: 0;
+}
+
+@media (max-width: 767px) {
+	.product-tabs .woocommerce-Tabs-panel--description h2 {
+		margin-block: var(--sp-24) var(--sp-12);
+		font-size: var(--fs-18);
+	}
+
+	.product-tabs .woocommerce-Tabs-panel--description h3 {
+		font-size: var(--fs-16);
+	}
+
+	/* Floated images leave unreadable 2-word columns on a phone. */
+	.product-tabs .woocommerce-Tabs-panel--description .alignleft,
+	.product-tabs .woocommerce-Tabs-panel--description .alignright {
+		float: none;
+		max-width: 100%;
+		margin: var(--sp-18) auto;
+		display: block;
+	}
+
+	/* A wide table would otherwise force the whole panel to scroll. */
+	.product-tabs .woocommerce-Tabs-panel--description table {
+		display: block;
+		overflow-x: auto;
+	}
 }
 
 /* ---- Grouped product specs (replaces the flat attribute table) ---- */
