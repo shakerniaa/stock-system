@@ -27,8 +27,32 @@
 		return ! reduceQuery || reduceQuery.matches;
 	}
 
-	var SPRING = 'cubic-bezier(.2, .8, .2, 1)';
 	var BUMP_KEY = 'stocksystem:cart-bump';
+
+	// Same springs as motion.css (SwiftUI response/damping, sampled). WAAPI
+	// throws on an easing it can't parse, so older browsers get a curve.
+	var HAS_LINEAR = !! ( window.CSS && CSS.supports && CSS.supports( 'transition-timing-function', 'linear(0, 1)' ) );
+	var SPRINGS = {
+		snappy: { duration: 450, easing: 'linear(0, .037, .121, .228, .343, .456, .56, .652, .73, .796, .849, .892, .925, .951, .969, .982, .992, .998, 1.002, 1.004, 1.006, 1.006, 1.006, 1.005, 1.005, 1)' },
+		bouncy: { duration: 740, easing: 'linear(0, .043, .142, .278, .427, .575, .707, .823, .917, .988, 1.039, 1.072, 1.089, 1.094, 1.091, 1.082, 1.069, 1.055, 1.041, 1.029, 1.018, 1.009, 1.002, .997, .993, .992, .991, .991, .992, .993, .995, 1)' },
+		smooth: { duration: 600, easing: 'linear(0, .041, .131, .24, .353, .459, .554, .639, .709, .767, .814, .853, .884, .909, .929, .945, .957, .967, .974, .98, .985, .988, .991, .993, .995, 1)' }
+	};
+
+	function spring( name, extra ) {
+		var base = SPRINGS[ name ];
+		var options = { duration: base.duration, easing: HAS_LINEAR ? base.easing : 'cubic-bezier(.2, .8, .2, 1)' };
+		for ( var key in extra ) {
+			options[ key ] = extra[ key ];
+		}
+		return options;
+	}
+
+	// Scale up from below and let the spring's overshoot do the "pop".
+	function pop( el, from ) {
+		if ( canAnimate( el ) ) {
+			el.animate( [ { transform: 'scale(' + ( from || 0.6 ) + ')' }, { transform: 'none' } ], spring( 'bouncy' ) );
+		}
+	}
 
 	function canAnimate( el ) {
 		return el && 'function' === typeof el.animate && ! reduced();
@@ -136,19 +160,11 @@
 	function bumpBadge() {
 		var target = cartTarget();
 		cartBadges().forEach( function ( badge ) {
-			if ( canAnimate( badge ) ) {
-				badge.animate(
-					[ { transform: 'scale(1)' }, { transform: 'scale(1.45)', offset: 0.35 }, { transform: 'scale(.9)', offset: 0.7 }, { transform: 'scale(1)' } ],
-					{ duration: 460, easing: 'ease-out' }
-				);
-			}
+			pop( badge, 0.5 );
 		} );
-		if ( canAnimate( target ) ) {
-			target.animate(
-				[ { transform: 'rotate(0)' }, { transform: 'rotate(-10deg)', offset: 0.3 }, { transform: 'rotate(7deg)', offset: 0.6 }, { transform: 'rotate(0)' } ],
-				{ duration: 420, easing: 'ease-out' }
-			);
-		}
+		// The bag "receives" the item: a short dip, then it springs back.
+		var icon = target && target.querySelector( 'svg' );
+		pop( icon, 0.86 );
 	}
 
 	function flyToCart( sourceImg, onDone ) {
@@ -187,7 +203,7 @@
 				{ transform: 'translate3d(' + dx * 0.45 + 'px, ' + ( dy * 0.45 - 60 ) + 'px, 0) scale(.6)', opacity: 0.95, offset: 0.45 },
 				{ transform: 'translate3d(' + dx + 'px, ' + dy + 'px, 0) scale(' + end + ')', opacity: 0.3 }
 			],
-			{ duration: 620, easing: 'cubic-bezier(.45, 0, .25, 1)', fill: 'forwards' }
+			{ duration: 600, easing: 'cubic-bezier(.32, .72, 0, 1)', fill: 'forwards' }
 		);
 
 		var finished = false;
@@ -219,12 +235,7 @@
 		if ( window.jQuery ) {
 			window.jQuery( document.body ).on( 'added_to_cart', function ( event, fragments, hash, $button ) {
 				var button = $button && $button[ 0 ];
-				if ( canAnimate( button ) ) {
-					button.animate(
-						[ { transform: 'scale(1)' }, { transform: 'scale(1.05)', offset: 0.4 }, { transform: 'scale(1)' } ],
-						{ duration: 360, easing: SPRING }
-					);
-				}
+				pop( button, 0.94 );
 				flyToCart( cardImage( button ), bumpBadge );
 			} );
 		}
@@ -270,12 +281,8 @@
 					return;
 				}
 				observer.disconnect();
-				var icon = button.querySelector( 'svg' ) || button;
-				if ( isActive && canAnimate( icon ) ) {
-					icon.animate(
-						[ { transform: 'scale(1)' }, { transform: 'scale(1.35)', offset: 0.35 }, { transform: 'scale(.92)', offset: 0.7 }, { transform: 'scale(1)' } ],
-						{ duration: 480, easing: 'ease-out' }
-					);
+				if ( isActive ) {
+					pop( button.querySelector( 'svg' ) || button, 0.5 );
 				}
 			} );
 			observer.observe( button, { attributes: true, attributeFilter: [ 'class' ] } );

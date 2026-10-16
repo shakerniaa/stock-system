@@ -17,28 +17,52 @@
  * behaves exactly as it did without this file.
  */
 
+/* ---- Motion scale ----------------------------------------------------
+   Springs are sampled from SwiftUI's own model (response / damping ratio),
+   so every move shares one physical "feel". Each spring's duration is the
+   time it takes to settle — use the pair together.
+
+     smooth  response .5s,  damping 1    → 600ms, no overshoot  (reveals, panels, sheets)
+     snappy  response .4s,  damping .85  → 450ms, 0.6% overshoot (state changes, toasts)
+     bouncy  response .5s,  damping .6   → 740ms, 9% overshoot   (badge / heart / pop)
+     quick   response .25s, damping 1    → 300ms                 (press release)
+
+   Distances and scales are a fixed set too: 4 / 8 / 16 / 24px moves;
+   .97 press, .98 panel entry, 1.06 pop peak. */
 :root {
-	--motion-fast: 140ms;
+	--motion-press: 100ms;
+	--motion-fast: 160ms;
 	--motion-base: 240ms;
-	--motion-spring-duration: 440ms;
+	--motion-smooth: 600ms;
+	--motion-snappy: 450ms;
+	--motion-bouncy: 740ms;
+	--motion-quick: 300ms;
+	--motion-spring-duration: var(--motion-snappy);
+	--motion-stagger: 40ms;
+
 	--ease-out-quick: cubic-bezier(.2, .8, .2, 1);
-	--ease-spring: var(--ease-out-quick);
-	--ease-spring-bouncy: var(--ease-out-quick);
+	--ease-in-quick: cubic-bezier(.4, 0, 1, 1);
+	--spring-smooth: var(--ease-out-quick);
+	--spring-snappy: var(--ease-out-quick);
+	--spring-bouncy: var(--ease-out-quick);
+	--spring-quick: var(--ease-out-quick);
+	--ease-spring: var(--spring-snappy);
+	--ease-spring-bouncy: var(--spring-bouncy);
 }
 
 @supports (transition-timing-function: linear(0, 1)) {
 	:root {
-		/* stiffness 300, damping 26 — settles in ~440ms, 2.6% overshoot */
-		--ease-spring: linear(0, .063, .177, .325, .464, .604, .714, .812, .882, .939, .975, 1.001, 1.015, 1.023, 1.026, 1.025, 1.022, 1.019, 1.015, 1.011, 1.008, 1.006, 1.004, 1);
-		/* stiffness 400, damping 22 — ~12% overshoot, for small "pop" feedback */
-		--ease-spring-bouncy: linear(0, .075, .211, .396, .569, .743, .887, .986, 1.062, 1.102, 1.121, 1.12, 1.108, 1.087, 1.066, 1.043, 1.025, 1.009, .997, .99, .986, .985, .986, .988, .99, .993, .996, 1);
+		--spring-smooth: linear(0, .041, .131, .24, .353, .459, .554, .639, .709, .767, .814, .853, .884, .909, .929, .945, .957, .967, .974, .98, .985, .988, .991, .993, .995, 1);
+		--spring-snappy: linear(0, .037, .121, .228, .343, .456, .56, .652, .73, .796, .849, .892, .925, .951, .969, .982, .992, .998, 1.002, 1.004, 1.006, 1.006, 1.006, 1.005, 1.005, 1);
+		--spring-bouncy: linear(0, .043, .142, .278, .427, .575, .707, .823, .917, .988, 1.039, 1.072, 1.089, 1.094, 1.091, 1.082, 1.069, 1.055, 1.041, 1.029, 1.018, 1.009, 1.002, .997, .993, .992, .991, .991, .992, .993, .995, 1);
+		--spring-quick: linear(0, .068, .205, .353, .489, .61, .704, .781, .838, .881, .914, .938, .955, .968, .977, .984, .989, .992, .994, 1);
 	}
 }
 
 @keyframes motion-fade-up {
 	from {
 		opacity: 0;
-		transform: translate3d(0, 18px, 0);
+		transform: translate3d(0, 24px, 0);
 	}
 	to {
 		opacity: 1;
@@ -58,7 +82,7 @@
 @keyframes motion-pop-in {
 	from {
 		opacity: 0;
-		transform: translate3d(0, -6px, 0) scale(.98);
+		transform: translate3d(0, -8px, 0) scale(.98);
 	}
 	to {
 		opacity: 1;
@@ -77,10 +101,34 @@
 
 @keyframes motion-tile-select {
 	0% {
-		transform: scale(.96);
+		transform: scale(.97);
 	}
 	100% {
 		transform: none;
+	}
+}
+
+@keyframes motion-swap-in {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 8px, 0);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes motion-vt-out {
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes motion-vt-in {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 8px, 0);
 	}
 }
 
@@ -101,7 +149,7 @@
 	}
 
 	.motion-ready .reveal.is-revealed {
-		animation: motion-fade-up 520ms var(--ease-spring) both;
+		animation: motion-fade-up var(--motion-smooth) var(--spring-smooth) both;
 		animation-delay: var(--reveal-delay, 0ms);
 	}
 
@@ -109,12 +157,12 @@
 	.mega-menu:not([hidden]),
 	.mini-cart-panel:not([hidden]),
 	.search-suggestions:not([hidden]) {
-		animation: motion-pop-in var(--motion-base) var(--ease-spring) both;
+		animation: motion-pop-in var(--motion-snappy) var(--spring-snappy) both;
 		transform-origin: top center;
 	}
 
 	.mobile-drawer:not([hidden]) {
-		animation: motion-drawer-in 380ms var(--ease-spring) both;
+		animation: motion-drawer-in var(--motion-smooth) var(--spring-smooth) both;
 	}
 
 	.mobile-drawer-backdrop:not([hidden]) {
@@ -147,22 +195,27 @@
 
 	/* ---- Configurator: the chosen tile settles into place ---- */
 	.configurator__tile:has(input:checked) {
-		animation: motion-tile-select var(--motion-spring-duration) var(--ease-spring-bouncy);
+		animation: motion-tile-select var(--motion-snappy) var(--spring-snappy);
 	}
 
 	/* Price/stock line after a variation change (class set by motion.js). */
 	.motion-swap {
-		animation: motion-fade-up 360ms var(--ease-spring) both;
+		animation: motion-swap-in var(--motion-snappy) var(--spring-snappy) both;
 	}
 
 	/* ---- Product card hover lift (pointer devices only) ---- */
 	@media (hover: hover) and (pointer: fine) {
 		.product-card {
-			transition: border-color var(--transition-hover), box-shadow var(--transition-hover), transform var(--motion-spring-duration) var(--ease-spring);
+			transition: border-color var(--transition-hover), box-shadow var(--transition-hover), transform var(--motion-smooth) var(--spring-smooth);
 		}
 
 		.product-card:hover {
-			transform: translate3d(0, -3px, 0);
+			transform: translate3d(0, -4px, 0);
+		}
+
+		.product-card:active {
+			transform: translate3d(0, -2px, 0) scale(.99);
+			transition-duration: var(--transition-hover), var(--transition-hover), var(--motion-press);
 		}
 	}
 
@@ -203,14 +256,29 @@
 		navigation: auto;
 	}
 
-	::view-transition-old(root),
+	/* Page to page: the old page fades out fast, the new one rises 8px
+	   into place — the "push" feel of a native app, kept short. */
+	::view-transition-old(root) {
+		animation: motion-vt-out var(--motion-fast) var(--ease-in-quick) both;
+	}
+
 	::view-transition-new(root) {
-		animation-duration: var(--motion-fast);
+		animation: motion-vt-in var(--motion-snappy) var(--spring-snappy) both;
+	}
+
+	/* The header is the same on every page: it stays put while the page
+	   under it changes. */
+	.site-header {
+		view-transition-name: site-header;
+	}
+
+	::view-transition-group(site-header) {
+		animation-duration: 0s;
 	}
 
 	::view-transition-group(product-media) {
-		animation-duration: 380ms;
-		animation-timing-function: var(--ease-spring);
+		animation-duration: var(--motion-smooth);
+		animation-timing-function: var(--spring-smooth);
 	}
 
 	::view-transition-old(product-media),
