@@ -173,24 +173,70 @@
 		animation: motion-fade-in var(--motion-fast) ease-out both;
 	}
 
-	/* ---- Press feedback ---- */
+	/* ---- Press feedback ----
+	   Press: 100ms in, released on the "quick" spring. Wide controls dip
+	   less than small ones so every press reads as the same depth. */
 	.btn,
 	.button,
 	.configurator__tile,
+	.configurator__addon,
 	.wishlist-toggle,
-	.flex-control-thumbs li img {
-		transition-property: background-color, border-color, color, box-shadow, transform;
-		transition-duration: var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-spring-duration);
-		transition-timing-function: ease-out, ease-out, ease-out, ease-out, var(--ease-spring);
+	.compare-toggle,
+	.compare-bar__chip,
+	.flex-control-thumbs li img,
+	.woocommerce-product-gallery__trigger,
+	.site-masthead__icon-btn,
+	.site-masthead__account-btn,
+	.mobile-header__icon-btn,
+	.quantity-stepper__btn,
+	.page-numbers,
+	.active-filters__chip,
+	.faq-accordion__question,
+	.mobile-drawer__nav a,
+	.product-tabs ul.tabs li a,
+	.hero-slider__tabs button,
+	.home-categories__grid > a,
+	.wa-float {
+		transition-property: background-color, border-color, color, box-shadow, opacity, transform;
+		transition-duration: var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-quick);
+		transition-timing-function: ease-out, ease-out, ease-out, ease-out, ease-out, var(--spring-quick);
 	}
 
 	.btn:active:not(:disabled):not(.disabled),
 	.button:active:not(:disabled):not(.disabled),
 	.configurator__tile:not(.is-unavailable):active,
+	.configurator__addon:active,
+	.compare-bar__chip:active,
+	.page-numbers:not(.current):not(.dots):active,
+	.active-filters__chip:active,
+	.product-tabs ul.tabs li a:active,
+	.hero-slider__tabs button:active {
+		transform: scale(.97);
+		transition-duration: var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-press);
+		transition-timing-function: ease-out;
+	}
+
+	.btn--block:active:not(:disabled):not(.disabled),
+	.faq-accordion__question:active,
+	.mobile-drawer__nav a:active,
+	.home-categories__grid > a:active {
+		transform: scale(.98);
+		transition-duration: var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-press);
+		transition-timing-function: ease-out;
+	}
+
 	.wishlist-toggle:active,
-	.flex-control-thumbs li img:active {
-		transform: scale(.96);
-		transition-duration: var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), 90ms;
+	.compare-toggle:active,
+	.flex-control-thumbs li img:active,
+	.woocommerce-product-gallery__trigger:active,
+	.site-masthead__icon-btn:active,
+	.site-masthead__account-btn:active,
+	.mobile-header__icon-btn:active,
+	.quantity-stepper__btn:active,
+	.wa-float:active {
+		transform: scale(.92);
+		transition-duration: var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-press);
+		transition-timing-function: ease-out;
 	}
 
 	/* ---- Configurator: the chosen tile settles into place ---- */
@@ -289,5 +335,244 @@
 
 	.woocommerce-product-gallery__image:first-child img:not(.zoomImg) {
 		view-transition-name: product-media;
+	}
+}
+
+@keyframes motion-slide-in-start {
+	from {
+		opacity: 0;
+		transform: translate3d(16px, 0, 0);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes motion-sheet-in {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 24px, 0);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes motion-zoom-in {
+	from {
+		opacity: 0;
+		transform: scale(.94);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes motion-pop {
+	from {
+		transform: scale(.5);
+	}
+	to {
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+	html {
+		scroll-behavior: smooth;
+	}
+
+	/* ---- Header ---- */
+	.primary-nav__all-categories svg {
+		transition: transform var(--motion-snappy) var(--spring-snappy);
+	}
+
+	.primary-nav__all-categories.is-active svg {
+		transform: rotate(180deg);
+	}
+
+	.mega-menu__pane {
+		animation: motion-swap-in var(--motion-snappy) var(--spring-snappy) both;
+	}
+
+	/* Drawer links follow the drawer in, one after another (RTL: from the
+	   inline-start edge the drawer itself slides from). */
+	/* "backwards", not "both": a held end state would block the press scale. */
+	.mobile-drawer:not([hidden]) .mobile-drawer__nav > * {
+		animation: motion-slide-in-start var(--motion-snappy) var(--spring-snappy) backwards;
+	}
+
+	.mobile-drawer:not([hidden]) .mobile-drawer__nav > :nth-child(1) { animation-delay: 60ms; }
+	.mobile-drawer:not([hidden]) .mobile-drawer__nav > :nth-child(2) { animation-delay: 100ms; }
+	.mobile-drawer:not([hidden]) .mobile-drawer__nav > :nth-child(3) { animation-delay: 140ms; }
+	.mobile-drawer:not([hidden]) .mobile-drawer__nav > :nth-child(4) { animation-delay: 180ms; }
+	.mobile-drawer:not([hidden]) .mobile-drawer__nav > :nth-child(5) { animation-delay: 220ms; }
+	.mobile-drawer:not([hidden]) .mobile-drawer__nav > :nth-child(6) { animation-delay: 260ms; }
+	.mobile-drawer:not([hidden]) .mobile-drawer__nav > :nth-child(7) { animation-delay: 300ms; }
+	.mobile-drawer:not([hidden]) .mobile-drawer__nav > :nth-child(n+8) { animation-delay: 340ms; }
+
+	/* Mini-cart rows settle in under the opening panel. */
+	.mini-cart-panel:not([hidden]) .mini-cart-panel__row {
+		animation: motion-swap-in var(--motion-snappy) var(--spring-snappy) backwards;
+	}
+
+	.mini-cart-panel:not([hidden]) .mini-cart-panel__row:nth-child(2) { animation-delay: 40ms; }
+	.mini-cart-panel:not([hidden]) .mini-cart-panel__row:nth-child(3) { animation-delay: 80ms; }
+	.mini-cart-panel:not([hidden]) .mini-cart-panel__row:nth-child(n+4) { animation-delay: 120ms; }
+
+	.mini-cart-panel__row {
+		transition: opacity var(--motion-fast) ease-out, transform var(--motion-snappy) var(--spring-snappy);
+	}
+
+	.mini-cart-panel__row.is-removing {
+		transform: scale(.98);
+	}
+
+	/* ---- Bottom bars and sheets: spring up, settle without bounce ---- */
+	@media (max-width: 767px) {
+		.mobile-buy-bar {
+			transition: transform var(--motion-smooth) var(--spring-smooth), visibility 0s linear var(--motion-smooth);
+		}
+
+		.mobile-buy-bar.is-visible {
+			transition: transform var(--motion-smooth) var(--spring-smooth), visibility 0s;
+		}
+	}
+
+	.compare-bar {
+		transition: transform var(--motion-smooth) var(--spring-smooth), visibility 0s linear var(--motion-smooth);
+	}
+
+	.compare-bar.is-visible {
+		transition: transform var(--motion-smooth) var(--spring-smooth), visibility 0s;
+	}
+
+	@media (max-width: 1023px) {
+		.archive-layout__sidebar {
+			transition: transform var(--motion-smooth) var(--spring-smooth);
+		}
+	}
+
+	.mobile-filters-backdrop:not([hidden]),
+	.promo-pop:not([hidden]) .promo-pop__backdrop {
+		animation: motion-fade-in var(--motion-base) ease-out both;
+	}
+
+	.cookie-notice:not([hidden]) {
+		animation: motion-sheet-in var(--motion-smooth) var(--spring-smooth) both;
+	}
+
+	.promo-pop:not([hidden]) .promo-pop__box {
+		animation: motion-zoom-in var(--motion-snappy) var(--spring-snappy) both;
+	}
+
+	.wa-float {
+		animation: motion-zoom-in var(--motion-smooth) var(--spring-bouncy) 600ms backwards;
+	}
+
+	/* ---- Toasts: rise and settle, sink away ---- */
+	.toast {
+		transform: translate3d(0, 16px, 0) scale(.96);
+		transition: opacity var(--motion-fast) ease-out, transform var(--motion-snappy) var(--spring-snappy);
+	}
+
+	.toast.is-visible {
+		transform: none;
+	}
+
+	/* ---- Product page ---- */
+	.product-tabs ul.tabs.has-indicator {
+		position: relative;
+	}
+
+	.product-tabs ul.tabs.has-indicator li a,
+	.product-tabs ul.tabs.has-indicator li.active a {
+		border-bottom-color: transparent;
+	}
+
+	/* One bar that slides between tabs (motion.js) instead of each tab
+	   drawing its own underline. Same colour and thickness as before. */
+	.tabs-indicator {
+		position: absolute;
+		bottom: -1px;
+		left: 0;
+		width: 1px;
+		height: 2px;
+		background: var(--c-teal-500);
+		transform-origin: 0 50%;
+		pointer-events: none;
+	}
+
+	.tabs-indicator.is-ready {
+		transition: transform var(--motion-snappy) var(--spring-snappy);
+	}
+
+	.configurator__addon input:checked ~ .configurator__addon-box svg {
+		animation: motion-pop var(--motion-bouncy) var(--spring-bouncy) both;
+	}
+
+	.add_to_cart_button.added::before {
+		display: inline-block;
+		animation: motion-pop var(--motion-bouncy) var(--spring-bouncy) both;
+	}
+
+	.compare-toggle.just-added {
+		transition-duration: var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-press);
+	}
+
+	/* ---- Accordions: content eases in as the panel opens ---- */
+	.faq-accordion__icon {
+		transition: transform var(--motion-snappy) var(--spring-snappy);
+	}
+
+	.faq-accordion__item.is-open .faq-accordion__answer-inner {
+		animation: motion-swap-in var(--motion-snappy) var(--spring-snappy) both;
+	}
+
+	@media (max-width: 767px) {
+		.site-footer__nav-col > summary::after {
+			transition: transform var(--motion-snappy) var(--spring-snappy);
+		}
+
+		.site-footer__nav-col[open] > .site-footer__nav-links {
+			animation: motion-swap-in var(--motion-snappy) var(--spring-snappy) both;
+		}
+	}
+
+	/* ---- Step changes (checkout, OTP login) ---- */
+	.checkout-step:not([hidden]),
+	.otp-form__step:not([hidden]),
+	#password-login-form:not([hidden]) {
+		animation: motion-swap-in var(--motion-snappy) var(--spring-snappy) both;
+	}
+
+	.checkout-stepper__stage.is-current .checkout-stepper__circle {
+		animation: motion-pop var(--motion-bouncy) var(--spring-bouncy) both;
+	}
+
+	/* ---- Loading: a results grid waiting for the next page ---- */
+	.product-grid.is-loading > * {
+		opacity: .45;
+		transform: scale(.99);
+		transition: opacity var(--motion-base) ease-out, transform var(--motion-snappy) var(--spring-snappy);
+		pointer-events: none;
+	}
+
+	.product-grid.is-loading .product-card__media::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .6), transparent);
+		animation: motion-shimmer 1.3s ease-in-out infinite;
+	}
+
+	/* Quantity / counter values that just changed (motion.js). */
+	.motion-bump {
+		animation: motion-swap-in var(--motion-snappy) var(--spring-snappy);
 	}
 }

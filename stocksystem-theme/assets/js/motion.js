@@ -58,6 +58,57 @@
 		return el && 'function' === typeof el.animate && ! reduced();
 	}
 
+	/* ---- Exit animations for panels that close with the hidden attribute ----
+	   CSS can animate an element in, but [hidden] removes it at once. The
+	   header, filters and extras scripts call this instead of setting
+	   .hidden, so closing plays a short exit first. Re-opening mid-exit
+	   cancels it. Without motion it is exactly el.hidden = value. */
+	var EASE_IN = 'cubic-bezier(.4, 0, 1, 1)';
+
+	function exitFrames( el ) {
+		if ( el.matches( '.mobile-drawer' ) ) {
+			return [ [ { transform: 'none' }, { transform: 'translate3d(100%, 0, 0)' } ], 260 ];
+		}
+		if ( el.matches( '.mobile-drawer-backdrop, .mobile-filters-backdrop, .promo-pop, .announce' ) ) {
+			return [ [ { opacity: 1 }, { opacity: 0 } ], 200 ];
+		}
+		if ( el.matches( '.cookie-notice' ) ) {
+			return [ [ { opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translate3d(0, 16px, 0)' } ], 200 ];
+		}
+		return [ [ { opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translate3d(0, -4px, 0) scale(.98)' } ], 160 ];
+	}
+
+	function setHidden( el, hidden ) {
+		if ( ! el ) {
+			return;
+		}
+		if ( el._motionExit ) {
+			el._motionExit.cancel();
+			el._motionExit = null;
+			el.style.pointerEvents = '';
+		}
+		if ( ! hidden || el.hidden || ! canAnimate( el ) || ! visible( el ) ) {
+			el.hidden = hidden;
+			return;
+		}
+		var frames = exitFrames( el );
+		var box = el.matches( '.promo-pop' ) && el.querySelector( '.promo-pop__box' );
+		if ( box ) {
+			box.animate( [ { transform: 'none' }, { transform: 'scale(.96)' } ], { duration: frames[ 1 ], easing: EASE_IN } );
+		}
+		el.style.pointerEvents = 'none';
+		var animation = el.animate( frames[ 0 ], { duration: frames[ 1 ], easing: EASE_IN, fill: 'forwards' } );
+		el._motionExit = animation;
+		animation.onfinish = function () {
+			el._motionExit = null;
+			el.hidden = true;
+			el.style.pointerEvents = '';
+			animation.cancel();
+		};
+	}
+
+	window.stocksystemMotion = { setHidden: setHidden };
+
 	/* ---- Staggered fade-up ---- */
 	var REVEAL_SELECTORS = [
 		'.product-grid > *',
@@ -377,6 +428,171 @@
 		window.addEventListener( 'pageshow', clearNames );
 	}
 
+	/* ---- Product tabs: one indicator slides to the chosen tab ---- */
+	function initTabs() {
+		var list = document.querySelector( '.product-tabs ul.tabs' );
+		if ( ! list || reduced() ) {
+			return;
+		}
+		var bar = document.createElement( 'span' );
+		bar.className = 'tabs-indicator';
+		bar.setAttribute( 'aria-hidden', 'true' );
+		list.appendChild( bar );
+		list.classList.add( 'has-indicator' );
+
+		function place() {
+			var active = list.querySelector( 'li.active a' ) || list.querySelector( 'li a' );
+			if ( ! active ) {
+				return;
+			}
+			var listBox = list.getBoundingClientRect();
+			var box = active.getBoundingClientRect();
+			bar.style.transform = 'translate3d(' + ( box.left - listBox.left + list.scrollLeft ) + 'px, 0, 0) scaleX(' + box.width + ')';
+		}
+
+		place();
+		// Turn the transition on only after the first placement: no slide on load.
+		window.requestAnimationFrame( function () {
+			bar.classList.add( 'is-ready' );
+		} );
+		list.addEventListener( 'click', function () {
+			window.requestAnimationFrame( place );
+		} );
+		window.addEventListener( 'resize', place );
+		if ( document.fonts && document.fonts.ready ) {
+			document.fonts.ready.then( place );
+		}
+	}
+
+	/* ---- A value that just changed eases into place ---- */
+	function bump( el ) {
+		if ( ! el || reduced() ) {
+			return;
+		}
+		el.classList.remove( 'motion-bump' );
+		void el.offsetWidth; // restart
+		el.classList.add( 'motion-bump' );
+	}
+
+	function initQuantity() {
+		document.addEventListener( 'change', function ( event ) {
+			if ( event.target.matches && event.target.matches( '.quantity-stepper input.qty' ) ) {
+				bump( event.target );
+			}
+		} );
+	}
+
+	/* ---- Home counters count up the first time they are seen ---- */
+	function toLatin( text ) {
+		return text.replace( /[۰-۹]/g, function ( d ) {
+			return String( d.charCodeAt( 0 ) - 1776 );
+		} );
+	}
+
+	function initCounters() {
+		var values = document.querySelectorAll( '.home-counters__value' );
+		if ( ! values.length || reduced() || ! ( 'IntersectionObserver' in window ) ) {
+			return;
+		}
+
+		var observer = new IntersectionObserver( function ( entries ) {
+			entries.forEach( function ( entry ) {
+				if ( ! entry.isIntersecting ) {
+					return;
+				}
+				observer.unobserve( entry.target );
+				countUp( entry.target );
+			} );
+		}, { threshold: 0.6 } );
+
+		values.forEach( function ( el ) {
+			// Only a plain number with an optional prefix/suffix («۵۰۰+», «۱۲٬۰۰۰»).
+			if ( /^[^0-9۰-۹]*[0-9۰-۹][0-9۰-۹,٬]*[^0-9۰-۹]*$/.test( el.textContent.trim() ) ) {
+				observer.observe( el );
+			}
+		} );
+	}
+
+	function countUp( el ) {
+		var original = el.textContent;
+		var persian = /[۰-۹]/.test( original );
+		var match = toLatin( original ).match( /^(\D*)([\d,٬]+)(\D*)$/ );
+		if ( ! match ) {
+			return;
+		}
+		var sep = match[ 2 ].indexOf( '٬' ) !== -1 ? '٬' : ( match[ 2 ].indexOf( ',' ) !== -1 ? ',' : '' );
+		var target = parseInt( match[ 2 ].replace( /[,٬]/g, '' ), 10 );
+		if ( ! target ) {
+			return;
+		}
+		// Hold the final width so the line never reflows while counting.
+		el.style.display = 'inline-block';
+		el.style.minWidth = el.getBoundingClientRect().width + 'px';
+
+		var start = null;
+		var duration = 1200;
+		function format( n ) {
+			var text = sep ? String( n ).replace( /\B(?=(\d{3})+(?!\d))/g, sep ) : String( n );
+			if ( persian ) {
+				text = text.replace( /[0-9]/g, function ( d ) {
+					return '۰۱۲۳۴۵۶۷۸۹'.charAt( d );
+				} );
+			}
+			return match[ 1 ] + text + match[ 3 ];
+		}
+		function frame( now ) {
+			if ( null === start ) {
+				start = now;
+			}
+			var t = Math.min( 1, ( now - start ) / duration );
+			var eased = 1 - Math.pow( 1 - t, 4 ); // quick start, long soft landing
+			el.textContent = format( Math.round( target * eased ) );
+			if ( t < 1 ) {
+				window.requestAnimationFrame( frame );
+			} else {
+				el.textContent = original;
+				el.style.minWidth = '';
+				el.style.display = '';
+			}
+		}
+		window.requestAnimationFrame( frame );
+	}
+
+	/* ---- Loading: results grid while filters / sort / paging load ---- */
+	function initArchiveLoading() {
+		var grid = document.querySelector( '.archive-layout .product-grid, .product-grid' );
+		if ( ! grid || reduced() ) {
+			return;
+		}
+		function loading() {
+			grid.classList.add( 'is-loading' );
+			grid.setAttribute( 'aria-busy', 'true' );
+		}
+		document.addEventListener( 'submit', function ( event ) {
+			if ( event.target.matches && event.target.matches( '#archive-filters, .woocommerce-ordering' ) ) {
+				loading();
+			}
+		} );
+		document.addEventListener( 'change', function ( event ) {
+			if ( event.target.matches && event.target.matches( '.woocommerce-ordering select' ) ) {
+				loading();
+			}
+		} );
+		document.addEventListener( 'click', function ( event ) {
+			if ( event.defaultPrevented || event.button || event.metaKey || event.ctrlKey || event.shiftKey ) {
+				return;
+			}
+			if ( event.target.closest( '.active-filters a, .woocommerce-pagination a, a.page-numbers' ) ) {
+				loading();
+			}
+		} );
+		// Coming back from the next page (back/forward cache) shows it as left.
+		window.addEventListener( 'pageshow', function () {
+			grid.classList.remove( 'is-loading' );
+			grid.removeAttribute( 'aria-busy' );
+		} );
+	}
+
 	document.addEventListener( 'DOMContentLoaded', function () {
 		initReveal();
 		initCart();
@@ -384,5 +600,9 @@
 		initVariationSwap();
 		initImageSkeletons();
 		initSharedElement();
+		initTabs();
+		initQuantity();
+		initCounters();
+		initArchiveLoading();
 	} );
 } )();

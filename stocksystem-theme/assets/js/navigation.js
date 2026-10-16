@@ -7,15 +7,24 @@
 ( function () {
 	'use strict';
 
+	// Close with motion.js's exit animation when it is loaded (plain .hidden otherwise).
+	function setHidden( el, hidden ) {
+		if ( window.stocksystemMotion ) {
+			window.stocksystemMotion.setHidden( el, hidden );
+		} else {
+			el.hidden = hidden;
+		}
+	}
+
 	function openPanel( panel, trigger ) {
-		panel.hidden = false;
+		setHidden( panel, false );
 		if ( trigger ) {
 			trigger.setAttribute( 'aria-expanded', 'true' );
 		}
 	}
 
 	function closePanel( panel, trigger ) {
-		panel.hidden = true;
+		setHidden( panel, true );
 		if ( trigger ) {
 			trigger.setAttribute( 'aria-expanded', 'false' );
 		}
@@ -275,7 +284,7 @@
 				var query = input.value.trim();
 
 				if ( query.length < 3 ) {
-					panel.hidden = true;
+					setHidden( panel, true );
 					input.setAttribute( 'aria-expanded', 'false' );
 					return;
 				}
@@ -283,14 +292,14 @@
 				debounceTimer = window.setTimeout( function () {
 					// TODO: fetch(`/wp-json/stocksystem/v1/search-suggest?q=${query}`)
 					// and render results into `panel` once that REST route exists.
-					panel.hidden = false;
+					setHidden( panel, false );
 					input.setAttribute( 'aria-expanded', 'true' );
 				}, 200 );
 			} );
 
 			input.addEventListener( 'blur', function () {
 				window.setTimeout( function () {
-					panel.hidden = true;
+					setHidden( panel, true );
 					input.setAttribute( 'aria-expanded', 'false' );
 				}, 150 );
 			} );
@@ -308,8 +317,8 @@
 		}
 
 		function open() {
-			drawer.hidden = false;
-			backdrop.hidden = false;
+			setHidden( drawer, false );
+			setHidden( backdrop, false );
 			openBtn.setAttribute( 'aria-expanded', 'true' );
 			document.body.style.overflow = 'hidden';
 			if ( closeBtn ) {
@@ -318,8 +327,8 @@
 		}
 
 		function close() {
-			drawer.hidden = true;
-			backdrop.hidden = true;
+			setHidden( drawer, true );
+			setHidden( backdrop, true );
 			openBtn.setAttribute( 'aria-expanded', 'false' );
 			document.body.style.overflow = '';
 			openBtn.focus();

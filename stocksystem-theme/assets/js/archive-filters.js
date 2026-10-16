@@ -8,6 +8,15 @@
 ( function () {
 	'use strict';
 
+	// Close with motion.js's exit animation when it is loaded (plain .hidden otherwise).
+	function setHidden( el, hidden ) {
+		if ( window.stocksystemMotion ) {
+			window.stocksystemMotion.setHidden( el, hidden );
+		} else {
+			el.hidden = hidden;
+		}
+	}
+
 	function initAutoSubmit() {
 		var form = document.getElementById( 'archive-filters' );
 		if ( ! form ) {
@@ -32,14 +41,14 @@
 
 		function open() {
 			sheet.classList.add( 'is-open' );
-			backdrop.hidden = false;
+			setHidden( backdrop, false );
 			toggle.setAttribute( 'aria-expanded', 'true' );
 			document.body.style.overflow = 'hidden';
 		}
 
 		function close() {
 			sheet.classList.remove( 'is-open' );
-			backdrop.hidden = true;
+			setHidden( backdrop, true );
 			toggle.setAttribute( 'aria-expanded', 'false' );
 			document.body.style.overflow = '';
 		}
