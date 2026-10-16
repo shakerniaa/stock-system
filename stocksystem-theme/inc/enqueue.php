@@ -102,6 +102,7 @@ function stocksystem_enqueue_assets() {
 	stocksystem_enqueue_style( 'stocksystem-product-card', 'components/product-card.css', array( 'stocksystem-buttons' ) );
 	stocksystem_enqueue_style( 'stocksystem-compare', 'components/compare.css', array( 'stocksystem-product-card' ) );
 	stocksystem_enqueue_style( 'stocksystem-archive', 'components/archive.css', array( 'stocksystem-product-card' ) );
+	stocksystem_enqueue_style( 'stocksystem-motion', 'components/motion.css', array( 'stocksystem-header', 'stocksystem-compare', 'stocksystem-archive' ) );
 	if ( stocksystem_dist_manifest() ) {
 		wp_register_style( 'stocksystem-style', false, array( 'stocksystem-global' ) ); // style.css is only the theme header comment.
 		wp_enqueue_style( 'stocksystem-style' );
@@ -120,6 +121,7 @@ function stocksystem_enqueue_assets() {
 	stocksystem_enqueue_script( 'stocksystem-wishlist', 'wishlist.js', array() );
 	stocksystem_enqueue_script( 'stocksystem-footer', 'footer.js', array() );
 	stocksystem_enqueue_script( 'stocksystem-compare', 'compare.js', array( 'stocksystem-toast' ) );
+	stocksystem_enqueue_script( 'stocksystem-motion', 'motion.js', array() );
 	wp_localize_script(
 		stocksystem_dist_manifest() ? 'stocksystem-global' : 'stocksystem-wishlist',
 		'stocksystemAjax',
