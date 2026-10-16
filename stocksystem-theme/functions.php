@@ -36,6 +36,7 @@ require STOCKSYSTEM_DIR . '/inc/performance.php';
 require STOCKSYSTEM_DIR . '/inc/menus.php';
 require STOCKSYSTEM_DIR . '/inc/js-strings.php';
 require STOCKSYSTEM_DIR . '/inc/persian-numerals.php';
+require STOCKSYSTEM_DIR . '/inc/jalali-dates.php';
 require STOCKSYSTEM_DIR . '/inc/taxonomies.php';
 require STOCKSYSTEM_DIR . '/inc/term-meta-fields.php';
 require STOCKSYSTEM_DIR . '/inc/nav-data.php';

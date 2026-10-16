@@ -93,7 +93,11 @@ function stocksystem_gregorian_to_jalali( $gy, $gm, $gd ) {
  */
 function stocksystem_jdate( $format = 'j F Y', $timestamp = null ) {
 	$timestamp = null === $timestamp ? time() : (int) $timestamp;
-	list( $gy, $gm, $gd, $hh, $ii ) = array_map( 'intval', explode( ' ', wp_date( 'Y n j G i', $timestamp ) ) );
+	// Not wp_date(): date plugins (Persian WooCommerce's Jalali option) filter
+	// its output to Jalali, and converting that again gave «۲ مرداد ۷۸۴».
+	$datetime = new DateTime( '@' . $timestamp );
+	$datetime->setTimezone( wp_timezone() );
+	list( $gy, $gm, $gd, $hh, $ii ) = array_map( 'intval', explode( ' ', $datetime->format( 'Y n j G i' ) ) );
 	list( $jy, $jm, $jd )           = stocksystem_gregorian_to_jalali( $gy, $gm, $gd );
 
 	$months = array( 'فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند' );
