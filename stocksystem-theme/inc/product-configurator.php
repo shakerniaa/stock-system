@@ -119,7 +119,90 @@ function stocksystem_configurator_attribute_options( WC_Product_Variable $produc
 		}
 	}
 
-	return array_values( $options );
+	// Then by price, cheapest first ("قیمت پایه" leads, upgrades follow);
+	// unavailable options go last. Equal prices keep the term order above
+	// (the position index makes the sort stable on every PHP version).
+	$options  = array_values( $options );
+	$position = 0;
+	foreach ( $options as &$option ) {
+		$option['position'] = $position++;
+	}
+	unset( $option );
+
+	usort(
+		$options,
+		function ( $a, $b ) {
+			if ( $a['available'] !== $b['available'] ) {
+				return $a['available'] ? -1 : 1;
+			}
+			if ( $a['available'] && (float) $a['min_price'] !== (float) $b['min_price'] ) {
+				return (float) $a['min_price'] < (float) $b['min_price'] ? -1 : 1;
+			}
+			return $a['position'] - $b['position'];
+		}
+	);
+
+	return $options;
+}
+
+/**
+ * The option each attribute starts on, keyed by attribute name. Order of
+ * preference: a value in the URL (?attribute_pa_ram=…, e.g. a shared
+ * link), the product's own default form values (WooCommerce product edit
+ * → Variations → "Default Form Values"), and — when the store set none —
+ * the cheapest in-stock variation, so the page opens with a real price and
+ * an active add-to-cart button instead of an empty configurator.
+ *
+ * Values are what the native <select>s hold (term slugs for global
+ * attributes); '' means "nothing selected".
+ */
+function stocksystem_configurator_selected_values( WC_Product_Variable $product ) {
+	$attributes = $product->get_variation_attributes();
+	$selected   = array();
+	$any_set    = false;
+
+	foreach ( $attributes as $attribute_name => $values ) {
+		$key = 'attribute_' . sanitize_title( $attribute_name );
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only preselection, same as WooCommerce's own dropdown.
+		$value = isset( $_REQUEST[ $key ] ) ? wc_clean( wp_unslash( $_REQUEST[ $key ] ) ) : $product->get_variation_default_attribute( $attribute_name );
+
+		$selected[ $attribute_name ] = (string) $value;
+		if ( '' !== (string) $value ) {
+			$any_set = true;
+		}
+	}
+
+	if ( $any_set ) {
+		return $selected;
+	}
+
+	$cheapest = null;
+	foreach ( $product->get_available_variations() as $variation ) {
+		if ( empty( $variation['is_in_stock'] ) || empty( $variation['is_purchasable'] ) ) {
+			continue;
+		}
+		if ( null === $cheapest || $variation['display_price'] < $cheapest['display_price'] ) {
+			$cheapest = $variation;
+		}
+	}
+
+	if ( null === $cheapest ) {
+		return $selected;
+	}
+
+	foreach ( $attributes as $attribute_name => $values ) {
+		$key   = 'attribute_' . sanitize_title( $attribute_name );
+		$value = isset( $cheapest['attributes'][ $key ] ) ? (string) $cheapest['attributes'][ $key ] : '';
+
+		// A variation set to "any" for this attribute: start on its first value.
+		if ( '' === $value && ! empty( $values ) ) {
+			$value = (string) reset( $values );
+		}
+
+		$selected[ $attribute_name ] = $value;
+	}
+
+	return $selected;
 }
 
 /**
