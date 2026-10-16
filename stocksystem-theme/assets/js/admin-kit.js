@@ -72,6 +72,10 @@
 	}
 
 	$( function () {
+		// wp-color-picker is not loaded on every screen (e.g. post edit).
+		if ( ! $.fn.wpColorPicker ) {
+			return;
+		}
 		// Skip inputs inside the (inert) row templates.
 		$( '.ss-color' ).filter( function () {
 			return ! $( this ).closest( 'template' ).length;
