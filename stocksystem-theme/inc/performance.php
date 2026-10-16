@@ -84,6 +84,14 @@ function stocksystem_perf_defer_jquery() {
 		return;
 	}
 
+	// Pages with an address form keep jQuery blocking: Iranian state/city
+	// plugins (Persian WooCommerce, PWS) print inline jQuery code right after
+	// the form, which runs before a deferred jQuery exists and shows
+	// «کتابخانه جیکوئری قبل از کدهای مربوط به شهرهای ایران لود نشده است!».
+	if ( function_exists( 'is_checkout' ) && ( is_checkout() || is_wc_endpoint_url( 'edit-address' ) ) ) {
+		return;
+	}
+
 	// WordPress only defers a script when everything that depends on it is deferred
 	// too, so the theme's own jQuery-dependent scripts are marked as well.
 	foreach ( array( 'jquery-core', 'stocksystem-product-configurator', 'stocksystem-checkout' ) as $handle ) {
