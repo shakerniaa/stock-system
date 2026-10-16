@@ -6,6 +6,15 @@
 ( function () {
 	'use strict';
 
+	// Close with motion.js's exit animation when it is loaded (plain .hidden otherwise).
+	function setHidden( el, hidden ) {
+		if ( window.stocksystemMotion ) {
+			window.stocksystemMotion.setHidden( el, hidden );
+		} else {
+			el.hidden = hidden;
+		}
+	}
+
 	function get( key ) {
 		try {
 			return window.localStorage.getItem( key );
@@ -32,7 +41,7 @@
 		var barClose = bar.querySelector( '[data-announce-close]' );
 		if ( barClose ) {
 			barClose.addEventListener( 'click', function () {
-				bar.hidden = true;
+				setHidden( bar, true );
 				set( barKey, '1' );
 			} );
 		}
@@ -43,7 +52,7 @@
 	if ( cookie && ! get( 'ss_cookie_ok' ) ) {
 		cookie.hidden = false;
 		cookie.querySelector( '[data-cookie-accept]' ).addEventListener( 'click', function () {
-			cookie.hidden = true;
+			setHidden( cookie, true );
 			set( 'ss_cookie_ok', '1' );
 		} );
 	}
@@ -57,7 +66,7 @@
 		var opener = null;
 
 		var closePromo = function () {
-			promo.hidden = true;
+			setHidden( promo, true );
 			set( promoKey, String( Date.now() + days * 86400000 ) );
 			document.removeEventListener( 'keydown', onKey );
 			if ( opener && opener.focus ) {

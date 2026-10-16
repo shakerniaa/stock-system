@@ -146,7 +146,17 @@
 		go.textContent = ( conf().compare || 'compare' ) + ' (' + toFa( ids.length ) + ')';
 		go.setAttribute( 'href', compareUrl( ids ) );
 
-		bar.classList.add( 'is-visible' );
+		// A bar built this frame needs one painted frame at its start
+		// position, or it appears without sliding up.
+		var shown = bar;
+		window.requestAnimationFrame( function () {
+			window.requestAnimationFrame( function () {
+				// Still wanted? (the list may have been cleared in between)
+				if ( document.body.classList.contains( 'has-compare-bar' ) ) {
+					shown.classList.add( 'is-visible' );
+				}
+			} );
+		} );
 		document.body.classList.add( 'has-compare-bar' );
 	}
 
@@ -179,7 +189,7 @@
 		} else {
 			if ( ids.length >= maxItems() ) {
 				if ( window.stocksystemToast ) {
-					window.stocksystemToast( conf().full, 'error' );
+					window.stocksystemToast.show( conf().full, 'error' );
 				}
 				return;
 			}
