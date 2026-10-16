@@ -1,0 +1,225 @@
+/**
+ * Motion layer: one place for the site's animation vocabulary.
+ *
+ *   • Spring easing tokens (CSS linear() curves sampled from a damped spring)
+ *   • Staggered fade-up for content entering the viewport (assets/js/motion.js
+ *     marks only what starts BELOW the fold, so the first paint never waits)
+ *   • Panel entries (mega menu, mini-cart, search suggestions, mobile drawer,
+ *     product tabs) — open with a short spring, close as a fast cut
+ *   • Micro-interactions: button press, configurator tile select, product
+ *     card hover lift, cart badge / heart pops and fly-to-cart (JS, WAAPI)
+ *   • Skeleton shimmer on product card images while they load
+ *   • Cross-page shared element: product card image → product page gallery
+ *     (View Transitions; browsers without it navigate exactly as before)
+ *
+ * Only transform and opacity animate. Everything here sits inside
+ * (prefers-reduced-motion: no-preference): with reduced motion the site
+ * behaves exactly as it did without this file.
+ */
+
+:root {
+	--motion-fast: 140ms;
+	--motion-base: 240ms;
+	--motion-spring-duration: 440ms;
+	--ease-out-quick: cubic-bezier(.2, .8, .2, 1);
+	--ease-spring: var(--ease-out-quick);
+	--ease-spring-bouncy: var(--ease-out-quick);
+}
+
+@supports (transition-timing-function: linear(0, 1)) {
+	:root {
+		/* stiffness 300, damping 26 — settles in ~440ms, 2.6% overshoot */
+		--ease-spring: linear(0, .063, .177, .325, .464, .604, .714, .812, .882, .939, .975, 1.001, 1.015, 1.023, 1.026, 1.025, 1.022, 1.019, 1.015, 1.011, 1.008, 1.006, 1.004, 1);
+		/* stiffness 400, damping 22 — ~12% overshoot, for small "pop" feedback */
+		--ease-spring-bouncy: linear(0, .075, .211, .396, .569, .743, .887, .986, 1.062, 1.102, 1.121, 1.12, 1.108, 1.087, 1.066, 1.043, 1.025, 1.009, .997, .99, .986, .985, .986, .988, .99, .993, .996, 1);
+	}
+}
+
+@keyframes motion-fade-up {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 18px, 0);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes motion-fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes motion-pop-in {
+	from {
+		opacity: 0;
+		transform: translate3d(0, -6px, 0) scale(.98);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes motion-drawer-in {
+	from {
+		transform: translate3d(100%, 0, 0);
+	}
+	to {
+		transform: none;
+	}
+}
+
+@keyframes motion-tile-select {
+	0% {
+		transform: scale(.96);
+	}
+	100% {
+		transform: none;
+	}
+}
+
+@keyframes motion-shimmer {
+	from {
+		transform: translate3d(100%, 0, 0);
+	}
+	to {
+		transform: translate3d(-100%, 0, 0);
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+	/* ---- Staggered fade-up (classes set by motion.js) ---- */
+	.motion-ready .reveal {
+		opacity: 0;
+	}
+
+	.motion-ready .reveal.is-revealed {
+		animation: motion-fade-up 520ms var(--ease-spring) both;
+		animation-delay: var(--reveal-delay, 0ms);
+	}
+
+	/* ---- Panels: spring in, fast-cut out ---- */
+	.mega-menu:not([hidden]),
+	.mini-cart-panel:not([hidden]),
+	.search-suggestions:not([hidden]) {
+		animation: motion-pop-in var(--motion-base) var(--ease-spring) both;
+		transform-origin: top center;
+	}
+
+	.mobile-drawer:not([hidden]) {
+		animation: motion-drawer-in 380ms var(--ease-spring) both;
+	}
+
+	.mobile-drawer-backdrop:not([hidden]) {
+		animation: motion-fade-in var(--motion-base) ease-out both;
+	}
+
+	.product-tabs .woocommerce-Tabs-panel {
+		animation: motion-fade-in var(--motion-fast) ease-out both;
+	}
+
+	/* ---- Press feedback ---- */
+	.btn,
+	.button,
+	.configurator__tile,
+	.wishlist-toggle,
+	.flex-control-thumbs li img {
+		transition-property: background-color, border-color, color, box-shadow, transform;
+		transition-duration: var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-spring-duration);
+		transition-timing-function: ease-out, ease-out, ease-out, ease-out, var(--ease-spring);
+	}
+
+	.btn:active:not(:disabled):not(.disabled),
+	.button:active:not(:disabled):not(.disabled),
+	.configurator__tile:not(.is-unavailable):active,
+	.wishlist-toggle:active,
+	.flex-control-thumbs li img:active {
+		transform: scale(.96);
+		transition-duration: var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast), 90ms;
+	}
+
+	/* ---- Configurator: the chosen tile settles into place ---- */
+	.configurator__tile:has(input:checked) {
+		animation: motion-tile-select var(--motion-spring-duration) var(--ease-spring-bouncy);
+	}
+
+	/* Price/stock line after a variation change (class set by motion.js). */
+	.motion-swap {
+		animation: motion-fade-up 360ms var(--ease-spring) both;
+	}
+
+	/* ---- Product card hover lift (pointer devices only) ---- */
+	@media (hover: hover) and (pointer: fine) {
+		.product-card {
+			transition: border-color var(--transition-hover), box-shadow var(--transition-hover), transform var(--motion-spring-duration) var(--ease-spring);
+		}
+
+		.product-card:hover {
+			transform: translate3d(0, -3px, 0);
+		}
+	}
+
+	/* ---- Skeleton shimmer while a product image loads ---- */
+	.product-card__media.is-img-loading::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .6), transparent);
+		animation: motion-shimmer 1.3s ease-in-out infinite;
+	}
+
+	.product-card__media.is-img-loading img {
+		opacity: 0;
+	}
+
+	.product-card__media img {
+		transition: opacity var(--motion-base) ease-out;
+	}
+
+	/* ---- Fly-to-cart ghost (motion.js) ---- */
+	.motion-fly {
+		position: fixed;
+		z-index: 2147483000;
+		margin: 0;
+		object-fit: contain;
+		pointer-events: none;
+		border-radius: var(--radius-card);
+		box-shadow: var(--shadow-float);
+		background: var(--c-paper);
+		will-change: transform, opacity;
+	}
+
+	/* ---- Shared element + fast cut between pages (View Transitions) ---- */
+	@view-transition {
+		navigation: auto;
+	}
+
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation-duration: var(--motion-fast);
+	}
+
+	::view-transition-group(product-media) {
+		animation-duration: 380ms;
+		animation-timing-function: var(--ease-spring);
+	}
+
+	::view-transition-old(product-media),
+	::view-transition-new(product-media) {
+		height: 100%;
+		object-fit: contain;
+	}
+
+	.woocommerce-product-gallery__image:first-child img:not(.zoomImg) {
+		view-transition-name: product-media;
+	}
+}

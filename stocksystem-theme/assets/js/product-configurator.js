@@ -33,6 +33,51 @@
 		var $summary = $form.find( '.configurator__summary' );
 		var basePrice = parseFloat( $summary.data( 'base-price' ) ) || 0;
 		var isHardwareConfig = '1' === String( $summary.data( 'hardware-config' ) );
+		var variations = $form.data( 'product_variations' ) || [];
+
+		// WooCommerce narrows each select to values that fit the OTHER current
+		// choices. A tile whose value was narrowed out (e.g. 16GB while 256GB
+		// is chosen and no 16GB/256GB variation exists) would otherwise be a
+		// dead click — so the clicked value wins and the other attributes move
+		// to the cheapest in-stock combination that has it.
+		function optionUsable( $select, value ) {
+			var $option = $select.find( 'option' ).filter( function () {
+				return this.value === value;
+			} );
+			return $option.length && ! $option.prop( 'disabled' );
+		}
+
+		function switchToCombination( selectName, value ) {
+			var best = null;
+			$.each( variations, function ( i, variation ) {
+				var attrs = variation.attributes || {};
+				if ( ! variation.is_in_stock || ( attrs[ selectName ] && attrs[ selectName ] !== value ) ) {
+					return;
+				}
+				if ( ! best || variation.display_price < best.display_price ) {
+					best = variation;
+				}
+			} );
+
+			var $selects = $form.find( '.variations select' );
+			// Clear everything first so WooCommerce re-lists every value...
+			$selects.val( '' );
+			$selects.first().trigger( 'change' );
+
+			// ...then apply the whole combination and let it look the price up.
+			$selects.each( function () {
+				var name = $( this ).attr( 'name' );
+				if ( name === selectName ) {
+					$( this ).val( value );
+				} else if ( best && best.attributes && best.attributes[ name ] ) {
+					$( this ).val( best.attributes[ name ] );
+				}
+			} );
+			$selects.filter( '[name="' + selectName + '"]' ).trigger( 'change' );
+			$selects.not( '[name="' + selectName + '"]' ).each( function () {
+				$( this ).triggerHandler( 'change' );
+			} );
+		}
 
 		// Tile ↔ hidden-select sync, both directions.
 		$form.find( '.configurator__attribute' ).each( function () {
@@ -42,7 +87,12 @@
 			var $radios = $attribute.find( 'input[type="radio"]' );
 
 			$radios.on( 'change', function () {
-				$select.val( $( this ).val() ).trigger( 'change' );
+				var value = $( this ).val();
+				if ( ! optionUsable( $select, value ) ) {
+					switchToCombination( selectName, value );
+					return;
+				}
+				$select.val( value ).trigger( 'change' );
 			} );
 
 			$select.on( 'change', function () {
@@ -52,6 +102,15 @@
 					$attribute.find( 'input[type="radio"][value="' + value + '"]' ).prop( 'checked', true );
 				}
 			} );
+
+			// Start in step with the select (pre-selected default, or a value
+			// the browser restored on back/forward).
+			if ( $select.val() ) {
+				$radios.prop( 'checked', false );
+				$radios.filter( function () {
+					return this.value === $select.val();
+				} ).prop( 'checked', true );
+			}
 		} );
 
 		$form.find( '.reset_variations' ).on( 'click', function () {

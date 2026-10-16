@@ -6,7 +6,10 @@
 
 .single-product-layout {
 	display: grid;
-	grid-template-columns: 7fr 5fr;
+	/* minmax(0, …): a grid track's default minimum is its content's
+	   min-content width, so a long thumbnail row widened the column and
+	   pushed the whole page sideways on phones. */
+	grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
 	gap: var(--sp-36);
 	align-items: start;
 	padding-block: var(--sp-32) var(--sp-48);
@@ -93,17 +96,30 @@
 	background: var(--c-paper-alt);
 }
 
+.woocommerce-product-gallery {
+	min-width: 0;
+}
+
+/* Any number of thumbnails: the row scrolls sideways inside the gallery
+   instead of widening it. */
 .flex-control-thumbs {
 	display: flex;
 	gap: var(--sp-12);
 	list-style: none;
 	margin: var(--sp-12) 0 0;
-	padding: 0;
+	padding: 0 0 var(--sp-4);
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+	scroll-snap-type: x proximity;
+	scrollbar-width: thin;
+	-webkit-overflow-scrolling: touch;
 }
 
 .flex-control-thumbs li {
+	flex: 0 0 auto;
 	width: 88px;
 	height: 88px;
+	scroll-snap-align: start;
 }
 
 .flex-control-thumbs li img {
@@ -1174,9 +1190,18 @@
    box's price/configurator). */
 @media (max-width: 767px) {
 	.single-product-layout {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 		gap: var(--sp-16);
 		padding-block: var(--sp-12) var(--sp-24);
+	}
+
+	.flex-control-thumbs {
+		gap: var(--sp-8);
+	}
+
+	.flex-control-thumbs li {
+		width: 64px;
+		height: 64px;
 	}
 
 	/* 10 Mobile Flows A3: title, price and CTA sit right under the gallery;

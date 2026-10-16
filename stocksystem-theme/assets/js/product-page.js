@@ -57,4 +57,32 @@
 			bar.classList.add( 'is-visible' );
 		}
 	}
+
+	// Gallery thumbnails scroll sideways when there are many: keep the active
+	// one in view as the main image changes (swipe, arrows, click). Only the
+	// row scrolls — never the page.
+	var gallery = document.querySelector( '.woocommerce-product-gallery' );
+
+	if ( gallery && 'MutationObserver' in window ) {
+		new MutationObserver( function ( mutations ) {
+			for ( var i = 0; i < mutations.length; i++ ) {
+				var img = mutations[ i ].target;
+				if ( ! img.classList || ! img.classList.contains( 'flex-active' ) ) {
+					continue;
+				}
+				var row = img.closest( '.flex-control-thumbs' );
+				if ( ! row || row.scrollWidth <= row.clientWidth ) {
+					return;
+				}
+				var rowBox = row.getBoundingClientRect();
+				var box = img.getBoundingClientRect();
+				var reduce = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+				row.scrollBy( {
+					left: ( box.left + ( box.width / 2 ) ) - ( rowBox.left + ( rowBox.width / 2 ) ),
+					behavior: reduce ? 'auto' : 'smooth',
+				} );
+				return;
+			}
+		} ).observe( gallery, { subtree: true, attributes: true, attributeFilter: [ 'class' ] } );
+	}
 } )();

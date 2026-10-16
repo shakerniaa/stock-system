@@ -1,5 +1,5 @@
 {
- "built": "2026-09-29T11:08:34.044Z",
+ "built": "2026-10-16T13:48:34.604Z",
  "global_css": [
   "fonts.css",
   "tokens.css",
@@ -13,7 +13,8 @@
   "components/archive.css",
   "components/blog.css",
   "components/extras.css",
-  "components/compare.css"
+  "components/compare.css",
+  "components/motion.css"
  ],
  "global_js": [
   "breakpoints.js",
@@ -26,7 +27,8 @@
   "wishlist.js",
   "extras.js",
   "footer.js",
-  "compare.js"
+  "compare.js",
+  "motion.js"
  ],
  "css": {
   "components/about.css": "css/about.min.css",

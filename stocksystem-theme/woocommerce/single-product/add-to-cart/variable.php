@@ -27,6 +27,7 @@ $variations_attr    = wc_esc_json( wp_json_encode( $available_variations ) );
 $addons             = stocksystem_get_product_addons( $product->get_id() );
 $cheapest_price     = stocksystem_configurator_cheapest_price( $product );
 $is_hardware_config = stocksystem_is_hardware_configurator_product( $product );
+$selected_values    = stocksystem_configurator_selected_values( $product );
 
 do_action( 'woocommerce_before_add_to_cart_form' );
 ?>
@@ -44,6 +45,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 					$tile_options = stocksystem_configurator_attribute_options( $product, $attribute_name );
 					$select_name  = 'attribute_' . sanitize_title( $attribute_name );
 					$group_id     = 'configurator-' . sanitize_title( $attribute_name );
+					$selected     = isset( $selected_values[ $attribute_name ] ) ? $selected_values[ $attribute_name ] : '';
 					?>
 					<div class="configurator__attribute" data-attribute-select="<?php echo esc_attr( $select_name ); ?>">
 						<span class="configurator__attribute-label"><?php echo esc_html( wc_attribute_label( $attribute_name ) ); ?></span>
@@ -57,6 +59,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 										value="<?php echo esc_attr( $option['value'] ); ?>"
 										data-delta="<?php echo esc_attr( $option['delta'] ); ?>"
 										<?php disabled( ! $option['available'] ); ?>
+										<?php checked( '' !== $selected && $option['available'] && (string) $option['value'] === $selected ); ?>
 									>
 									<span class="configurator__tile-label"><?php echo esc_html( $option['label'] ); ?></span>
 									<span class="configurator__tile-delta">
@@ -92,6 +95,7 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 									'options'   => $raw_options,
 									'attribute' => $attribute_name,
 									'product'   => $product,
+									'selected'  => '' !== $selected ? $selected : false,
 								)
 							);
 							?>
