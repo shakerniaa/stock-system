@@ -319,13 +319,20 @@
 
 .hero-bento__img {
 	position: absolute;
-	inset-inline-end: var(--sp-24);
-	bottom: var(--sp-36);
-	width: 300px;
-	max-width: 45%;
-	height: auto;
+	inset-inline-end: var(--sp-16);
+	bottom: var(--sp-20);
+	/* A fixed slot (not the image's own size): every upload lands in the
+	   same place, contained and pinned to the bottom outer corner. */
+	width: 55%;
+	height: 60%;
 	object-fit: contain;
+	object-position: left bottom;
 	pointer-events: none;
+}
+
+[dir="ltr"] .hero-bento__img,
+[dir="ltr"] .hero-bento__tile-img {
+	object-position: right bottom;
 }
 
 .hero-bento__tile {
@@ -344,6 +351,11 @@
 .hero-bento__tile:hover {
 	color: var(--tile-fg);
 	filter: brightness(1.04);
+}
+
+.hero-bento__tile > span {
+	position: relative;
+	z-index: 1;
 }
 
 .hero-bento__tile-eyebrow {
@@ -374,12 +386,13 @@
 
 .hero-bento__tile-img {
 	position: absolute;
-	inset-inline-end: -10px;
-	bottom: -6px;
-	width: 150px;
-	max-width: 50%;
-	height: auto;
+	inset-inline-end: 0;
+	bottom: 0;
+	width: 58%;
+	max-width: 220px;
+	height: 72%;
 	object-fit: contain;
+	object-position: left bottom;
 	pointer-events: none;
 }
 
@@ -1045,23 +1058,58 @@
 		line-height: 1.4;
 	}
 
+	/* Main card: copy → image → full-width button, nothing overlapping. */
 	.hero-bento__img {
 		position: relative;
 		inset-inline-end: auto;
 		bottom: auto;
+		order: 1;
 		align-self: center;
-		width: 230px;
-		max-width: 70%;
+		width: min(80%, 300px);
+		height: auto;
+		max-height: 200px;
+		object-position: center bottom;
 	}
 
+	.hero-bento__cta {
+		order: 2;
+		align-self: stretch;
+		justify-content: center;
+	}
+
+	/* Tiles: a picture on top, text under it — every tile the same rhythm. */
 	.hero-bento__tile {
-		padding: var(--sp-16);
-		min-height: 150px;
+		padding: var(--sp-12) var(--sp-14) var(--sp-14);
+		min-height: 0;
+		gap: var(--sp-4);
+	}
+
+	.hero-bento__tile-img {
+		position: static;
+		order: -1;
+		width: 100%;
+		max-width: none;
+		height: 92px;
+		margin-bottom: var(--sp-8);
+		object-position: center bottom;
+	}
+
+	.hero-bento__tile-eyebrow {
+		font-size: var(--fs-11-5);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.hero-bento__tile-title {
-		font-size: var(--fs-16);
-		line-height: 1.45;
+		font-size: var(--fs-15);
+		line-height: 1.5;
+		max-width: none;
+	}
+
+	.hero-bento__tile-cta {
+		padding-top: var(--sp-6);
+		font-size: var(--fs-12-5);
 	}
 
 	.hero-bento__tile-body {
